@@ -8,7 +8,6 @@ from tweepy import Cursor, OAuthHandler, API
 from tweepy.error import TweepError
 from settings import *
 
-from scipy import average
 import re
 from utils import json_dump_unicode, json_load_unicode, concatenate
 import os
@@ -102,10 +101,10 @@ def get_friends_graph():
     return graph
 
 if __name__ == '__main__':
-    # graph = get_friends_graph()
+    graph = get_friends_graph()
 
-    fname = 'graph.gpickle'
-    graph = nx.read_gpickle(fname)
+    # fname = 'graph.gpickle'
+    # graph = nx.read_gpickle(fname)
 
     for uid in graph.nodes():
         get_timeline(user_id=uid)
