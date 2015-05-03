@@ -1,3 +1,4 @@
 *.json
 *.tmp
-.pyc
+*.pyc
+localsettings.py
