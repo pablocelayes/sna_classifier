@@ -20,7 +20,7 @@ class APIHandler(object):
     """docstring for APIHandler"""
     def __init__(self, auth_data):
         self.auth_data = auth_data
-        self.index = 0
+        self.index = 2
 
     def get_fresh_api_connection(self):
         success = False
@@ -46,9 +46,9 @@ def get_followed_user_ids(user_id=None):
             following = TW.friends_ids(user_id=user_id)
             done = True
         except Exception, e:
-            print e
-            # print "waiting..."
-            # time.sleep(10)
+            # print e
+            print "waiting..."
+            time.sleep(10)
 
     return following
 
@@ -83,19 +83,23 @@ def get_timeline(screen_name=None, user_id=None, days=30):
 
 
 def get_friends_graph():
-    graph = nx.DiGraph()
     my_id = USER_DATA['id']
+
+    # Seed: users I'm following
     my_followed = get_followed_user_ids(my_id)
 
-    # resume
     fname = 'graph.gpickle' 
-    graph = nx.read_gpickle(fname)
+    if os.path.exists(fname):     # resume
+        graph = nx.read_gpickle(fname)
+    else:
+        graph = nx.DiGraph()
+
     seen = set([x[0] for x in graph.edges()])
-    my_followed = list(set(my_followed) - seen)
-    for u_id in my_followed:
+    
+    unvisited = list(set(my_followed) - seen)
+    for u_id in unvisited:
         followed = get_followed_user_ids(u_id)
-        followed = [f for f in followed if f in my_followed]
-        graph.add_edges_from([(u_id, id) for id in followed])
+        graph.add_edges_from([(u_id, f_id) for f_id in followed])
         nx.write_gpickle(graph, fname)
 
     return graph
@@ -117,9 +121,4 @@ if __name__ == '__main__':
     # for u_id in user_ids:
     #     get_timeline(screen_name=None, user_id=None, days=30)
 
-    # Seed: users I'm following
-
     # Among those, I collect all the following relationships within the set 
-
-
-
