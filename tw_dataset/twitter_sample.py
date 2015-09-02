@@ -14,13 +14,16 @@ import os
 import time
 
 import networkx as nx
+from random import choice
+import pickle
+
 
 # Used to switch between tokens to avoid exceeding rates
 class APIHandler(object):
     """docstring for APIHandler"""
     def __init__(self, auth_data):
         self.auth_data = auth_data
-        self.index = 2
+        self.index = choice(range(len(auth_data)))
 
     def get_fresh_api_connection(self):
         success = False
@@ -103,6 +106,46 @@ def get_friends_graph():
         nx.write_gpickle(graph, fname)
 
     return graph
+
+def get_follower_counts(user_id):
+    TW = API_Handler.get_fresh_api_connection()
+    u = TW.get_user(user_id)
+    return u.followers_count
+
+
+def filter_most_relevant_users(user_ids, scoring_function, N=100):
+    scored = [(u_id, scoring_function(u_id)) for u_id in user_ids]
+
+    most_relevant = sorted(scored, key=lambda u, s: -s)[:N]
+
+    return most_relevant
+
+def get_my_most_popular_followed(N=100):
+    my_id = USER_DATA['id']
+
+    followed_ids = get_followed_user_ids(my_id)
+
+    fname = 'followed.pickle'
+
+    if os.path.exists(fname):
+        with open(fname, 'rb') as f:
+            scored = pickle.load(f)
+    else:
+        scored = []
+
+    n_seen = len(scored)
+
+    for i, u_id in enumerate(followed_ids[n_seen:]):
+        scored.append((u_id, get_follower_counts(u_id)))
+        if i > 0 and i % 10 == 0:
+            with open(fname, 'wb') as f:
+                pickle.dump(scored, f)
+    
+    most_popular = sorted(scored, key=lambda (u, s): -s)[:N]
+
+    return most_popular
+
+
 
 if __name__ == '__main__':
     graph = get_friends_graph()
