@@ -39,6 +39,24 @@ AUTH_DATA = [
     access_token = '393285785-f6bjB9LZWAcKIcBTmHaBuKGLeRBN9sq0vWWq4MBn',
     access_token_secret = 'fewVhQ0UulxCRuPyvkIOBHHLLtBUf3PR1gAFIRBlAn9fs'),
 
+    # ds_tesiscomp0
+    dict(consumer_key = 'QXRzocZPEZHt2J1nMdVd9mbeF',
+    consumer_secret = 'zltlvMscQDGoQCX5UOHrK6BHmyfoYvGPUELuEmTlGhMAE1ZEI7',
+    access_token = '3072785271-fWvbm54Z4efwRG54NskULSnHweiBgHdZUclYiP7',
+    access_token_secret = 'Uu42AYIL2sPd9V9He9estF31GbcoeYhadVly1s70eGBtt'),
+
+    # ds_tesiscomp1
+    dict(consumer_key = 'QOlBFygFTecPH0W8UJdwNutqr',
+    consumer_secret = 'XhCUoiSHdVOSAAiHrg3sf4zIF5xIUAexV3EIfbFMeVIHjAyLFi',
+    access_token = '3072785271-GReaaepikVW8NXVtRzZrgNlqiQwNRB3GvTse167',
+    access_token_secret = 'cCFyenr0B9LLwQyB9EePRW0oC7KdXxu3ApY7UgQ4RcXcc'),
+
+    # ds_tesiscomp2
+    dict(consumer_key = '2n7yeboGqZ3ldwXr08wOGE5wQ',
+    consumer_secret = '7CFURPoJDhJKNb6VWVamAyS3WFKRrt556jJHsWifoDZBY41yfm',
+    access_token = '3072785271-dWAo8qpOaEZ6J7IzPWDVd4nk3vC138nM2cNORJn',
+    access_token_secret = 'AJNrwJUfoZinAgQz0HWA3fTNM1xVMgYL4aGluWYKRLLqo'),
+
 ]
 
 USER_DATA = {
