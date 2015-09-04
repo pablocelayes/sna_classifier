@@ -19,8 +19,25 @@ AUTH_DATA = [
     dict(consumer_key = 'PGJgnuiRPw6ZiJrzVa7bpkcwg',
     consumer_secret = '91oIGr4hxcJviAEHFlbwwX79fHsA9aR3KX4nmVCdtVtLR6hMxV',
     access_token = '3072785271-raDCcTEGrtNJqJqLAn9LYJtL7Sz7pgEB67uMSfF',
-    access_token_secret = 'wqlUE7tfstOyi8TuUkzT1q99e4xMtkchvEpfh0Kze35X7')
+    access_token_secret = 'wqlUE7tfstOyi8TuUkzT1q99e4xMtkchvEpfh0Kze35X7'),
 
+    # tesiscomp0
+    dict(consumer_key = 'W0i9r14YUAB4PGQHfp68X3SgY',
+    consumer_secret = 'RykpfbJHsW44li88pDHy2pkjbrJorSmjDePSxjR8VtU7myAoM4',
+    access_token = '393285785-DYfrJEDo2gUTRbYtlf3jPioZMaNDBlUPnzcoAFuG',
+    access_token_secret = 'qeFL5xSxoU76dfKxLgJpbe7OQO5kyXHKM6New5fr1ljVV'),
+
+    # tesiscomp1
+    dict(consumer_key = 'f0MiYq2S5iLktvJf0sTfRsLLS',
+    consumer_secret = 'xlvnp6fVAzlfpdShTICRPKbIT6YVlZUd9bofZG1lSEEMqP4pPn',
+    access_token = '393285785-4yzNnw5EQU4VQVg60zczJjUHAWDN3M9SQOVos0aD',
+    access_token_secret = 'yO0FuPRGYNgOUjjCGC7mTdGfnpKfyaH9ruTEZxzO5vFiC'),
+
+    # tesiscomp2
+    dict(consumer_key = 'VAetOVbpVSq75f7w50P3W0CSR',
+    consumer_secret = 'z6J7yFJLeG0LzGWMDfdrG2GReavKNvV2gScyPu5S9AeTU6J3Iv',
+    access_token = '393285785-f6bjB9LZWAcKIcBTmHaBuKGLeRBN9sq0vWWq4MBn',
+    access_token_secret = 'fewVhQ0UulxCRuPyvkIOBHHLLtBUf3PR1gAFIRBlAn9fs'),
 
 ]
 

@@ -14,6 +14,7 @@ import os
 import time
 
 import networkx as nx
+import pandas as pd
 from random import choice
 import pickle
 
@@ -41,6 +42,45 @@ class APIHandler(object):
 API_Handler = APIHandler(AUTH_DATA)
 
 
+def get_follower_counts(user_id):
+    TW = API_Handler.get_fresh_api_connection()
+    u = TW.get_user(user_id)
+    return u.followers_count
+
+
+def filter_most_relevant_users(user_ids, scoring_function, N=100):
+    scored = [(u_id, scoring_function(u_id)) for u_id in user_ids]
+
+    most_relevant = sorted(scored, key=lambda u, s: -s)[:N]
+
+    return most_relevant
+
+def get_my_most_popular_followed(N=100):
+    my_id = USER_DATA['id']
+
+    followed_ids = get_followed_user_ids(my_id)
+
+    fname = 'followed.pickle'
+
+    if os.path.exists(fname):
+        with open(fname, 'rb') as f:
+            scored = pickle.load(f)
+    else:
+        scored = []
+
+    n_seen = len(scored)
+
+    for i, u_id in enumerate(followed_ids[n_seen:]):
+        scored.append((u_id, get_follower_counts(u_id)))
+        if i > 0 and i % 10 == 0:
+            with open(fname, 'wb') as f:
+                pickle.dump(scored, f)
+    
+    most_popular = sorted(scored, key=lambda (u, s): -s)[:N]
+
+    return most_popular
+
+
 def get_followed_user_ids(user_id=None):
     done = False
     while not done:
@@ -54,6 +94,24 @@ def get_followed_user_ids(user_id=None):
             time.sleep(10)
 
     return following
+
+RELEVANT = {}
+
+def is_relevant(user_id):
+    if user_id in RELEVANT:
+        return RELEVANT[user_id]
+    else:
+        while True:
+            try:
+                TW = API_Handler.get_fresh_api_connection()
+                u = TW.get_user(user_id)
+                relevant = u.followers_count > 40 and u.friends_count > 40
+                RELEVANT[user_id] = relevant
+                return relevant
+            except Exception, e:
+                # print e
+                print "waiting..."
+                time.sleep(10)
 
 
 def get_timeline(screen_name=None, user_id=None, days=30):
@@ -107,43 +165,85 @@ def get_friends_graph():
 
     return graph
 
-def get_follower_counts(user_id):
-    TW = API_Handler.get_fresh_api_connection()
-    u = TW.get_user(user_id)
-    return u.followers_count
+
+def filter_relevant_ids(graph):
+    """
+        Dado el grafo de mis followed y sus followed,
+        extraemos los 100 nodos más relevantes 
+    """
+    graph = nx.read_gpickle('graph.gpickle')
+    my_followed = list(set([x[0] for x in graph.edges()]))
+    graph = nx.subgraph(graph, my_followed)
+
+    def get_followed(nid):
+        return len(graph.successors(nid))
+
+    def get_nfollowers(nid):
+        return len(graph.predecessors(nid))
+
+    df = pd.DataFrame()
+    df['nodeid'] = my_followed
+    df['nfollowed'] = df['nodeid'].apply(get_nfollowed)
+    df['nfollowers'] = df['nodeid'].apply(get_nfollowers)
+
+    relevant = df[(df.nfollowed > 40) & (df.nfollowers > 40)]
+
+    relevantids = list(relevant.nodeid.values)
+    with open('layer0.pickle','wb') as f:
+        pickle.dump(relevantids, f)
+
+    return relevantids
 
 
-def filter_most_relevant_users(user_ids, scoring_function, N=100):
-    scored = [(u_id, scoring_function(u_id)) for u_id in user_ids]
+def extend_followed_graph(outer_layer_ids, level):
+    """
+        Given a graph and the ids of its outer layer,
+        it extends it with one extra step in the followed
+        relation.
 
-    most_relevant = sorted(scored, key=lambda u, s: -s)[:N]
+        This is meant to be applied up to a certain number
+        of steps. The outer layer are the nodes that were
+        seen for the first time in the previous step
 
-    return most_relevant
-
-def get_my_most_popular_followed(N=100):
-    my_id = USER_DATA['id']
-
-    followed_ids = get_followed_user_ids(my_id)
-
-    fname = 'followed.pickle'
-
-    if os.path.exists(fname):
-        with open(fname, 'rb') as f:
-            scored = pickle.load(f)
+        Level 0 are just a set of selected relevant users.
+        After that, level N + 1 is the extension of level N
+        by one more step in the followed relation
+    """
+    fname_current = 'graph%d.gpickle' % level     
+    if os.path.exists(fname_current):     # resume
+        graph = nx.read_gpickle(fname_current)
+        with open('layer%d.pickle' % level, 'rb') as fl:
+            new_outer_layer = pickle.load(fl)
     else:
-        scored = []
+        # start from previous
+        fname_previous = 'graph%d.gpickle' % (level - 1)
+        graph = nx.read_gpickle(fname_previous)
+        new_outer_layer = []
 
-    n_seen = len(scored)
+    seen = set([x[0] for x in graph.edges()])
+    unvisited = list(set(outer_layer_ids) - seen)
+    for u_id in unvisited:
+        followed = get_followed_user_ids(u_id)
+        followed = [f_id for f_id in followed if is_relevant(f_id)]
+        graph.add_edges_from([(u_id, f_id) for f_id in followed])
+        
+        new_nodes = [f_id for f_id in followed if graph.out_degree(f_id) == 0]
+        new_outer_layer += new_nodes
+        
+        nx.write_gpickle(graph, fname_current)
+        with open('layer%d.pickle' % level, 'wb') as fl:
+            pickle.dump(new_outer_layer, fl)
 
-    for i, u_id in enumerate(followed_ids[n_seen:]):
-        scored.append((u_id, get_follower_counts(u_id)))
-        if i > 0 and i % 10 == 0:
-            with open(fname, 'wb') as f:
-                pickle.dump(scored, f)
-    
-    most_popular = sorted(scored, key=lambda (u, s): -s)[:N]
+    return graph, new_outer_layer
 
-    return most_popular
+
+def compute_extended_graphs():
+    with open('layer0.pickle','rb') as f:
+        outer_layer_ids = pickle.load(f)
+
+    for level in [1, 2, 3]:
+        graph, outer_layer_ids = extend_followed_graph(outer_layer_ids, level)
+
 
 
 
