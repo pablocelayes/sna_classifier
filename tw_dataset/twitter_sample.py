@@ -14,7 +14,6 @@ import os
 import time
 
 import networkx as nx
-import pandas as pd
 from random import choice
 import pickle
 
@@ -181,6 +180,7 @@ def filter_relevant_ids(graph):
     def get_nfollowers(nid):
         return len(graph.predecessors(nid))
 
+    import pandas as pd
     df = pd.DataFrame()
     df['nodeid'] = my_followed
     df['nfollowed'] = df['nodeid'].apply(get_nfollowed)
