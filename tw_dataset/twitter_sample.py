@@ -21,9 +21,19 @@ import pickle
 # Used to switch between tokens to avoid exceeding rates
 class APIHandler(object):
     """docstring for APIHandler"""
-    def __init__(self, auth_data):
+    def __init__(self, auth_data, max_nreqs=50):
         self.auth_data = auth_data
         self.index = choice(range(len(auth_data)))
+        self.max_nreqs = max_nreqs
+        self.get_fresh_api_connection()
+
+    def get_api_connection(self):
+        if self.nreqs == self.max_nreqs:
+            self.get_fresh_api_connection()
+        else:
+            print("Continuing with API Credentials #%d" % self.index)
+            self.nreqs += 1
+        return self.connection
 
     def get_fresh_api_connection(self):
         success = False
@@ -34,15 +44,18 @@ class APIHandler(object):
                 print "Switching to API Credentials #%d" % self.index
                 auth = OAuthHandler(d['consumer_key'], d['consumer_secret'])
                 auth.set_access_token(d['access_token'], d['access_token_secret'])
-                return API(auth_handler=auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)                
-            except TweepError:
+                self.connection = API(auth_handler=auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+                self.nreqs = 0
+                return self.connection
+            except TweepError, e:
+                print("Error trying to connect: %s" % e.message)
                 time.sleep(10)
 
 API_Handler = APIHandler(AUTH_DATA)
 
 
 def get_follower_counts(user_id):
-    TW = API_Handler.get_fresh_api_connection()
+    TW = API_Handler.get_api_connection()
     u = TW.get_user(user_id)
     return u.followers_count
 
@@ -80,21 +93,44 @@ def get_my_most_popular_followed(N=100):
     return most_popular
 
 
+RELEVANT_FNAME = "relevantdict.pickle"
+
+if os.path.exists(RELEVANT_FNAME):
+    with open(RELEVANT_FNAME, 'rb') as f:
+        RELEVANT = pickle.load(f)
+else:
+    RELEVANT = {}
+
+NOTAUTHORIZED_FNAME = "notauthorizedids.pickle"
+
+if os.path.exists(NOTAUTHORIZED_FNAME):
+    with open(NOTAUTHORIZED_FNAME, 'rb') as f:
+        NOTAUTHORIZED = pickle.load(f)
+else:
+    NOTAUTHORIZED = set()
+
+
 def get_followed_user_ids(user_id=None):
     done = False
     while not done:
         try:
-            TW = API_Handler.get_fresh_api_connection()
+            TW = API_Handler.get_api_connection()
             following = TW.friends_ids(user_id=user_id)
             done = True
         except Exception, e:
             # print e
-            print "waiting..."
-            time.sleep(10)
+            if e.message == u'Not authorized.':
+                NOTAUTHORIZED.add(user_id)
+                with open(NOTAUTHORIZED_FNAME, 'wb') as f:
+                    pickle.dump(NOTAUTHORIZED, f)
+                return []
+            else:
+                print("Error: %s" % e.message)
+                print "waiting..."
+                time.sleep(10)
 
     return following
 
-RELEVANT = {}
 
 def is_relevant(user_id):
     if user_id in RELEVANT:
@@ -102,14 +138,17 @@ def is_relevant(user_id):
     else:
         while True:
             try:
-                TW = API_Handler.get_fresh_api_connection()
+                TW = API_Handler.get_api_connection()
                 u = TW.get_user(user_id)
                 relevant = u.followers_count > 40 and u.friends_count > 40
                 RELEVANT[user_id] = relevant
+                with open(RELEVANT_FNAME, 'wb') as f:
+                    pickle.dump(RELEVANT, f)
                 return relevant
             except Exception, e:
-                # print e
+                print e.message()
                 print "waiting..."
+                import ipdb; ipdb.set_trace()
                 time.sleep(10)
 
 
@@ -118,7 +157,7 @@ def get_timeline(screen_name=None, user_id=None, days=30):
     if not os.path.exists(timeline_file):
         # authenticating here ensures a different set of credentials
         # everytime we start processing a new county, to prevent hitting the rate limit
-        TW_API = API_Handler.get_fresh_api_connection()
+        TW_API = API_Handler.get_api_connection()
         timeline = []
 
         for t in Cursor(TW_API.user_timeline, user_id=user_id).items(1000):
@@ -218,17 +257,17 @@ def extend_followed_graph(outer_layer_ids, level):
         # start from previous
         fname_previous = 'graph%d.gpickle' % (level - 1)
         graph = nx.read_gpickle(fname_previous)
-        new_outer_layer = []
+        new_outer_layer = set()
 
     seen = set([x[0] for x in graph.edges()])
-    unvisited = list(set(outer_layer_ids) - seen)
+    unvisited = outer_layer_ids - seen
     for u_id in unvisited:
         followed = get_followed_user_ids(u_id)
         followed = [f_id for f_id in followed if is_relevant(f_id)]
         graph.add_edges_from([(u_id, f_id) for f_id in followed])
         
         new_nodes = [f_id for f_id in followed if graph.out_degree(f_id) == 0]
-        new_outer_layer += new_nodes
+        new_outer_layer.update(new_nodes)
         
         nx.write_gpickle(graph, fname_current)
         with open('layer%d.pickle' % level, 'wb') as fl:
@@ -248,13 +287,14 @@ def compute_extended_graphs():
 
 
 if __name__ == '__main__':
-    graph = get_friends_graph()
+    compute_extended_graphs()
+    # graph = get_friends_graph()
 
     # fname = 'graph.gpickle'
     # graph = nx.read_gpickle(fname)
 
-    for uid in graph.nodes():
-        get_timeline(user_id=uid)
+    # for uid in graph.nodes():
+    #     get_timeline(user_id=uid)
     # import matplotlib.pyplot as plt
     # nx.draw(graph)
     # plt.show()
