@@ -15,7 +15,7 @@ import time
 
 import networkx as nx
 from random import choice
-import pickle
+import pickle, json
 from datetime import timedelta, datetime
 from time import time
 
@@ -99,11 +99,12 @@ def get_my_most_popular_followed(N=100):
     return most_popular
 
 
-RELEVANT_FNAME = "relevantdict.pickle"
+# RELEVANT_FNAME = "relevantdict.pickle"
+RELEVANT_FNAME = "relevantdict.json"
 
 if os.path.exists(RELEVANT_FNAME):
-    with open(RELEVANT_FNAME, 'rb') as f:
-        RELEVANT = pickle.load(f)
+    with open(RELEVANT_FNAME, 'r') as f:
+        RELEVANT = json.load(f)
 else:
     RELEVANT = {}
 
@@ -148,8 +149,8 @@ def is_relevant(user_id):
                 u = TW.get_user(user_id)
                 relevant = u.followers_count > 40 and u.friends_count > 40
                 RELEVANT[user_id] = relevant
-                with open(RELEVANT_FNAME, 'wb') as f:
-                    pickle.dump(RELEVANT, f)
+                with open(RELEVANT_FNAME, 'w') as f:
+                    json.dump(RELEVANT, f)
                 return relevant
             except Exception, e:
                 print "Error in is_relevant for %d" % user_id
