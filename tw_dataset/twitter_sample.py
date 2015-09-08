@@ -17,7 +17,6 @@ import networkx as nx
 from random import choice
 import pickle, json
 from datetime import timedelta, datetime
-from time import time
 
 FAV_DAYS = 30
 
@@ -192,7 +191,7 @@ def fetch_favorites(user_id):
     favorites_file = "favorites/%s.json" % user_id
 
     print "Fetching favorites for user %d" % user_id
-    start_time = time()
+    start_time = time.time()
     if not os.path.exists(favorites_file):
         # authenticating here ensures a different set of credentials
         # everytime we start processing a new county, to prevent hitting the rate limit
@@ -240,10 +239,68 @@ def fetch_favorites(user_id):
 
     else:
         favorites = json_load_unicode(favorites_file)
-    elapsed_time =  time() - start_time
+    elapsed_time =  time.time() - start_time
     print "Done. Took %.1f secs to fetch %d favs" % (elapsed_time, len(favorites))
 
     return favorites
+
+
+def fetch_retweets(user_id):
+    retweets_file = "retweets/%s.json" % user_id
+
+    print "Fetching retweets for user %d" % user_id
+    start_time = time.time()
+    if not os.path.exists(retweets_file):
+        # authenticating here ensures a different set of credentials
+        # everytime we start processing a new county, to prevent hitting the rate limit
+        retweets = []
+
+        page = 1
+        done = False
+        while not done:
+            TW_API = API_HANDLER.get_fresh_api_connection()
+            try:
+                rts = TW_API.retweets(user_id=user_id, page=page)
+            except Exception, e:                
+                if e.message == u'Not authorized.':
+                    NOTAUTHORIZED.add(user_id)
+                    with open(NOTAUTHORIZED_FNAME, 'wb') as f:
+                        pickle.dump(NOTAUTHORIZED, f)
+                    break
+                else:
+                    print("Error: %s" % e.message)
+                    print "waiting..."
+                    time.sleep(10)
+                    continue
+
+            if rts:
+                for t in rts:
+                    if t.created_at > FAV_DATE_LIMIT:
+                        retweets.append({
+                                "timestamp": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
+                                "text": t.text,
+                                "user_id": t.user.id,
+                                "id": t.id
+                            })
+                        json_dump_unicode(retweets, retweets_file + ".tmp")
+                    else:
+                        done = True
+                        break
+            else:
+                # All done
+                break
+            page += 1  # next page
+
+        if retweets:
+            os.remove(retweets_file + ".tmp")
+            json_dump_unicode(retweets, retweets_file)
+
+    else:
+        retweets = json_load_unicode(retweets_file)
+    elapsed_time =  time.time() - start_time
+    print "Done. Took %.1f secs to fetch %d rts" % (elapsed_time, len(retweets))
+
+    return retweets
 
 
 def get_friends_graph():
