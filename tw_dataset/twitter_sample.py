@@ -152,9 +152,9 @@ def is_relevant(user_id):
                     pickle.dump(RELEVANT, f)
                 return relevant
             except Exception, e:
+                print "Error in is_relevant for %d" % user_id
                 print e.message()
                 print "waiting..."
-                import ipdb; ipdb.set_trace()
                 time.sleep(10)
 
 
@@ -201,7 +201,20 @@ def fetch_favorites(user_id):
         done = False
         while not done:
             TW_API = API_HANDLER.get_fresh_api_connection()
-            favs = TW_API.favorites(user_id=user_id, page=page)
+            try:
+                favs = TW_API.favorites(user_id=user_id, page=page)
+            except Exception, e:                
+                if e.message == u'Not authorized.':
+                    NOTAUTHORIZED.add(user_id)
+                    with open(NOTAUTHORIZED_FNAME, 'wb') as f:
+                        pickle.dump(NOTAUTHORIZED, f)
+                    break
+                else:
+                    print("Error: %s" % e.message)
+                    print "waiting..."
+                    time.sleep(10)
+                    continue
+
             if favs:
                 for t in favs:
                     if t.created_at > FAV_DATE_LIMIT:
@@ -219,21 +232,6 @@ def fetch_favorites(user_id):
                 # All done
                 break
             page += 1  # next page
-
-        #  We use the old-fashioned version (no Cursor) to be able to switch credentials
-        #  between pages
-
-        # for t in Cursor(TW_API.favorites, user_id=user_id).items():
-        #     if t.created_at > FAV_DATE_LIMIT:
-        #         favorites.append({
-        #                 "timestamp": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
-        #                 "text": t.text,
-        #                 "user_id": t.user.id,
-        #                 "id": t.id
-        #             })
-        #         json_dump_unicode(favorites, favorites_file + ".tmp")
-        #     else:
-        #         break
 
         if favorites:
             os.remove(favorites_file + ".tmp")
