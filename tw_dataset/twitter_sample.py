@@ -16,6 +16,12 @@ import time
 import networkx as nx
 from random import choice
 import pickle
+from datetime import timedelta, datetime
+from time import time
+
+FAV_DAYS = 30
+
+FAV_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
 
 # Used to switch between tokens to avoid exceeding rates
@@ -51,11 +57,11 @@ class APIHandler(object):
                 print("Error trying to connect: %s" % e.message)
                 time.sleep(10)
 
-API_Handler = APIHandler(AUTH_DATA)
+API_HANDLER = APIHandler(AUTH_DATA)
 
 
 def get_follower_counts(user_id):
-    TW = API_Handler.get_api_connection()
+    TW = API_HANDLER.get_api_connection()
     u = TW.get_user(user_id)
     return u.followers_count
 
@@ -114,7 +120,7 @@ def get_followed_user_ids(user_id=None):
     done = False
     while not done:
         try:
-            TW = API_Handler.get_api_connection()
+            TW = API_HANDLER.get_api_connection()
             following = TW.friends_ids(user_id=user_id)
             done = True
         except Exception, e:
@@ -138,7 +144,7 @@ def is_relevant(user_id):
     else:
         while True:
             try:
-                TW = API_Handler.get_api_connection()
+                TW = API_HANDLER.get_api_connection()
                 u = TW.get_user(user_id)
                 relevant = u.followers_count > 40 and u.friends_count > 40
                 RELEVANT[user_id] = relevant
@@ -157,7 +163,7 @@ def get_timeline(screen_name=None, user_id=None, days=30):
     if not os.path.exists(timeline_file):
         # authenticating here ensures a different set of credentials
         # everytime we start processing a new county, to prevent hitting the rate limit
-        TW_API = API_Handler.get_api_connection()
+        TW_API = API_HANDLER.get_api_connection()
         timeline = []
 
         for t in Cursor(TW_API.user_timeline, user_id=user_id).items(1000):
@@ -179,6 +185,66 @@ def get_timeline(screen_name=None, user_id=None, days=30):
         timeline = json_load_unicode(timeline_file)
 
     return timeline
+
+
+def fetch_favorites(user_id):
+    favorites_file = "favorites/%s.json" % user_id
+
+    print "Fetching favorites for user %d" % user_id
+    start_time = time()
+    if not os.path.exists(favorites_file):
+        # authenticating here ensures a different set of credentials
+        # everytime we start processing a new county, to prevent hitting the rate limit
+        favorites = []
+
+        page = 1
+        done = False
+        while not done:
+            TW_API = API_HANDLER.get_fresh_api_connection()
+            favs = TW_API.favorites(user_id=user_id, page=page)
+            if favs:
+                for t in favs:
+                    if t.created_at > FAV_DATE_LIMIT:
+                        favorites.append({
+                                "timestamp": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
+                                "text": t.text,
+                                "user_id": t.user.id,
+                                "id": t.id
+                            })
+                        json_dump_unicode(favorites, favorites_file + ".tmp")
+                    else:
+                        done = True
+                        break
+            else:
+                # All done
+                break
+            page += 1  # next page
+
+        #  We use the old-fashioned version (no Cursor) to be able to switch credentials
+        #  between pages
+
+        # for t in Cursor(TW_API.favorites, user_id=user_id).items():
+        #     if t.created_at > FAV_DATE_LIMIT:
+        #         favorites.append({
+        #                 "timestamp": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
+        #                 "text": t.text,
+        #                 "user_id": t.user.id,
+        #                 "id": t.id
+        #             })
+        #         json_dump_unicode(favorites, favorites_file + ".tmp")
+        #     else:
+        #         break
+
+        if favorites:
+            os.remove(favorites_file + ".tmp")
+            json_dump_unicode(favorites, favorites_file)
+
+    else:
+        favorites = json_load_unicode(favorites_file)
+    elapsed_time =  time() - start_time
+    print "Done. Took %.1f secs to fetch %d favs" % (elapsed_time, len(favorites))
+
+    return favorites
 
 
 def get_friends_graph():
