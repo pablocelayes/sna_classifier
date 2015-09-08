@@ -152,11 +152,16 @@ def fetch_timeline(user_id):
                 for t in tweets:
                     if t.created_at > FAV_DATE_LIMIT:
                         timeline.append({
-                            "timestamp": t.created_at.strftime("%Y/%m/%d"),
+                            "id": t.id,
+                            "author_id": t.author.id,
+                            "created_at": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
                             "favorited": t.favorited,
                             "retweeted": t.retweeted,
+                            "retweet_count": t.retweet_count,
+                            "favorite_count": t.favorite_count,
                             "text": t.text,
-                            "user": t.user.screen_name,
+                            "lang": t.lang,
+                            "is_quote_status": t.is_quote_status,
                         })
                         json_dump_unicode(timeline, timeline_file + ".tmp")
                     else:

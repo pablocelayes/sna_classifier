@@ -19,7 +19,7 @@ class APIHandler(object):
         if self.nreqs == self.max_nreqs:
             self.get_fresh_connection()
         else:
-            print("Continuing with API Credentials #%d" % self.index)
+            # print("Continuing with API Credentials #%d" % self.index)
             self.nreqs += 1
         return self.connection
 
@@ -29,7 +29,7 @@ class APIHandler(object):
             try:
                 self.index = (self.index + 1) % len(self.auth_data)
                 d = self.auth_data[self.index]
-                print "Switching to API Credentials #%d" % self.index
+                # print "Switching to API Credentials #%d" % self.index
                 auth = OAuthHandler(d['consumer_key'], d['consumer_secret'])
                 auth.set_access_token(d['access_token'], d['access_token_secret'])
                 self.connection = API(auth_handler=auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
