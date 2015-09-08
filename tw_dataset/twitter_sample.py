@@ -1,66 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-    Sampling of 100 geolocated user by county
-    and their last 500 tweeted words (from last 3 months)
-"""
-from tweepy import Cursor, OAuthHandler, API
-from tweepy.error import TweepError
-from settings import *
-
 import re
 from utils import json_dump_unicode, json_load_unicode, concatenate
 import os
 import time
 
 import networkx as nx
-from random import choice
 import pickle, json
 from datetime import timedelta, datetime
+
+from twitter_api import API_HANDLER
 
 FAV_DAYS = 30
 
 FAV_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
 
-# Used to switch between tokens to avoid exceeding rates
-class APIHandler(object):
-    """docstring for APIHandler"""
-    def __init__(self, auth_data, max_nreqs=50):
-        self.auth_data = auth_data
-        self.index = choice(range(len(auth_data)))
-        self.max_nreqs = max_nreqs
-        self.get_fresh_api_connection()
-
-    def get_api_connection(self):
-        if self.nreqs == self.max_nreqs:
-            self.get_fresh_api_connection()
-        else:
-            print("Continuing with API Credentials #%d" % self.index)
-            self.nreqs += 1
-        return self.connection
-
-    def get_fresh_api_connection(self):
-        success = False
-        while not success:
-            try:
-                self.index = (self.index + 1) % len(self.auth_data)
-                d = self.auth_data[self.index]
-                print "Switching to API Credentials #%d" % self.index
-                auth = OAuthHandler(d['consumer_key'], d['consumer_secret'])
-                auth.set_access_token(d['access_token'], d['access_token_secret'])
-                self.connection = API(auth_handler=auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-                self.nreqs = 0
-                return self.connection
-            except TweepError, e:
-                print("Error trying to connect: %s" % e.message)
-                time.sleep(10)
-
-API_HANDLER = APIHandler(AUTH_DATA)
-
-
 def get_follower_counts(user_id):
-    TW = API_HANDLER.get_api_connection()
+    TW = API_HANDLER.get_connection()
     u = TW.get_user(user_id)
     return u.followers_count
 
@@ -120,7 +77,7 @@ def get_followed_user_ids(user_id=None):
     done = False
     while not done:
         try:
-            TW = API_HANDLER.get_api_connection()
+            TW = API_HANDLER.get_connection()
             following = TW.friends_ids(user_id=user_id)
             done = True
         except Exception, e:
@@ -144,7 +101,7 @@ def is_relevant(user_id):
     else:
         while True:
             try:
-                TW = API_HANDLER.get_api_connection()
+                TW = API_HANDLER.get_connection()
                 u = TW.get_user(user_id)
                 relevant = u.followers_count > 40 and u.friends_count > 40
                 RELEVANT[user_id] = relevant
@@ -158,31 +115,66 @@ def is_relevant(user_id):
                 time.sleep(10)
 
 
-def get_timeline(screen_name=None, user_id=None, days=30):
+TL_DAYS = 10
+
+TL_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
+
+
+def fetch_timeline(user_id):
     timeline_file = "timelines/%s.json" % user_id
+
+    print "Fetching timeline for user %d" % user_id
+    start_time = time.time()
     if not os.path.exists(timeline_file):
         # authenticating here ensures a different set of credentials
         # everytime we start processing a new county, to prevent hitting the rate limit
-        TW_API = API_HANDLER.get_api_connection()
         timeline = []
 
-        for t in Cursor(TW_API.user_timeline, user_id=user_id).items(1000):
-            if t.created_at.date() > DATE_LIMIT:
-                timeline.append({
-                        "timestamp": t.created_at.strftime("%Y/%m/%d"),
-                        "favorited": t.favorited,
-                        "retweeted": t.retweeted,
-                        "text": t.text,
-                        "user": t.user.screen_name,
-                    })
-                json_dump_unicode(timeline, timeline_file + ".tmp")
+        page = 1
+        done = False
+        while not done:
+            TW_API = API_HANDLER.get_fresh_connection()
+            try:
+                tweets = TW_API.user_timeline(user_id=user_id, page=page)
+            except Exception, e:                
+                if e.message == u'Not authorized.':
+                    NOTAUTHORIZED.add(user_id)
+                    with open(NOTAUTHORIZED_FNAME, 'wb') as f:
+                        pickle.dump(NOTAUTHORIZED, f)
+                    break
+                else:
+                    print("Error: %s" % e.message)
+                    print "waiting..."
+                    time.sleep(10)
+                    continue
+
+            if tweets:
+                for t in tweets:
+                    if t.created_at > FAV_DATE_LIMIT:
+                        timeline.append({
+                            "timestamp": t.created_at.strftime("%Y/%m/%d"),
+                            "favorited": t.favorited,
+                            "retweeted": t.retweeted,
+                            "text": t.text,
+                            "user": t.user.screen_name,
+                        })
+                        json_dump_unicode(timeline, timeline_file + ".tmp")
+                    else:
+                        done = True
+                        break
             else:
+                # All done
                 break
+            page += 1  # next page
+
         if timeline:
             os.remove(timeline_file + ".tmp")
-            json_dump_unicode(timeline, timeline_file)    
+            json_dump_unicode(timeline, timeline_file)
+
     else:
         timeline = json_load_unicode(timeline_file)
+    elapsed_time =  time.time() - start_time
+    print "Done. Took %.1f secs to fetch %d tweets" % (elapsed_time, len(timeline))
 
     return timeline
 
@@ -200,7 +192,7 @@ def fetch_favorites(user_id):
         page = 1
         done = False
         while not done:
-            TW_API = API_HANDLER.get_fresh_api_connection()
+            TW_API = API_HANDLER.get_fresh_connection()
             try:
                 favs = TW_API.favorites(user_id=user_id, page=page)
             except Exception, e:                
@@ -244,8 +236,13 @@ def fetch_favorites(user_id):
 
     return favorites
 
+RT_DAYS = 10
+
+RT_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
+
 
 def fetch_retweets(user_id):
+    # NOT WORKING, need to fetch entire timeline
     retweets_file = "retweets/%s.json" % user_id
 
     print "Fetching retweets for user %d" % user_id
@@ -258,7 +255,7 @@ def fetch_retweets(user_id):
         page = 1
         done = False
         while not done:
-            TW_API = API_HANDLER.get_fresh_api_connection()
+            TW_API = API_HANDLER.get_fresh_connection()
             try:
                 rts = TW_API.retweets(user_id=user_id, page=page)
             except Exception, e:                
@@ -275,7 +272,7 @@ def fetch_retweets(user_id):
 
             if rts:
                 for t in rts:
-                    if t.created_at > FAV_DATE_LIMIT:
+                    if t.created_at > RT_DATE_LIMIT:
                         retweets.append({
                                 "timestamp": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
                                 "text": t.text,
@@ -406,8 +403,6 @@ def compute_extended_graphs():
         graph, outer_layer_ids = extend_followed_graph(outer_layer_ids, level)
 
 
-
-
 if __name__ == '__main__':
     compute_extended_graphs()
     # graph = get_friends_graph()
@@ -416,7 +411,7 @@ if __name__ == '__main__':
     # graph = nx.read_gpickle(fname)
 
     # for uid in graph.nodes():
-    #     get_timeline(user_id=uid)
+    #     fetch_timeline(user_id=uid)
     # import matplotlib.pyplot as plt
     # nx.draw(graph)
     # plt.show()
@@ -424,6 +419,6 @@ if __name__ == '__main__':
     # user_ids = graph.nodes()
 
     # for u_id in user_ids:
-    #     get_timeline(screen_name=None, user_id=None, days=30)
+    #     fetch_timeline(screen_name=None, user_id=None, days=30)
 
     # Among those, I collect all the following relationships within the set 
