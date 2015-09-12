@@ -111,7 +111,9 @@ def is_relevant(user_id):
                 return relevant
             except Exception, e:
                 print "Error in is_relevant for %d" % user_id
-                print e.message()
+		print "Skiping..."
+                # import ipdb; ipdb.set_trace()
+		# print e.message()
                 print "waiting..."
                 time.sleep(10)
                 retries += 1
