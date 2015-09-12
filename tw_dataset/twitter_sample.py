@@ -99,7 +99,8 @@ def is_relevant(user_id):
     if user_id in RELEVANT:
         return RELEVANT[user_id]
     else:
-        while True:
+        retries = 0
+        while retries < 5:
             try:
                 TW = API_HANDLER.get_connection()
                 u = TW.get_user(user_id)
@@ -113,7 +114,7 @@ def is_relevant(user_id):
                 print e.message()
                 print "waiting..."
                 time.sleep(10)
-
+                retries += 1
 
 TL_DAYS = 10
 
