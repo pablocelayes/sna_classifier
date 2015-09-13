@@ -15,6 +15,8 @@ FAV_DAYS = 30
 
 FAV_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
+DB_ENGINE = db_connect()
+DB_SESSION = sessionmaker(engine)
 
 def get_follower_counts(user_id):
     TW = API_HANDLER.get_connection()
@@ -55,37 +57,17 @@ def get_my_most_popular_followed(N=100):
     return most_popular
 
 
-# RELEVANT_FNAME = "relevantdict.pickle"
-RELEVANT_FNAME = "relevantdict.json"
-
-if os.path.exists(RELEVANT_FNAME):
-    with open(RELEVANT_FNAME, 'r') as f:
-        RELEVANT = json.load(f)
-else:
-    RELEVANT = {}
-
-NOTAUTHORIZED_FNAME = "notauthorizedids.pickle"
-
-if os.path.exists(NOTAUTHORIZED_FNAME):
-    with open(NOTAUTHORIZED_FNAME, 'rb') as f:
-        NOTAUTHORIZED = pickle.load(f)
-else:
-    NOTAUTHORIZED = set()
-
-
-def get_followed_user_ids(user_id=None):
+def get_followed_user_ids(user):
     done = False
     while not done:
         try:
             TW = API_HANDLER.get_connection()
-            following = TW.friends_ids(user_id=user_id)
+            following = TW.friends_ids(user_id=user.id)
             done = True
         except Exception, e:
             # print e
             if e.message == u'Not authorized.':
-                NOTAUTHORIZED.add(user_id)
-                with open(NOTAUTHORIZED_FNAME, 'wb') as f:
-                    pickle.dump(NOTAUTHORIZED, f)
+                u.is_authorized = False
                 return []
             else:
                 print("Error: %s" % e.message)
@@ -155,8 +137,13 @@ def fetch_timeline(user_id):
                             "id": t.id,
                             "author_id": t.author.id,
                             "created_at": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
+                            
+                            # if it was favorited by some of our followers    
                             "favorited": t.favorited,
+
+                            # if it was retweeted by some of our followers
                             "retweeted": t.retweeted,
+                            
                             "retweet_count": t.retweet_count,
                             "favorite_count": t.favorite_count,
                             "text": t.text,
