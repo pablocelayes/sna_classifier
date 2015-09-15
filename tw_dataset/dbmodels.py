@@ -13,9 +13,9 @@ import time
 from datetime import timedelta, datetime
 import pickle
 
-TL_DAYS = 30
+TWEET_HISTORY_DAYS = 30
 
-TL_DATE_LIMIT = datetime.now() - timedelta(days=TL_DAYS)
+TWEET_DATE_LIMIT = datetime.now() - timedelta(days=TWEET_HISTORY_DAYS)
 
 Base = declarative_base()
 
@@ -54,8 +54,8 @@ def initialize_db():
 def create_tables(engine):
     Base.metadata.create_all(engine)
 
-users_tweets = Table(
-    "users_tweets",
+users_timeline = Table(
+    "users_timeline",
     Base.metadata,
     Column("fk_user", Integer, ForeignKey("users.id")),
     Column("fk_tweet", Integer, ForeignKey("tweets.id")),
@@ -108,7 +108,7 @@ class User(Base):
     timeline = relationship(
         "Tweet",
         backref="users_posted",
-        secondary=users_tweets
+        secondary=users_timeline
     )
 
     favs = relationship(
@@ -139,13 +139,12 @@ class User(Base):
                     retries += 1
         return self._is_relevant
 
-    def fetch_tweets(self, session):
+    def fetch_timeline(self, session):
         print "Fetching timeline for user %d" % self.id
         start_time = time.time()
         # authenticating here ensures a different set of credentials
         # everytime we start processing a new county, to prevent hitting the rate limit
         self.timeline = []
-        self.favs = []
         self.retweets = []
 
         page = 1
@@ -169,7 +168,7 @@ class User(Base):
                 break
             else:
                 for t in tweets:
-                    if t.created_at > TL_DATE_LIMIT:
+                    if t.created_at > TWEET_DATE_LIMIT:
                         isretweet = False
                         if hasattr(t, 'retweeted_status'):
                             t = t.retweeted_status
@@ -195,14 +194,67 @@ class User(Base):
         elapsed_time =  time.time() - start_time
         print "Done. Took %.1f secs to fetch %d tweets" % (elapsed_time, len(self.timeline))
         session.commit()
+        
         return self.timeline
+
+
+    def fetch_favorites(self, session):
+        print "Fetching favorites for user %d" % self.id
+        start_time = time.time()
+        self.favs = []
+
+        page = 1
+        done = False
+        while not done:
+            TW_API = API_HANDLER.get_fresh_connection()
+            try:
+                tweets = TW_API.favorites(user_id=self.id, page=page)
+            except Exception, e:                
+                if e.message == u'Not authorized.':
+                    self.is_authorized = False
+                    break
+                else:
+                    print("Error: %s" % e.message)
+                    print "waiting..."
+                    time.sleep(10)
+                    continue
+
+            if not tweets:
+                # All done
+                break
+            else:
+                for t in tweets:
+                    if t.created_at > TWEET_DATE_LIMIT:
+                        tid = t.id
+                        tweet = session.query(Tweet).get(tid)
+                        if not tweet:
+                            tweet = Tweet(**{f: t.__getattribute__(f) for f in TWEET_FIELDS})
+                            tweet.author_id = t.author.id
+                            session.add(tweet)
+                            self.favs.append(tweet)                            
+                    else:
+                        done = True
+                        break
+            page += 1  # next page
+
+
+        elapsed_time =  time.time() - start_time
+        print "Done. Took %.1f secs to fetch %d favs" % (elapsed_time, len(self.favs))
+        session.commit()
+        
+        return self.favs
 
 if __name__ == '__main__':
     initialize_db()
-    session = open_session()
+    
     user_ids = list(pickle.load(open('layer0.pickle', 'rb')))[:20]
     users = [User(id=uid) for uid in user_ids]
+    
+    session = open_session()
     session.add_all(users)
-    for user in users:
-        user.fetch_tweets(session)
     session.close()
+
+    for user in users:
+        user.fetch_timeline(session)
+        user.fetch_favorites(session)
+    
