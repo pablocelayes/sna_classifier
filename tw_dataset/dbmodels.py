@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 
 Base = declarative_base()
 
-SQLITE_CONNECTION = 'twitter_sample.db'
+SQLITE_CONNECTION = 'sqlite:///twitter_sample.db'
 
 def db_connect():
     """

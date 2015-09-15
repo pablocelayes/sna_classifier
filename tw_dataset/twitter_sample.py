@@ -8,15 +8,19 @@ import time
 import networkx as nx
 import pickle, json
 from datetime import timedelta, datetime
-
 from twitter_api import API_HANDLER
+
+from dbmodels import db_connect, sessionmaker
+from math import ceil
 
 FAV_DAYS = 30
 
 FAV_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
 DB_ENGINE = db_connect()
-DB_SESSION = sessionmaker(engine)
+DB_SESSION = sessionmaker(DB_ENGINE)
+
+GRAPH = nx.read_gpickle('graph2.gpickle')
 
 def get_follower_counts(user_id):
     TW = API_HANDLER.get_connection()
@@ -30,6 +34,7 @@ def filter_most_relevant_users(user_ids, scoring_function, N=100):
     most_relevant = sorted(scored, key=lambda u, s: -s)[:N]
 
     return most_relevant
+
 
 def get_my_most_popular_followed(N=100):
     my_id = USER_DATA['id']
@@ -57,24 +62,55 @@ def get_my_most_popular_followed(N=100):
     return most_popular
 
 
-def get_followed_user_ids(user):
-    done = False
-    while not done:
-        try:
-            TW = API_HANDLER.get_connection()
-            following = TW.friends_ids(user_id=user.id)
-            done = True
-        except Exception, e:
-            # print e
-            if e.message == u'Not authorized.':
-                u.is_authorized = False
-                return []
-            else:
-                print("Error: %s" % e.message)
-                print "waiting..."
-                time.sleep(10)
+def get_most_similar_followed(user_id, amount=None, N=None):
+    followed_ids = get_followed_user_ids(user_id=user_id)
+    followed_ids = [f_id for f_id in followed_ids if is_relevant(f_id)]
+    scored = []
+    for u_id in followed_ids:
+        u_followed_ids = set(get_followed_user_ids(user_id=u_id))
+        common = len(u_followed_ids.intersection(set(followed_ids)))
+        total = len(followed_ids) + len(u_followed_ids) - common
+        score = common * 1.0 / total
+        scored.append((u_id, score))
 
-    return following
+    if N is None:
+        if amount is not None:
+            N = ceil(amount * len(scored))
+        else:
+            raise ValueError("either N or amount must be passed")
+    
+    most_similar = sorted(scored, key=lambda (u, s): -s)[:N]
+    most_similar = [u for (u, s) in most_similar]
+
+    return most_similar
+
+
+def get_followed_user_ids(user=None, user_id=None):
+    if user is not None:
+        user_id = user.id
+
+    if GRAPH.out_degree(user_id):
+        followed = GRAPH.successors(user_id)
+    else:   
+        done = False
+        while not done:
+            try:
+                TW = API_HANDLER.get_connection()
+                followed = TW.friends_ids(user_id=user_id)
+                GRAPH.add_edges_from([(user_id, f_id) for f_id in followed])
+                done = True
+            except Exception, e:
+                # print e
+                if e.message == u'Not authorized.':
+                    u.is_authorized = False
+                    return []
+                else:
+                    print("Error: %s" % e.message)
+                    print "waiting..."
+                    time.sleep(10)
+
+
+    return followed
 
 
 def is_relevant(user_id):
@@ -309,7 +345,6 @@ def get_friends_graph():
     unvisited = list(set(my_followed) - seen)
     for u_id in unvisited:
         followed = get_followed_user_ids(u_id)
-        graph.add_edges_from([(u_id, f_id) for f_id in followed])
         nx.write_gpickle(graph, fname)
 
     return graph
