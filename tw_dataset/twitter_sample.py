@@ -113,98 +113,12 @@ def get_followed_user_ids(user=None, user_id=None):
     return followed
 
 
-def is_relevant(user_id):
-    if user_id in RELEVANT:
-        return RELEVANT[user_id]
-    else:
-        retries = 0
-        while retries < 5:
-            try:
-                TW = API_HANDLER.get_connection()
-                u = TW.get_user(user_id)
-                relevant = u.followers_count > 40 and u.friends_count > 40
-                RELEVANT[user_id] = relevant
-                with open(RELEVANT_FNAME, 'w') as f:
-                    json.dump(RELEVANT, f)
-                return relevant
-            except Exception, e:
-                print "Error in is_relevant for %d" % user_id
-                print "waiting..."
-                time.sleep(10)
-                retries += 1
-
 TL_DAYS = 10
 
 TL_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
 
 def fetch_timeline(user_id):
-    timeline_file = "timelines/%s.json" % user_id
-
-    print "Fetching timeline for user %d" % user_id
-    start_time = time.time()
-    if not os.path.exists(timeline_file):
-        # authenticating here ensures a different set of credentials
-        # everytime we start processing a new county, to prevent hitting the rate limit
-        timeline = []
-
-        page = 1
-        done = False
-        while not done:
-            TW_API = API_HANDLER.get_fresh_connection()
-            try:
-                tweets = TW_API.user_timeline(user_id=user_id, page=page)
-            except Exception, e:                
-                if e.message == u'Not authorized.':
-                    NOTAUTHORIZED.add(user_id)
-                    with open(NOTAUTHORIZED_FNAME, 'wb') as f:
-                        pickle.dump(NOTAUTHORIZED, f)
-                    break
-                else:
-                    print("Error: %s" % e.message)
-                    print "waiting..."
-                    time.sleep(10)
-                    continue
-
-            if tweets:
-                for t in tweets:
-                    if t.created_at > FAV_DATE_LIMIT:
-                        timeline.append({
-                            "id": t.id,
-                            "author_id": t.author.id,
-                            "created_at": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
-                            
-                            # if it was favorited by some of our followers    
-                            "favorited": t.favorited,
-
-                            # if it was retweeted by some of our followers
-                            "retweeted": t.retweeted,
-                            
-                            "retweet_count": t.retweet_count,
-                            "favorite_count": t.favorite_count,
-                            "text": t.text,
-                            "lang": t.lang,
-                            "is_quote_status": t.is_quote_status,
-                        })
-                        json_dump_unicode(timeline, timeline_file + ".tmp")
-                    else:
-                        done = True
-                        break
-            else:
-                # All done
-                break
-            page += 1  # next page
-
-        if timeline:
-            os.remove(timeline_file + ".tmp")
-            json_dump_unicode(timeline, timeline_file)
-
-    else:
-        timeline = json_load_unicode(timeline_file)
-    elapsed_time =  time.time() - start_time
-    print "Done. Took %.1f secs to fetch %d tweets" % (elapsed_time, len(timeline))
-
-    return timeline
 
 
 def fetch_favorites(user_id):
