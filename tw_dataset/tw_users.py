@@ -22,6 +22,35 @@ DB_SESSION = sessionmaker(DB_ENGINE)
 
 GRAPH = nx.read_gpickle('graph2.gpickle')
 
+
+RELEVANT_FNAME = "relevantdict.json"
+
+if os.path.exists(RELEVANT_FNAME):
+    with open(RELEVANT_FNAME, 'r') as f:
+        RELEVANT = json.load(f)
+else:
+    RELEVANT = {}
+
+def is_relevant(user_id):
+    if user_id in RELEVANT:
+        return RELEVANT[user_id]
+    else:
+        retries = 0
+        while retries < 5:
+            try:
+                TW = API_HANDLER.get_connection()
+                u = TW.get_user(user_id)
+                relevant = u.followers_count > 40 and u.friends_count > 40
+                RELEVANT[user_id] = relevant
+                with open(RELEVANT_FNAME, 'w') as f:
+                    json.dump(RELEVANT, f)
+                return relevant
+            except Exception, e:
+                print "Error in is_relevant for %d" % user_id
+                print "waiting..."
+                time.sleep(10)
+                retries += 1
+
 def get_follower_counts(user_id):
     TW = API_HANDLER.get_connection()
     u = TW.get_user(user_id)
@@ -116,9 +145,6 @@ def get_followed_user_ids(user=None, user_id=None):
 TL_DAYS = 10
 
 TL_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
-
-
-def fetch_timeline(user_id):
 
 
 def fetch_favorites(user_id):
