@@ -10,7 +10,6 @@ import pickle, json
 from datetime import timedelta, datetime
 from twitter_api import API_HANDLER
 
-from dbmodels import db_connect, sessionmaker
 from math import ceil
 
 FAV_DAYS = 30
@@ -21,7 +20,6 @@ DB_ENGINE = db_connect()
 DB_SESSION = sessionmaker(DB_ENGINE)
 
 GRAPH = nx.read_gpickle('graph2.gpickle')
-
 
 RELEVANT_FNAME = "relevantdict.json"
 
@@ -50,6 +48,7 @@ def is_relevant(user_id):
                 print "waiting..."
                 time.sleep(10)
                 retries += 1
+
 
 def get_follower_counts(user_id):
     TW = API_HANDLER.get_connection()
@@ -114,6 +113,15 @@ def get_most_similar_followed(user_id, amount=None, N=None):
     return most_similar
 
 
+NOTAUTHORIZED_FNAME = "notauthorizedids.pickle"
+
+if os.path.exists(NOTAUTHORIZED_FNAME):
+    with open(NOTAUTHORIZED_FNAME, 'rb') as f:
+        NOTAUTHORIZED = pickle.load(f)
+else:
+    NOTAUTHORIZED = set()
+
+
 def get_followed_user_ids(user=None, user_id=None):
     if user is not None:
         user_id = user.id
@@ -131,7 +139,9 @@ def get_followed_user_ids(user=None, user_id=None):
             except Exception, e:
                 # print e
                 if e.message == u'Not authorized.':
-                    u.is_authorized = False
+                    NOTAUTHORIZED.add(user_id)
+                    with open(NOTAUTHORIZED_FNAME, 'wb') as f:
+                        pickle.dump(NOTAUTHORIZED, f)
                     return []
                 else:
                     print("Error: %s" % e.message)
@@ -144,7 +154,7 @@ def get_followed_user_ids(user=None, user_id=None):
 
 TL_DAYS = 10
 
-TL_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
+TL_DATE_LIMIT = datetime.now() - timedelta(days=TL_DAYS)
 
 
 def fetch_favorites(user_id):
@@ -206,7 +216,7 @@ def fetch_favorites(user_id):
 
 RT_DAYS = 10
 
-RT_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
+RT_DATE_LIMIT = datetime.now() - timedelta(days=RT_DAYS)
 
 
 def fetch_retweets(user_id):

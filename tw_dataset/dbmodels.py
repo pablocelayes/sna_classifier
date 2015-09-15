@@ -6,8 +6,16 @@ from sqlalchemy import (Integer, SmallInteger, String, Date, DateTime, Float, Bo
 from sqlalchemy.ext.declarative import declarative_base
 # from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy_utils.functions import drop_database, database_exists, create_database
 
 from twitter_api import API_HANDLER
+import time
+from datetime import timedelta, datetime
+import pickle
+
+TL_DAYS = 30
+
+TL_DATE_LIMIT = datetime.now() - timedelta(days=TL_DAYS)
 
 Base = declarative_base()
 
@@ -20,6 +28,28 @@ def db_connect():
     """
     return create_engine(SQLITE_CONNECTION)
 
+SESSION = sessionmaker(db_connect())
+
+def open_session(engine=None):
+    if engine is None:
+        engine = db_connect()
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    return session
+
+
+def create_tables(engine):
+    DeclarativeBase.metadata.create_all(engine)
+
+
+def initialize_db():
+    engine = db_connect()
+    if database_exists(engine.url):
+        drop_database(engine.url)
+    create_database(engine.url)
+    create_tables(engine)
+    
 
 def create_tables(engine):
     Base.metadata.create_all(engine)
@@ -52,6 +82,20 @@ users_follows = Table(
     Column("fk_user_followed", Integer, ForeignKey("users.id")),
 )
 
+class Tweet(Base):
+    """SQLAlchemy Tweet model"""
+    __tablename__ = "tweets"
+    id = Column('id', Integer, primary_key=True)
+    author_id = Column('author_id', Integer)
+    created_at = Column('created_at', DateTime)
+    retweet_count = Column('retweet_count', Integer)
+    favorite_count = Column('favorite_count', Integer)
+    text = Column('text', String(300))
+    lang = Column('lang', String(2))
+    is_quote_status = Column('is_quote_status', Boolean)
+
+TWEET_FIELDS = [c.name for c in Tweet.__table__.columns if c.name != 'author_id']
+
 
 class User(Base):
     """SQLAlchemy Hotel model"""
@@ -61,21 +105,21 @@ class User(Base):
     _is_relevant = Column('is_relevant', Boolean, nullable=True)
     is_authorized = Column('is_authorized', Boolean, default=True)
 
-    tweets = relationship(
+    timeline = relationship(
         "Tweet",
-        backref="users",
+        backref="users_posted",
         secondary=users_tweets
     )
 
     favs = relationship(
         "Tweet",
-        backref="users",
+        backref="users_faved",
         secondary=users_favs
     )
 
     retweets = relationship(
         "Tweet",
-        backref="users",
+        backref="users_retweeted",
         secondary=users_retweets
     )
 
@@ -95,19 +139,21 @@ class User(Base):
                     retries += 1
         return self._is_relevant
 
-    def fetch_timeline(self):
+    def fetch_tweets(self, session):
         print "Fetching timeline for user %d" % self.id
         start_time = time.time()
         # authenticating here ensures a different set of credentials
         # everytime we start processing a new county, to prevent hitting the rate limit
-        timeline = []
+        self.timeline = []
+        self.favs = []
+        self.retweets = []
 
         page = 1
         done = False
         while not done:
             TW_API = API_HANDLER.get_fresh_connection()
             try:
-                tweets = TW_API.user_timeline(user_id=user_id, page=page)
+                tweets = TW_API.user_timeline(user_id=self.id, page=page)
             except Exception, e:                
                 if e.message == u'Not authorized.':
                     self.is_authorized = False
@@ -118,51 +164,45 @@ class User(Base):
                     time.sleep(10)
                     continue
 
-            if tweets:
+            if not tweets:
+                # All done
+                break
+            else:
                 for t in tweets:
-                    if t.created_at > FAV_DATE_LIMIT:
-                        timeline.append({
-                            "id": t.id,
-                            "author_id": t.author.id,
-                            "created_at": t.created_at.strftime("%Y/%m/%d %H:%M:%S"),
-                            
-                            # if it was favorited by some of our followers    
-                            "favorited": t.favorited,
+                    if t.created_at > TL_DATE_LIMIT:
+                        isretweet = False
+                        if hasattr(t, 'retweeted_status'):
+                            t = t.retweeted_status
+                            isretweet = True
 
-                            # if it was retweeted by some of our followers
-                            "retweeted": t.retweeted,
-                            
-                            "retweet_count": t.retweet_count,
-                            "favorite_count": t.favorite_count,
-                            "text": t.text,
-                            "lang": t.lang,
-                            "is_quote_status": t.is_quote_status,
-                        })
-                        json_dump_unicode(timeline, timeline_file + ".tmp")
+                        tid = t.id
+                        tweet = session.query(Tweet).get(tid)
+                        if not tweet:
+                            tweet = Tweet(**{f: t.__getattribute__(f) for f in TWEET_FIELDS})
+                            tweet.author_id = t.author.id
+                            session.add(tweet)
+                        if isretweet:
+                            self.retweets.append(tweet)                            
+                        self.timeline.append(tweet)
+                        # if t.favorited:
+                        #     self.favs.append(tweet)                            
                     else:
                         done = True
                         break
-            else:
-                # All done
-                break
             page += 1  # next page
 
 
         elapsed_time =  time.time() - start_time
-        print "Done. Took %.1f secs to fetch %d tweets" % (elapsed_time, len(timeline))
+        print "Done. Took %.1f secs to fetch %d tweets" % (elapsed_time, len(self.timeline))
+        session.commit()
+        return self.timeline
 
-        return timeline
-
-
-class Tweet(Base):
-    """SQLAlchemy Tweet model"""
-    __tablename__ = "tweets"
-    id = Column('id', Integer, primary_key=True)
-    author_id = Column('author_id', Integer)
-    created_at = Column('created_at', DateTime)
-    
-    retweet_count = Column('retweet_count', Integer)
-    favorite_count = Column('favorite_count', Integer)
-    text = Column('text', String(300))
-    lang = Column('lang', String(2))
-    is_quote_status = Column('is_quote_status', Boolean)
+if __name__ == '__main__':
+    initialize_db()
+    session = open_session()
+    user_ids = list(pickle.load(open('layer0.pickle', 'rb')))[:20]
+    users = [User(id=uid) for uid in user_ids]
+    session.add_all(users)
+    for user in users:
+        user.fetch_tweets(session)
+    session.close()
