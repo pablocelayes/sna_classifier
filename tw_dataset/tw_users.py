@@ -16,9 +16,6 @@ FAV_DAYS = 30
 
 FAV_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
-DB_ENGINE = db_connect()
-DB_SESSION = sessionmaker(DB_ENGINE)
-
 GRAPH = nx.read_gpickle('graph2.gpickle')
 
 RELEVANT_FNAME = "relevantdict.json"
