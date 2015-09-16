@@ -9,7 +9,7 @@ from random import choice
 # Used to switch between tokens to avoid exceeding rates
 class APIHandler(object):
     """docstring for APIHandler"""
-    def __init__(self, auth_data, max_nreqs=50):
+    def __init__(self, auth_data, max_nreqs=10):
         self.auth_data = auth_data
         self.index = choice(range(len(auth_data)))
         self.max_nreqs = max_nreqs

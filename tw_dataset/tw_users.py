@@ -16,7 +16,7 @@ FAV_DAYS = 30
 
 FAV_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
-GRAPH = nx.read_gpickle('graph2.gpickle')
+GRAPH = nx.read_gpickle('big_graph.gpickle')
 
 RELEVANT_FNAME = "relevantdict.json"
 
@@ -27,6 +27,7 @@ else:
     RELEVANT = {}
 
 def is_relevant(user_id):
+    user_id = str(user_id)
     if user_id in RELEVANT:
         return RELEVANT[user_id]
     else:
@@ -90,6 +91,7 @@ def get_my_most_popular_followed(N=100):
 def get_most_similar_followed(user_id, amount=None, N=None):
     followed_ids = get_followed_user_ids(user_id=user_id)
     followed_ids = [f_id for f_id in followed_ids if is_relevant(f_id)]
+
     scored = []
     for u_id in followed_ids:
         u_followed_ids = set(get_followed_user_ids(user_id=u_id))
@@ -132,6 +134,7 @@ def get_followed_user_ids(user=None, user_id=None):
                 TW = API_HANDLER.get_connection()
                 followed = TW.friends_ids(user_id=user_id)
                 GRAPH.add_edges_from([(user_id, f_id) for f_id in followed])
+                nx.write_gpickle(GRAPH, 'big_graph.gpickle')
                 done = True
             except Exception, e:
                 # print e
