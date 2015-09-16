@@ -36,16 +36,19 @@ def extend_followed_graph(outer_layer_ids, level):
 
     seen = set([x[0] for x in graph.edges()])
     unvisited = outer_layer_ids - seen
-    for u_id in unvisited:
+    for i, u_id in enumerate(unvisited):
         followed = get_most_similar_followed(u_id, N=50)
         graph.add_edges_from([(u_id, f_id) for f_id in followed])
         
         new_nodes = [f_id for f_id in followed if graph.out_degree(f_id) == 0]
         new_outer_layer.update(new_nodes)
         
-        nx.write_gpickle(graph, fname_current)
-        with open('filtered_layer%d.pickle' % level, 'wb') as fl:
-            pickle.dump(new_outer_layer, fl)
+        if i % 50 == 0:
+            # Save only ocassionally
+            nx.write_gpickle(graph, fname_current)
+            nx.write_gpickle(GRAPH, 'big_graph.gpickle')
+            with open('filtered_layer%d.pickle' % level, 'wb') as fl:
+                pickle.dump(new_outer_layer, fl)
 
     return graph, new_outer_layer
 
