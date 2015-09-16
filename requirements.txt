@@ -1,3 +1,5 @@
 tweepy==3.2.0
 networkx==1.9.1
 pandas==0.15.2
+ipdb==0.8.1
+SQLAlchemy==1.0.8
