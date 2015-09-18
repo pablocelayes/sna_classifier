@@ -32,7 +32,7 @@ def is_relevant(user_id):
         return RELEVANT[user_id]
     else:
         retries = 0
-        while retries < 5:
+        while True:
             try:
                 TW = API_HANDLER.get_connection()
                 u = TW.get_user(user_id)
@@ -43,9 +43,14 @@ def is_relevant(user_id):
                 return relevant
             except Exception, e:
                 print "Error in is_relevant for %d" % user_id
-                print "waiting..."
-                time.sleep(10)
                 retries += 1
+                if retries == 5:
+                    print "Gave up retrying for user %d" % user_id
+                    print "(marked as not relevant)"
+                    return False
+                else:
+                    print "waiting..."
+                    time.sleep(10)
 
 
 def get_follower_counts(user_id):
@@ -127,12 +132,11 @@ def get_followed_user_ids(user=None, user_id=None):
 
     if GRAPH.out_degree(user_id):
         followed = GRAPH.successors(user_id)
+        return followed
     else:
         retries = 0
         while True:
-            if retries == 5:
-                print "Gave up retrying for user %d" % user_id
-                return []      
+     
             try:
                 TW = API_HANDLER.get_connection()
                 followed = TW.friends_ids(user_id=user_id)
@@ -147,9 +151,13 @@ def get_followed_user_ids(user=None, user_id=None):
                     return []
                 else:
                     print "Error for user %d: %s" % (user_id, e.message)
-                    print "waiting..."
                     retries += 1
-                    time.sleep(10)
+                    if retries == 5:
+                        print "Gave up retrying for user %d" % user_id
+                        return [] 
+                    else:
+                        print "waiting..."
+                        time.sleep(10)
 
 
 TL_DAYS = 10

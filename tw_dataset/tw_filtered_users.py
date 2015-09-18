@@ -38,7 +38,7 @@ def extend_followed_graph(outer_layer_ids, level):
     unvisited = outer_layer_ids - seen
     for i, u_id in enumerate(unvisited):
         print "Adding filtered edges for %d" % u_id
-        followed = get_most_similar_followed(u_id, N=50)
+        followed = get_most_similar_followed(user_id=u_id, N=50)
         graph.add_edges_from([(u_id, f_id) for f_id in followed])
         
         new_nodes = [f_id for f_id in followed if graph.out_degree(f_id) == 0]
