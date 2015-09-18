@@ -127,14 +127,17 @@ def get_followed_user_ids(user=None, user_id=None):
 
     if GRAPH.out_degree(user_id):
         followed = GRAPH.successors(user_id)
-    else:   
-        done = False
-        while not done:
+    else:
+        retries = 0
+        while True:
+            if retries == 5:
+                print "Gave up retrying for user %d" % user_id
+                return []      
             try:
                 TW = API_HANDLER.get_connection()
                 followed = TW.friends_ids(user_id=user_id)
                 GRAPH.add_edges_from([(user_id, f_id) for f_id in followed])
-                done = True
+                return followed
             except Exception, e:
                 # print e
                 if e.message == u'Not authorized.':
@@ -143,12 +146,10 @@ def get_followed_user_ids(user=None, user_id=None):
                         pickle.dump(NOTAUTHORIZED, f)
                     return []
                 else:
-                    print("Error: %s" % e.message)
+                    print "Error for user %d: %s" % (user_id, e.message)
                     print "waiting..."
+                    retries += 1
                     time.sleep(10)
-
-
-    return followed
 
 
 TL_DAYS = 10
