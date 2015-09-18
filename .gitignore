@@ -2,3 +2,4 @@
 *.tmp
 *.pyc
 localsettings.py
+tw_dataset/big_graph.gpickle
