@@ -44,7 +44,7 @@ def extend_followed_graph(outer_layer_ids, level):
         new_nodes = [f_id for f_id in followed if graph.out_degree(f_id) == 0]
         new_outer_layer.update(new_nodes)
         
-        if i % 50 == 0:
+        if i % 10 == 0:
             # Save only ocassionally
             print "Saving snapshots..."
             nx.write_gpickle(graph, fname_current)
