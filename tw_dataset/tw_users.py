@@ -42,10 +42,10 @@ def is_relevant(user_id):
                     json.dump(RELEVANT, f)
                 return relevant
             except Exception, e:
-                print "Error in is_relevant for %d" % user_id
+                print "Error in is_relevant for %s" % user_id
                 retries += 1
                 if retries == 5:
-                    print "Gave up retrying for user %d" % user_id
+                    print "Gave up retrying for user %s" % user_id
                     print "(marked as not relevant)"
                     return False
                 else:
