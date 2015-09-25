@@ -63,6 +63,8 @@ def sample_subgraph(universe_graph, seed_ids, K):
         n_edges = subgraph.number_of_edges()
         print "%d nodes, %d edges" % (n_nodes, n_edges)
 
+    return subgraph
+
 
 if __name__ == '__main__':
     print "Loading universe graph..."
