@@ -10,12 +10,14 @@ from sqlalchemy_utils.functions import drop_database, database_exists, create_da
 
 from twitter_api import API_HANDLER
 import time
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 import pickle
 
-TWEET_HISTORY_DAYS = 30
 
-TWEET_DATE_LIMIT = datetime.now() - timedelta(days=TWEET_HISTORY_DAYS)
+DATE_LOWER_LIMIT = datetime(year=2015, month=8, day=24)
+
+DATE_UPPER_LIMIT = datetime(year=2015, month=9, day=24)
+
 
 Base = declarative_base()
 
@@ -102,7 +104,6 @@ class User(Base):
     __tablename__ = "users"
     id = Column('id', Integer, primary_key=True)
     username = Column('username', String)
-    _is_relevant = Column('is_relevant', Boolean, nullable=True)
     is_authorized = Column('is_authorized', Boolean, default=True)
 
     timeline = relationship(
@@ -122,22 +123,6 @@ class User(Base):
         backref="users_retweeted",
         secondary=users_retweets
     )
-
-    def is_relevant(self):
-        if self._is_relevant is None:
-            retries = 0
-            while retries < 5:
-                try:
-                    TW = API_HANDLER.get_connection()
-                    u = TW.get_user(self.id)
-                    relevant = u.followers_count > 40 and u.friends_count > 40
-                    self._is_relevant = relevant
-                except Exception, e:
-                    print "Error in is_relevant for %d" % self.id
-                    print "waiting..."
-                    time.sleep(10)
-                    retries += 1
-        return self._is_relevant
 
     def fetch_timeline(self, session):
         print "Fetching timeline for user %d" % self.id
@@ -168,7 +153,9 @@ class User(Base):
                 break
             else:
                 for t in tweets:
-                    if t.created_at > TWEET_DATE_LIMIT:
+                    if t.created_at > DATE_UPPER_LIMIT:
+                        continue
+                    elif t.created_at > DATE_LOWER_LIMIT:
                         isretweet = False
                         if hasattr(t, 'retweeted_status'):
                             t = t.retweeted_status
@@ -224,7 +211,9 @@ class User(Base):
                 break
             else:
                 for t in tweets:
-                    if t.created_at > TWEET_DATE_LIMIT:
+                    if t.created_at > DATE_UPPER_LIMIT:
+                        continue
+                    elif t.created_at > DATE_LOWER_LIMIT:
                         tid = t.id
                         tweet = session.query(Tweet).get(tid)
                         if not tweet:
@@ -247,8 +236,10 @@ class User(Base):
 if __name__ == '__main__':
     initialize_db()
     
-    user_ids = list(pickle.load(open('layer0.pickle', 'rb')))[:20]
-    users = [User(id=uid) for uid in user_ids]
+    import networkx as nx
+    graph = nx.read_gpickle('subgraph.gpickle')
+    user_ids = graph.nodes()
+    users = [User(id=int(uid)) for uid in user_ids]
     
     session = open_session()
     session.add_all(users)

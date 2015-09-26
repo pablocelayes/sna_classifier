@@ -68,7 +68,7 @@ def sample_subgraph(universe_graph, seed_ids, K):
 
 if __name__ == '__main__':
     print "Loading universe graph..."
-    universe_graph = nx.read_gpickle('universe_graph.gpickle')
+    universe_graph = nx.read_graphml('huge_graph.graphml')
 
     print "Loading seed ids..."
     fg1 = nx.read_gpickle('filtered_graph1.gpickle')
