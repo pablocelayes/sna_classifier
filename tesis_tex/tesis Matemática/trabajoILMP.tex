@@ -1,0 +1,1463 @@
+\documentclass[a4paper,12pt,spanish]{book}
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{amstex, amssymb}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{verbatim}
+
+\usepackage{makeidx}
+\usepackage{url}
+
+\usepackage{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{t1enc}
+
+\usepackage{stmaryrd}
+\usepackage[all]{xy}
+
+\newlength{\ancho}
+\setlength{\ancho}{\paperwidth}
+\addtolength{\ancho}{-2in}
+\textwidth=\ancho
+%\topmargin=0pt
+%\headsep=0pt
+%\headheight=0pt
+\evensidemargin=0mm
+\oddsidemargin=0mm
+
+%
+%Caracteres
+
+\newcommand{\Baire}{\mathcal N}
+\newcommand{\Cantor}{\mathcal C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\I}{\mathbb I}
+
+%Varias
+\newcommand{\subp}{\mathrm{M}}
+\newcommand{\prob}{\mathrm{P}}
+\newcommand{\graf}{\mathrm{graf}}
+\newcommand{\diam}{\mathrm{diam}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\longi}{\mathrm{long}}
+\newcommand{\osc}{\mathrm{osc}}
+\newcommand{\tends}{\rightarrow}
+
+%
+%	Estilo
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mb}[1]{\mathbf{#1}}
+\newcommand{\remark}[1]{}%\marginpar{\tiny{#1}}}
+\renewcommand{\eqref}[1]{(\ref{#1})}
+\newcommand{\teoref}[1]{teorema \ref{#1}}
+\newcommand{\propref}[1]{proposición \ref{#1}}
+\newcommand{\lemaref}[1]{lema \ref{#1}}
+\newcommand{\cororef}[1]{corolario \ref{#1}}
+
+%
+% 	Logicas
+\newcommand{\true}{\mathsf{T}}
+\newcommand{\sat}{\vDash}
+\newcommand{\nsat}{\nvDash}
+\newcommand{\sii}{\Leftrightarrow}
+\newcommand{\ent}{\Rightarrow}
+\newcommand{\tne}{\Leftarrow}
+\newcommand{\iso}{\cong}
+\newcommand{\func}{\rightarrow}
+\newcommand{\Func}{\longrightarrow}
+\newcommand{\comp}{\circ}
+\newcommand{\y}{\wedge}
+\renewcommand{\o}{\vee}
+\newcommand{\abst}[1]{\llbracket #1\rrbracket}
+
+%
+% Conjuntos
+\newcommand{\union}{\ensuremath{\cup}}
+\newcommand{\Union}{\ensuremath{\bigcup}}
+\newcommand{\included}{\ensuremath{\subseteq}}
+\newcommand{\includes}{\ensuremath{\supseteq}}
+\newcommand{\notincluded}{\ensuremath{\not\subseteq}}
+\newcommand{\inters}{\ensuremath{\cap}}
+\newcommand{\Inters}{\ensuremath{\bigcap}}
+\newcommand{\en}{\ensuremath{\in}}
+\newcommand{\foral}{\ensuremath{\forall}}
+\newcommand{\exi}{\ensuremath{\exists}}
+\newcommand{\subi}[1]{\ensuremath{_{#1}}}
+\newcommand{\compl}[1]{#1^c}
+\newcommand{\f}[3]{{#1:#2\rightarrow#3}}
+\newcommand{\vacio}{\emptyset}
+\newcommand{\dom}{\mathrm{dom}}
+
+%
+%	Griegas
+\renewcommand{\th}{\theta}
+\renewcommand{\a}{\alpha}
+\renewcommand{\b}{\beta}
+\newcommand{\g}{\gamma}
+\newcommand{\Ga}{\Gamma}
+\renewcommand{\d}{\delta}
+\newcommand{\eps}{\epsilon}
+\newcommand{\e}{\varepsilon}
+\newcommand{\vp}{\varphi}
+\newcommand{\sig}{\sigma}
+\newcommand{\Sig}{\Sigma}
+\renewcommand{\l}{\lambda}
+\newcommand{\La}{\Lambda}
+\newcommand{\om}{\omega}
+\newcommand{\Om}{\Omega}
+\newcommand{\z}{\zeta}
+
+%NLMP
+\newcommand{\NLMP}{\ensuremath{\mathrm{NLMP}}}
+\newcommand{\LMP}{\ensuremath{\mathrm{LMP}}}
+\newcommand{\DLMP}{\ensuremath{\mathrm{DLMP}}}
+\newcommand{\SIG}[1]{\ensuremath{\mathit{#1}}}
+\newcommand{\Idiom}[1]{\textsl{#1}}
+\renewcommand{\remark}[1]{}%\marginpar{\tiny{#1}}}
+\newcommand{\Prop}[1]{\textit{\textbf{#1}}}
+\newcommand{\Pred}[1]{\ensuremath{\mathsf{#1}}}
+
+\newcommand{\trans}[3]{{#1\!\stackrel{#2}{\rightarrow}\!#3}}
+\newcommand{\fsource}{\SIG{source}}
+\newcommand{\flabel}{\SIG{label}}
+\newcommand{\ftarget}{\SIG{target}}
+\newcommand{\rcerrado}[1]{\ensuremath{#1\text{-cerrado}}}
+\newcommand{\rcerrados}[1]{\ensuremath{#1}\text{-cerrados}}
+\newcommand{\salgebra}{$\sigma$-álgebra\ }
+\newcommand{\salgebras}{$\sigma$-álgebras\ }
+\newcommand{\wgt}{\SIG{wgt}}
+\newcommand{\sqleq}{\sqsubseteq}
+\newcommand{\fsupp}{\SIG{supp}}
+\newcommand{\flast}[1]{#1\!\!\downarrow}
+\newcommand{\Exec}{\SIG{Exec}}
+
+%
+%	Entornos de redaccion
+\newenvironment{dem}{\begin{proof}[Prueba]}{\end{proof}}
+\newenvironment{sol}{\begin{proof}[Soluci\'on]}{\end{proof}}
+%
+\theoremstyle{definition}
+\newtheorem{defn}{Definici\'on}
+%
+\theoremstyle{remark}
+\newtheorem{ejem}{Ejemplo}
+\newtheorem{nota}{Nota}
+%
+\theoremstyle{plain}
+\newtheorem{lem}{Lema}
+\newtheorem{af}[lem]{Afirmaci\'on}
+\newtheorem{teo}[lem]{Teorema}
+\newtheorem{coro}[lem]{Corolario}
+\newtheorem{prop}[lem]{Proposici\'on}
+
+
+%\CompileMatrices
+
+\makeindex
+
+%% \hyphenation{dis-cre-ta de-sa-rro-lla-da des-crip-ti-va sub-es-pa-cio pro-ba-bi-lis-ta
+%% ca-rac-te-ri-za-ción}
+
+\begin{document}
+\title{%
+\begin{flushright}
+{%
+\footnotesize
+\begin{tabular}{rl}
+{\bf 04} 
+& Teoría de Conjuntos \\
+& Teoría de Conjuntos Descriptiva\\
+{\bf 60}
+& Probabilidad y Procesos Estocásticos\\
+& Procesos de Markov\\
+{\bf 03B} 
+& Lógica General\\
+& Lógica Modal\\ 
+\end{tabular}
+}
+\end{flushright}
+\hspace{0pt}\\[10\bigskipamount]
+Procesos de Markov Etiquetados\\
+sobre Espacios Borel Estándar
+}
+\author{Autor: Pablo Gabriel Celayes.\thanks{con el apoyo de la Agencia Córdoba Ciencia, a través del programa de becas Con\!Ciencias}\\
+Director: Dr.~Pedro~R.~D'Argenio.\\ 
+Co-director: Lic.~Pedro~O.~Sánchez~Terraf\\
+Facultad de Matemática, Astronomía y Física --- U.N.C.}
+\maketitle
+
+\pagenumbering{roman}
+
+
+\begin{center}
+\textbf{Resumen}
+\end{center}
+
+Revisamos la teoría de LMP (Labelled Markov Processes), desarrollada en \cite{Desharnais}, cuyos conceptos más importantes son la relación de bisimulación y su caracterización por una lógica modal simple $\mc{L}_>$. En dicho trabajo tenían importancia fundamental ciertos resultados de teoría de conjuntos descriptiva (espacios Polacos y conjuntos analíticos, \cite{Kechris}) y teoría de la medida ($\lambda$-$\pi$ de Dynkin, \cite{Billingsley}). Estudiamos en detalle la teoría necesaria para probar estos resultados, logrando un entendimiento más profundo de las razones que llevaron a emplear espacios analíticos como base de la teoría de LMP.
+
+Partiendo de las definiciones de \cite{Nico}, introducimos el concepto de NLMP (Non-deterministic LMP) y adaptamos el teorema de caracterización lógica de la bisimulación a este nuevo tipo de procesos, empleando extensiones apropiadas de $\mc{L}_>$ y trabajando sobre espacios Polacos de estados en vez de analíticos.
+
+\cleardoublepage
+
+\noindent\textbf{\Large Agradecimientos}
+\bigskip
+
+\noindent En ningún orden particular:
+\smallskip
+
+A mis directores (Pedro$^2$) por soportar mi extenso proceso de entrada en ritmo. A la Agencia Córdoba Ciencia, por financiarme un año de entrada en ritmo y esperarme otros tres meses. A mis viejos por la libertad, la confianza y la apertura. A la Lore por la alegría. A Ana por bancarme que me reparta entre despedirla y terminar el trabajo. A la Olimpiada Matemática Argentina por la oportunidad de descubrir y desarrollar mi pasión por este arte-ciencia. A la gente del Despacho de Alumnos por la buena onda y la paciencia para tratar este caso patológico. A los compañeros de cualquier tipo de viaje. A la familia grande por quererme en mi locura. A los pibes del cole, por tantos momentos de volver a ser los de siempre. A La Banda Del Tío por darme un lugar donde dejar de pensar por dos horas semanales. A mi otra banda por el espacio de catarsis musical. A mi pequeña lista de amigos imprescindibles. A mis fuentes de inspiración. Y a todos los que me olvidé también.
+
+\tableofcontents
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+\chapter{Introducción}
+La teoría de LMP (Labelled Markov Processes) desarrollada en \cite{Desharnais} se ocupa del análisis de sistemas probabilistas sobre un espacio de estados continuo, e introduce una noción de equivalencia entre tales sistemas ---la relación de bisimulación, inspirada en la versión discreta de \cite{LarsenSkou}--- que formaliza el concepto de que dos sistemas tengan el mismo ``comportamiento observable''. La tarea de analizar y razonar sobre un sistema, se hace mucho más precisa si se establecen métodos formales a tal fin. Un método formal es un conjunto de lenguajes, técnicas y herramientas de gran rigor matemático, empleado para especificar (describir) y verificar sistemas. Un objetivo general en esta área es abordar el estudio de las propiedes observables de los LMP mediante métodos formales. Como primer paso en esta dirección, se probó que la bisimulación está caracterizada por una lógica modal simple $\mc{L}_>$ (sin negación), siendo equivalentes sólo aquellos sistemas con las mismas propiedades definibles en dicha lógica. Para demostrar este resultado fueron esenciales algunos teoremas y técnicas de teoría de la medida, junto con propiedades de los espacios analíticos.
+
+Tomando esto como motivación, estudiamos los conceptos básicos de teoría descriptiva de conjuntos necesarios para llegar a demostrar toda la maquinaria matemática empleada en \cite{Desharnais}, y comprender con más profundidad las razones que llevaron a emplear espacios analíticos en la definición. A partir de ahí, buscamos extender los resultados de caracterización lógica a procesos no deterministas (los NLMP, Non-deterministic Labelled Markov Processes), partiendo de las definiciones básicas de \cite{Nico}. Veremos que la teoría de NLMP y LMP puede construirse tomando sólo espacios Polacos como conjuntos de estados, que si bien son menos generales que los analíticos, tienen una definición menos técnica y un poco más cercana a la intuición. Esto es posible si definimos las relaciones sobre un mismo sistema (prescindiendo del enfoque categórico), lo que evita trabajar con espacios cociente (una de las principales razones para emplear espacios analíticos de estados en \cite{Desharnais}).
+Reconstruimos el teorema de caracterización para nuestras definiciones, e introducimos un conjunto de lógicas modales más expresivas para varias familias cada vez más amplias de NLMP (llegando hasta los NLMP de imagen finita, aquellos con grados finitos arbitrarios de no determinismo).
+
+El capítulo \ref{cap:tcd} abarca los contenidos de teoría descriptiva de conjuntos y teoría de la medida. Allí definimos las herramientas básicas (espacios métricos, árboles, espacios de Cantor y de Baire) y realizamos un breve estudio de los espacios Polacos, y sus subconjuntos Borel y analíticos. Es de fundamental importancia en la teoría de NLMP el Teorema de Separación de Lusin, y sus aplicaciones a las relaciones de equivalencia Borel (Teorema de Blackwell) y a la medibilidad de ciertas proyecciones (Lusin-Novikov). Al final del capítulo probamos dos resultados útiles sobre coincidencia de medidas. El primero de ellos aparecía sin prueba en \cite{Desharnais}, el segundo es un lema que probamos para poder caracterizar la bisimulación en $2$-NLMP por una lógica simple.
+
+En el capítulo \ref{cap:nlmp}, partiendo de \cite{Nico}, se introducen las definiciones básicas de NLMP y la relación de bisimulación sobre ellos, junto con las pruebas de algunas propiedades de esta relación. Se incluye una sección de ``interfaz con Desharnais'', que muestra como adaptar nuestras definiciones a las de \cite{Desharnais}. Definimos luego las lógicas modales a emplear en la caracterización. Por último se aborda la prueba de caracterización lógica, dando una prueba estructural que engloba todas aquellas propiedades que no dependen de la lógica usada. Una vez hecho esto, probar la caracterización para una lógica en particular se reducirá a probar que ésta satisface una cierta hipótesis de coincidencia de medidas. Concluimos aplicando lo anterior a la prueba de caraterización de la bisimulación para cuatro clases de NLMP por distintas lógicas modales.
+
+\chapter{Teoría de Conjuntos Descriptiva}\label{cap:tcd}
+\section{Introducción}
+La teoría de conjuntos descriptiva es el estudio de los \emph{conjuntos definibles} en \emph{espacios Polacos} (i.e., espacios completamente metrizables y separables). En esta teoría los conjuntos son clasificados en jerarquías, de acuerdo a la complejidad de sus definiciones, y la estructura de los conjuntos en cada nivel de tales jerarquías es analizada sistemáticamente.
+
+La primera clase que se estudia es la de los \emph{conjuntos Borel}, que son los que se obtienen a partir de los abiertos de un espacio Polaco dado, mediante las operaciones de complementación y unión numerable. Esta clase puede organizarse en una jerarquía transfinita de longitud $\omega_1$ (el primer ordinal no numerable), pero no entraremos en los detalles de esta estructura en este trabajo.
+
+Más allá de la clase de los conjuntos Borel, tenemos la de los \emph{conjuntos proyectivos}, que son aquellos que se obtienen a partir de los conjuntos Borel mediante las operaciones de proyección (o imagen continua) y complementación. La clase de los conjuntos proyectivos forma una jerarquía de longitud $\omega$ (el primer ordinal infinito), que incluye a los \emph{analíticos} ($\Sig_1^1$) (imágenes continuas de Borel) y \emph{co-analíticos}($\Sig_1^1$) (complementos de analíticos).
+
+Comenzaremos estudiando las propiedades fundamentales de los espacios Polacos e introduciremos algunas herramientas básicas de la teoría. Luego veremos algunos resultados importantes sobre conjuntos Borel, analíticos y co-analíticos, y veremos algunas conexiones con la teoría de la medida que serán aplicadas en el tercer capítulo a la teoría de \emph{NLMP}.
+
+
+\section{Espacios Métricos}
+Repasamos a continuación algunas definiciones y propiedades básicas relacionadas con los espacios métricos, que serán la base de nuestro trabajo con espacios Polacos.
+\begin{defn}
+Un \textbf{espacio métrico}\index{métrico!espacio} es un par $(X,d)$, con un conjunto $X$ y una función $d:X\rightarrow[0,\infty)$ que satisface
+\begin{enumerate}[i\textup{)}]
+\item $d(x,y)=0\sii x=y$;
+\item $d(x,y)=d(y,x)$;
+\item $d(x,y)\leq d(x,z)+d(z,y)$.
+\end{enumerate}
+Dicha función se denomina una \textbf{métrica}\index{métrica} sobre $X$.
+\end{defn}
+
+La \textbf{bola abierta}\index{bola abierta} con centro $x$ y radio $r$ se define como
+\[B(x,r)=B_d(x,r):=\{y\in X: d(x,y)<r\}\]
+Las bolas abiertas son base de una topología, denominada la \textbf{topología del espacio métrico}\index{métrico!topología del espacio} y denotada por $\mc{T}_d$.
+
+Para cualquier conjunto $A\subseteq X$, definimos
+\[\diam(A) = \sup\{d(x,y) : x,y\in A\}\]
+(con $\diam(\vacio) = 0$, por convención).
+
+Un espacio topológico $(X,\mc{T})$ se dice \textbf{metrizable}\index{metrizable} si existe una métrica $d$ sobre $X$ tal que
+$\mc{T}$ es la topología de $(X,d)$. En este caso decimos que la métrica $d$ es \textbf{compatible}\index{métrica!compatible} con $\mc{T}$. Si $\mc{T}$ es metrizable con métrica compatible $d$, entonces la métrica
+\[d' := \frac{d}{1+d}\]
+también es compatible y $d'\leq 1$.
+
+Un subconjunto $D\subseteq X$ de un espacio topológico $X$ es \textbf{denso}\index{denso} si $D\inters U \neq \vacio$ para todo abierto no vacío $U$. Un espacio $X$ que contiene un conjunto denso numerable se denomina \textbf{separable}\index{separable}. Recordemos que un espacio topológico se dice $\mathbf{N_2}$\index{N2@$N_2$} si tiene una base numerable.
+Todo espacio $N_2$  es separable (pero el recíproco no es cierto). Si $X$ es metrizable, entonces $X$ es separable si y sólo si es $N_2$, por lo que usaremos estos términos de forma equivalente.
+
+Recordemos que el \textbf{producto}\index{producto!de espacios topológicos} de una familia $\{X_i\}_{i\in I}$ de espacios topológicos es el espacio topológico sobre el producto cartesiano $\prod_{i\in I}X_i$ con la topología generada por los conjuntos de la forma $\prod_i U_i$, donde $U_i$ es un abierto en $X_i$ para cada $i$ y $U_i = X_i$ para todos salvo una cantidad finita de $i$. Esta es la menor topología tal que las proyecciones $\pi_j : (x_i)_{i\in I} \mapsto x_j$ son continuas. Si $X_i=X$ para todo $i\in I$, denotamos $X^I := \prod_{i\in I}X_i$.
+
+El producto \index{producto!de espacios métricos} de una sucesión de espacios métricos $\{(X_n,d_n)\}_{n\in\N}$ es el espacio métrico $(\prod_n X_n,d)$, donde
+\[d(x,y):= \sum_{n=0}^\infty 2^{-n-1}\frac{d_n(x_n,y_n)}{1+d_n(x_n,y_n)}\]
+con $x=\{x_n\}$, $y=\{y_n\}$. La topología de este espacio métrico es el producto de las topologías de $\{(X_n,d_n)\}$. Por lo tanto el producto de una sucesión de espacios topológicos metrizables es metrizable. Más aún, el producto de una sucesión de espacios metrizables separables es también separable.
+
+\section{Árboles}
+El concepto de árbol es una herramienta combinatoria básica en la teoría de conjuntos descriptiva. La noción de árbol empleada en este contexto, es diferente de la usada en teoría de grafos o en teoría de conjuntos combinatoria, aunque están muy relacionadas.
+\subsection{Definiciones Básicas}
+\begin{defn}[Sucesiones finitas]\index{sucesiones finitas}
+Sea $A$ un conjunto no vacío y $n\in\N$. Denotamos con $A^n$ al conjunto de todas las sucesiones finitas $s=(s(0),\ldots,s(n-1))=(s_0,\ldots,s_{n-1})$ de longitud $n$ ($n$\textbf{-uplas}). Definimos para $n=0$, $A^0=\{\vacio\}$, donde $\vacio$ denota la \textbf{sucesión vacía}. La longitud de una sucesión finita $s$ se denota $\longi(s)$, con $\longi(\vacio)=0$. Si $s\in A^n$ y $m\leq n$, definimos $s|m=(s_0,\ldots,s_{m-1})$, con $s|0=\vacio$. Si $s,t$ son sucesiones finitas de $A$, decimos que $s$ es un \textbf{segmento inicial} de $t$ y que $t$ es una \textbf{extensión} de $s$ (en símbolos, $s\subseteq t$) si $s=t|m$ para algún $m\leq \longi (t)$. Por lo tanto $\vacio\subseteq s$, para cualquier $s$. Dos sucesiones finitas se dicen \textbf{compatibles} si son comparables por el orden parcial $\subseteq$ e \textbf{incompatibles} en caso contrario. Usamos $s\bot t$ para indicar que $s$ y $t$ son incompatibles. Por último, sea
+\[ A^{<\N} = \Union_{n\in\N}A^n\]
+el conjunto de todas las sucesiones finitas de $A$. La \textbf{concatenación} de $s=(s_i)_{i<n}$, $t=(t_j)_{j<m}$ es la sucesión $s\hat{\ }t = (s_0,\ldots,s_{n-1},t_0,\ldots,t_{m-1})$. Escribimos $s\hat\ a$ para denotar $s\hat\ (a)$, cuando $a\in A$.
+\end{defn}
+
+Sea $A^\N$ el conjunto de todas las sucesiones infinitas $x=\{x(n)\}=\{x_n\}$ de elementos de $A$. Si $x\in A^\N$ y $n\in\N$, sea $x|n=(x_0,\ldots,x_{n-1})\in A^n$. Decimos que $s\in A^n$ es un \textbf{segmento inicial} de $x\in A^\N$ si $s=x|n$. Escribimos $s\subseteq x$ si $s$ es un segmento inicial de $x$. También, para $s\in A^{<\N}$, definimos la \textbf{concatenación} de $s,x$ como la sucesión infinita $s\hat\ x=y$, con $y(i)=s(i)$ para $i<\longi (s)$ y $y(\longi(s){+}i)=x(i)$. 
+
+\begin{defn}[Árbol]\index{árbol}
+Un \textbf{árbol} en un conjunto $A$ es un subconjunto $T\subseteq A^{<\N}$ cerrado por segmentos iniciales; es decir, si $t\in T$ y $s\subseteq t$, entonces $s\in T$. (En particular, $\vacio \in T$ si $T$ es no vacío.) Llamamos a los elementos de $T$ los \textbf{nodos} de $T$. Una \textbf{rama infinita} de $T$ es una sucesión $x\in A^\N$ tal que $x|n \in T$, para todo $n$. El \textbf{cuerpo} de $T$, se denota $[T]$ y es el conjunto de todas las ramas infinitas de $T$, o sea
+\[[T] = \{x\in A^\N : \forall n(x|n\in T)\}\] 
+Finalmente, un árbol se dice \textbf{podado}\index{podado, árbol} si cada $s\in T$ tiene una extensión propia $t\supsetneqq s, t\in T$. Nótese que un árbol podado está completamente determinado por su cuerpo $[T]$, pues todo nodo es segmento inicial de alguna rama infinita.
+\end{defn}
+
+\subsection{Árboles y Conjuntos Cerrados}
+Cualquier conjunto $A$ puede verse como un espacio topológico con la topología discreta $\mc{T} = \mc{P}(A)$.
+Este espacio resulta metrizable con la métrica $\d(a,b)=1$, si $a\neq b$. Luego $A^\N$, visto como el espacio producto de infinitas copias de $A$ es metrizable con la métrica: $d(x,y)=2^{-n-1}$ si $x\neq y$ y $n$ es el menor índice con $x_n\neq y_n$.
+
+La \textbf{base estándar} para la topología de $A^\N$ está formada por los conjuntos
+\[N_s = \{x\in A^\N : s \subseteq x \}\text{,}\]
+donde $s\in A^{<\N}$. Notemos que $s \subseteq t \sii N_s \supseteq N_t$ y $s \bot t \sii N_s\inters N_t = \vacio$.
+
+Si $\{x_n\}$ es una sucesión en $A^\N$ y $x\in A^\N$, $x_n\rightarrow x$ si y sólo si $\forall i \exists n_i : x_n(i) = x(i)$ para $n\geq n_i$.
+
+\begin{prop}\index{árbol!de un conjunto cerrado}
+La función $T\mapsto [T]$ es una biyección entre árboles podados y conjuntos cerrados de $A^\N$. Su inversa está dada por
+\[F\mapsto T_F = \{x|n : x\in F, n\in\N\}\]
+$T_F$ se denomina el \textbf{árbol de} F.
+\end{prop}
+\begin{dem}
+Sea $T$ un árbol podado y veamos que $[T]$ es cerrado. Sea $x$ un punto de acumulación de $[T]$. Existe entonces una sucesión $\{x_n\}\subseteq [T]$ con $x_n\rightarrow x$. Luego, para todo $m\in\N$ existe $n\in\N$ tal que $x_n|m = x|m$. Deducimos que $\forall m\in\N x|m\in T$, de donde $x\in [T]$.
+
+Es claro que $T_A$ es un árbol podado para todo $A\subseteq A^\N$. Además, por lo probado en el párrafo anterior, se puede ver que $[T_A]=\overline{A}$. Luego, para todo $F$ cerrado en $A^\N$ resulta $[T_F] = F$, y entonces $T\mapsto[T]$ es una biyección entre árboles podados y cerrados en $A^\N$.
+\end{dem}
+
+\begin{defn}
+Sean $S,T$ árboles (sobre conjuntos $A,B$, resp.). Una función $\varphi : S\rightarrow T$ se dice \textbf{monótona} si $s\subseteq t$ implica $\varphi(s)\subseteq \varphi(t)$. A cada $\varphi$ monótona se le asocia de modo natural una función sobre ramas infinitas con dominio 
+\[D(\varphi) := \{x\in [S] : \lim_n \longi (\varphi(x|n)) = \infty \}\text{,}\]
+y luego, para $x\in D(\varphi)$,
+\[\varphi^*(x) = \Union_n \varphi(x|n) \in [T]\]
+$\varphi$ se dice \textbf{propia}\index{propia, función} si $D(\varphi) = [S]$, es decir, si $\varphi^*$ tiene sentido para toda rama infinita.
+\end{defn}
+
+Si $X$ es un espacio topológico, los conjuntos de la forma $\Inters_{n\in\N}U_n$, con $U_n$ abiertos, se denominan conjuntos $G_\d$\index{Gd@$G_\d$}; y los de la forma $\Union_{n\in\N}F_n$, con $F_n$ cerrados, se denominan conjuntos $F_\sigma$\index{Fs@$F_\sigma$}.
+
+\begin{prop}
+El conjunto $D(\varphi)$ es $G_\d$ en $[S]$ y $\varphi^* : D(\varphi) \rightarrow [T]$ es continua.
+\end{prop}
+\begin{dem}
+Tenemos $x \in D(\varphi) \sii \forall n \exists m (\longi (\varphi(x|m))\geq n)$, entonces $D(\varphi)=\Inters_n U_n$, con $U_n = \{x : \exists m (\longi (\varphi(x|m))\geq n)\}$ abierto (porque ${y|m = x|m}\ {\forall y \in N_{x|m}}$).
+
+Para ver que $\varphi^*$ es continua, notemos que los conjuntos $V_t:=[T]\inters N_t$ forman una base de la topología de $[T]$ y $(\varphi^*)^{-1}(V_t) = \Union \{N_s\inters D(\varphi) : s\in S, \varphi(s) \supseteq t\}$ es un abierto en $D(\varphi)$.
+\end{dem}
+
+Un conjunto cerrado $F$ en un espacio topológico $X$ es un \textbf{retracto}\index{retracto} de $X$ si existe una
+función continua sobreyectiva $f:X\rightarrow F$ tal que $f(x)=x$ para $x\in F$.
+
+\begin{prop}\label{p:retracto}
+Sean $F\subseteq H$ dos conjuntos cerrados no vacíos de $A^\N$. Entonces $F$ es un retracto de $H$.
+\end{prop}
+\begin{dem}
+Sean $S,T$ árboles podados con $[S]=F$ y $[T]=H$. Definiremos una función monótona propia $\varphi: T\rightarrow S$ con $\varphi(s) = s$ para $s\in S$ (nótese que $S\subseteq T$). Por la proposición anterior resultará que $F$ es un retracto de $H$ vía $f=\varphi^*$.
+
+Definimos $\varphi(t)$ por inducción en $\longi (t)$. $\varphi(\vacio)=\vacio$, y dado $\varphi(t)$, definimos $\varphi(t\hat\ a)$ para $a\in A$ y $t\hat\ a \in T$ como sigue: si $t\hat\ a \in S$, sea $\varphi(t\hat\ a)= t\hat\ a$. Si $t\hat\ a \notin S$, sea $\varphi(t\hat\ a)=\varphi(t)\hat\ b$ para cualquier $b$ tal que $\varphi(t)\hat\ b \in S$, que existe ya que $S$ es un árbol podado.
+\end{dem}
+
+\section{Espacios Polacos}
+
+\subsection{Definiciones y Ejemplos}
+Sea $(X,d)$ un espacio métrico. Una \textbf{sucesión de Cauchy}\index{Cauchy, sucesión de} es una sucesión $\{x_n\}$ de elementos de $X$ tal que $\lim_{m,n\rightarrow \infty}d(x_m,x_n) = 0$. Decimos que $(X,d)$ es \textbf{completo}\index{completo} si toda sucesión de Cauchy tiene un límite en $X$.
+
+Para cualquier espacio métrico $(X,d)$ existe un espacio métrico completo $(\hat X,\hat d)$ tal que $(X,d)$ es un subespacio de $(\hat X,\hat d)$ y $X$ es denso en $\hat X$. Este espacio es único salvo isometrías y se denomina la \textbf{completación}\index{completación} de $(X,d)$. Claramente, $\hat X$ es separable si y sólo si $X$ es separable.
+
+\begin{defn}\index{Polaco, espacio}
+Un espacio topológico $X$ es \textbf{completamente metrizable}\index{completamente metrizable} si admite una métrica compatible $d$ tal que $(X,d)$ es completo. Un espacio completamente metrizable y separable se denomina espacio \textbf{Polaco}.
+\end{defn}  
+
+Las siguientes propiedades son fáciles de verificar
+\begin{prop}\label{p:polacos} 
+\begin{enumerate}[i\textup{)}]
+	\item La completación de un espacio métrico separable es un espacio Polaco.
+	\item Todo subespacio cerrado de un espacio Polaco es Polaco.
+	\item El producto de una sucesión numerable de espacios completamente metrizables
+	(resp. Polacos) es completamente metrizable (resp. Polaco). La suma de una
+	familia de espacios completamente metrizables es completamente metrizable.
+	La suma de una sucesión de espacios Polacos es un espacio Polaco.
+\end{enumerate}
+\end{prop} 
+
+\begin{ejem}\ 
+\begin{enumerate}[i\textup{)}]
+	\item El intervalo abierto $(0,1)$ es Polaco (por ser homeomorfo a $\R$), a pesar
+	de que su métrica usual no es completa.
+	\item Cualquier conjunto $A$ con la topología discreta es completamente metrizable,
+	y si $A$ es numerable resulta ser Polaco.
+	\item El espacio $A^{\N}$, visto como el producto de infinitas copias de $A$ con
+	la topología discreta, es completamente metrizable y si $A$ es numerable, es Polaco.
+	Son de particular importancia los casos $A = 2 = \{0,1\}$ y $A = \N$, el \textbf{espacio de Cantor}\index{Cantor!espacio de ($\mc{C}$)}:
+	\[ \Cantor = 2^{\N}\]
+	y
+	\item
+	\[ \mc{N} = \N^\N\]
+	el \textbf{espacio de Baire}\index{Baire, espacio de ($\mc{N}$)}.
+	\item Un ejemplo un poco más sorprendente es Irr$:=\R\setminus\Q$, el espacio de los irracionales con la topología inducida por $\R$. Usando el desarrollo en fracciones continuas, el conjunto Irr$\inters(0,1)$ resulta homeomorfo a $(\N\setminus\{0\})^\N$, y entonces Irr es homeomorfo a $\Baire$ y por lo tanto Polaco.
+\end{enumerate}
+\end{ejem}
+
+\subsection{Extensiones de Funciones Continuas y Homeomorfismos}
+Sea $X$ un espacio topológico, $(Y,d)$ un espacio métrico, $A\subseteq X$, y $\f{f}{A}{Y}$. Definimos la \textbf{oscilación}\index{oscilación} de $f$ en $x\in X$ como
+\[\osc_f(x) = \inf\{\diam(f(U)) : U \text{ entorno abierto de } x\}\]
+(donde se entiende que $f(U)=f(A\inters U)$). Notar que si $x\in A$, entonces $f$ es continua en $x$ si y sólo si $\osc_f(x) = 0$. Definiendo $A_\eps=\{x\in X: \osc_f(x)<\eps\}$, notemos que $A_\eps$ es abierto y $\{x:\osc_f(x)=0\}=\Inters_n A_{1/n}$ es un conjunto $G_\d$. Hemos probado entonces la siguiente proposición
+\begin{prop}\label{p:contgd}
+Sea $X$ un espacio topológico, $Y$ un espacio metrizable, y $\f{f}{X}{Y}$. Entonces los puntos de continuidad de $f$ forman un conjunto $G_\d$.
+\end{prop}
+
+Usaremos la siguiente propiedad básica de los espacios metrizables
+\begin{prop}\label{p:cerradogd}
+Si $X$ es metrizable, entonces todo cerrado es un $G_\d$ (y por lo tanto todo abierto es un $F_\sigma$).
+\end{prop}
+\begin{dem}
+Sea $d$ una métrica compatible con $X$. Para $x\in X$, $\vacio\neq A \subseteq X$, $\eps >0$ definimos la $\eps$-\textbf{bola alrededor} de $A$, $B(A,\eps):=\{x:d(x,A)<\eps\}$, donde $d(x,A)=\inf\{d(x,y):y\in A\}$. Como $|d(x,A)- d(y,A)| \leq d(x,y)$ resulta $B(A,\eps)$ abierta. Por otro lado, si $\vacio\neq F \subseteq X$ es cerrado entonces
+\[F = \Inters_n B(F,1/n)\]
+y luego $F$ es un $G_\d$.
+\end{dem}
+
+Usando las ideas anteriores podemos probar el siguiente teorema de extensión
+\begin{teo}[Kuratowski]\label{t:kuratowski}
+Sean $X$ metrizable, $Y$ completamente metrizable, $A\subseteq X$, y $\f{f}{A}{Y}$ continua. Entonces existe $G$ un conjunto $G_\d$ con $A\subseteq G \subseteq \overline{A}$ y una extensión continua $\f{g}{G}{Y}$ de $f$.
+\end{teo}
+\begin{dem}
+Sea $G=\overline{A}\inters\{x:\osc_f(x)=0\}$. Por las proposiciones anteriores $G$ es un $G_\d$ y como $f$ es continua en $A$, $A\subseteq G \subseteq \overline{A}$.
+
+Ahora sea $x\in G$. Como $x\in\overline{A}$, existe una sucesión $\{x_n\}\subseteq A$ con $x_n\rightarrow x$. Luego $\lim_n\diam(f(\{x_n,x_{n+1},\ldots\}))=0$, y entonces $\{f(x_n)\}$ es de Cauchy y por lo tanto converge en $Y$. Sea
+\[g(x):=\lim_n f(x_n)\]
+Es fácil verificar que $g$ está bien definida (i.e., no depende de la elección de $\{x_n\}$) y extiende a $f$. Por último, para ver que $g$ es continua en $G$, tenemos que ver que $\osc_g(x)=0$ para todo $x\in G$. Si $U$ es abierto en $X$, entonces $g(U)\subseteq \overline{f(U)}$, de donde se sigue que $\diam(G(U))\leq\diam(f(U))$, y luego $\osc_g(x)\leq \osc_f(x) = 0$.
+\end{dem}
+
+El siguiente teorema caracteriza los subespacios de espacios Polacos que son Polacos (con la topología relativa).
+
+\begin{teo}\label{t:polacogd}
+Si $X$ es metrizable y $Y \subseteq X$ es completamente metrizable, entonces $Y$ es
+un $G_\d$ en $X$. Recíprocamente, si $X$ es completamente metrizable y $Y \subseteq X$
+es un $G_\d$, entonces $Y$ es completamente metrizable.
+En particular, un subespacio de un Polaco es Polaco si y sólo si es un $G_\d$.
+\end{teo}
+\begin{dem}
+Para la primera parte, consideremos la identidad $\f{\text{id}_Y}{Y}{Y}$. Como es continua, existe un $G_\d$ con $Y\subseteq G \subseteq \overline{Y}$ y una extensión continua $\f{g}{G}{Y}$ de id$_Y$. Como $Y$ es denso en $G$, $g=id_G$, y entonces $Y=G$.
+
+Probamos la segunda afirmación. Sea $Y=\Inters_n U_n$, con $U_n$ abierto en $X$ para todo $n$. Sea $F_n=X\setminus U_n$.
+Sea $d$ una métrica completa compatible con $X$. Definamos una nueva métrica en $Y$, como sigue
+\[d'(x,y):= d(x,y) + \sum_{n=1}^\infty \min\left\{2^{-n}, \left|\frac{1}{d(x,F_n)}-\frac{1}{d(y,F_n)}\right|\right\}\]
+
+Para ver que $d'$ es una métrica compatible con la topología de $Y$,
+debemos ver que $\mc{T}_{d'}=\mc{T}_d$. Como $d'(x,y)\geq d(x,y)$,
+tenemos $B_{d'}(x,r)\subseteq B_d(x,r)$, $\forall x\in Y, r>0$, y
+entonces $\mc{T}_{d'}\supseteq\mc{T}_d$. Veamos ahora que
+$\mc{T}_{d'}\subseteq\mc{T}_d$. Para ello debemos probar que para toda
+bola $B_{d'}(x,\eps)$ hay una bola $B_d(x,\delta)$ tal que
+$B_d'(x,\eps)\supseteq B_d(x,\delta)$. Sea $N$ tal que
+$\sum_{n=N+1}^{\infty} 2^{-n} < \frac{\eps}{3}$. Como
+$\frac{1}{d(x,F_n)}$ es continua en $Y$ para todo $n$, existen
+$\delta_n$ tales que $d(x,y)<\delta_n \ent
+|\frac{1}{d(x,F_n)}-\frac{1}{d(y,F_n)}|<\frac{\eps}{3N}$. Luego,
+tomando $\delta=\min\{\eps/3,\delta_1,\ldots,\delta_n\}$ tenemos: 
+\[ d(x,y)<\delta \ent d'(x,y) \leq d(x,y) + \sum_{n=1}^N \left|\frac{1}{d(x,F_n)}-\frac{1}{d(y,F_n)}\right| + \frac{\eps}{3} < \frac{\eps}{3} + N\frac{\eps}{3N} + \frac{\eps}{3} = \eps\]
+
+Veamos ahora que $(Y,d')$ es completo. Sea $\{y_i\}$ una sucesión de Cauchy en $(Y,d')$. Entonces es de Cauchy en $(X,d)$, y $y_i\rightarrow y \in X$. Pero además $\lim_{i,j\rightarrow\infty}\left|\frac{1}{d(y_i,F_n)}-\frac{1}{d(y_j,F_n)}\right| = 0$ para cada $n$, y entonces $\{\frac{1}{d(y_i,F_n)}\}$ converge en $\R$ y por lo tanto es acotada superiormente. Luego, existe $c_n>0$ tal que $d(y_i,F_n)>c_n$ para todo $i$. Como $d(y_i,F_n)\rightarrow d(y,F_n)$, tenemos $d(y,F_n)\neq 0$ para todo $n$, y entonces $y\neq F_n$ para todo $n$, es decir, $y\in Y$. Claramente, $y_i\rightarrow y$ en $(Y,d')$.
+\end{dem} 
+\begin{ejem}
+El teorema anterior se puede usar para dar otra prueba de que Irr es Polaco. Basta notar que como los singuletes $\{x\}$ en un Polaco son cerrados, cualquier conjunto numerable en un Polaco es $F_\sigma$. En particular, $\Q$ es un $F_\sigma$ en $\R$, de donde Irr es un $G_\d$ y por lo tanto Polaco.
+\end{ejem}
+
+\subsection{Espacios Polacos Perfectos}
+Un subconjunto de un espacio Polaco satisface \emph{propiedad del conjunto perfecto} cuando es numerable o contiene un subconjunto perfecto no vacío. Esta es una propiedad de los conjuntos definibles y permite decidir la \emph{Hipótesis del Continuo} para cualquier clase de conjuntos que la satisfagan.
+\remark{ver}
+
+Un \textbf{punto límite}\index{punto límite} en un espacio topológico es un punto que no es aislado, i.e., para todo entorno abierto $U$ de $x$ existe un punto $y\in U$, $y\neq x$ (equivalentemente $\{x\}$ no es abierto). Un espacio es \textbf{perfecto}\index{perfecto} si todos sus puntos son puntos límite. Si $P$ es un subconjunto de un espacio topológico $X$, decimos que $P$ es \textbf{perfecto en} $X$ si $P$ es cerrado y perfecto con la topología relativa.
+
+Por ejemplo $\R^n, \R^\N, \C^n, \C^\N, \I^\N, \Cantor, \Baire$ son perfectos.
+
+\begin{defn}
+Un \textbf{esquema de Cantor}\index{Cantor!esquema de} sobre un conjunto $X$ es una familia $\{A_s\}_{s\in 2^{<\N}}$ de subconjuntos de $X$ tal que:
+\begin{enumerate}[i\textup{)}]
+\item $A_{s\hat\ 0} \inters A_{s\hat\ 1} = \vacio$, para $s\in 2^{<\N}$;
+\item $A_{s\hat\ i} \subseteq A_s$, para $s\in 2^{<\N}$, $i\in\{0,1\}$;
+\end{enumerate}
+\end{defn}
+
+\begin{teo}
+Sea $X$ un espacio Polaco perfecto no vacío. Entonces existe una incrustación de $\Cantor$ en $X$.
+\end{teo}
+\begin{dem}
+Definiremos un esquema de Cantor $\{U_s\}_{s\in 2^{<\N}}$ sobre $X$ tal que
+\begin{enumerate}[i\textup{)}]
+\item\label{i1:a} $U_s$ es un abierto no vacío;
+\item\label{i1:b} $\diam(U_s)\leq 2^{-\longi (s)}$;
+\item\label{i1:c} $\overline{U_{s\hat\ i}}\subseteq U_s$, para $s\in 2^{<\N}$, $i\in\{0,1\}$.
+\end{enumerate}
+Luego para $x\in\Cantor$, $\Inters_n U_{x|n} = \Inters_n \overline{U_{x|n}}$ es un singulete (por ser $X$ completo y $T_2$), digamos $\{f(x)\}$. Claramente, $\f{f}{\Cantor}{X}$ será inyectiva, continua y abierta, y por lo tanto una incrustación.
+
+Definimos $U_s$ por inducción en $\longi (s)$. Sea $U_\vacio$ un conjunto arbitrario que satisfaga \ref{i1:a}) y \ref{i1:b}). Dado $U_s$, definimos $U_{s\hat\ 0}, U_{s\hat\ 1}$ eligiendo $x\neq y$ en $U_s$ (lo cual es posible por ser $X$ perfecto) y tomando $U_{s\hat\ 0}, U_{s\hat\ 1}$ como bolas abiertas suficientemente pequeñas alrededor de $x$ e $y$, respectivamente.
+\end{dem}
+\begin{nota}
+El resultado anterior es válido para cualquier $X$ completamente metrizable, ya que no hacemos uso de la separabilidad en la demostración.
+\end{nota}
+
+\begin{coro}\label{c:perfectnonum}
+Si $X$ es un espacio Polaco perfecto no vacío, entonces $card(X) = 2^{\aleph_0}$. Por lo tanto, todo espacio Polaco numerable no vacío tiene un punto aislado.
+\end{coro}
+
+Por el teorema de Cantor-Bendixson (ver \cite{Kechris}, p.32),
+cualquier espacio Polaco no numerable contiene un subconjunto perfecto
+no vacío y por lo tanto contiene también una copia homeomorfa de
+$\Cantor$. En particular, cualquier conjunto $G_\d$ o $F_\sigma$ no
+numerable en un Polaco cumple esto y luego tiene cardinalidad $2^{\aleph_0}$, i.e., la
+Hipótesis del Continuo es cierta para esta clase de conjuntos.
+
+\subsection{Polacos como Imágenes Continuas de $\Baire$}
+
+\begin{defn}
+Un \textbf{esquema de Lusin}\index{Lusin!esquema de} sobre un conjunto $X$ es una familia $\{A_s\}_{s\in \N^{<\N}}$ de subconjuntos de $X$ tal que:
+\begin{enumerate}[i\textup{)}]
+\item $A_{s\hat\ i} \inters A_{s\hat\ j} = \vacio$, si $s\in \N^{<\N}$, $i\neq j \in \N$;
+\item $A_{s\hat\ i} \subseteq A_s$, para $s\in \N^{<\N}$, $i\in\N$;
+\end{enumerate}
+Si $(X,d)$ es un espacio métrico y $\{A_s\}_{s\in \N^{<\N}}$ es un esquema de Lusin sobre $X$, decimos que $\{A_s\}_{s\in \N^{<\N}}$ es \textbf{fino} si $\lim_n \diam(A_{x|n})=0$, para todo $x\in\Baire$. En ese caso si $D=\{x\in\Baire:\Inters_n A_{x|n}\neq \vacio\}$, podemos definir $\f{f}{D}{X}$ como $\{f(x)\}=\Inters_n A_{x|n}$. Llamamos a $f$ la \textbf{función asociada}\index{función asociada (esquema de Lusin)} al esquema. 
+\end{defn}
+
+\begin{prop}\label{p:flusin}
+Sea $\{A_s\}_{s\in \N^{<\N}}$ un esquema de Lusin fino en un espacio métrico $(X,d)$. Entonces si $\f{f}{D}{X}$ es su función asociada, tenemos
+\begin{enumerate}[i\textup{)}]
+\item\label{i2:a} $f$ es inyectiva y continua
+\item\label{i2:b} Si $(X,d)$ es completo y cada $A_s$ es cerrado, entonces $D$ es cerrado.
+\item\label{i2:c} Si $A_s$ es abierto, entonces $f$ es una incrustación.
+\end{enumerate}
+\end{prop}
+\begin{dem}
+La parte \ref{i2:a}) se deduce directamente de la definición de $D$ y de que $\{A_s\}$ sea fino. Para probar \ref{i2:b}), veamos que si $x_n\in D$, $x_n\rightarrow x$, entonces $\{f(x_n)\}$ es de Cauchy ya que, dado $\eps>0$, existen un $N$ tal que $\diam(A_{x|n})<\eps$ (por ser $\{A_s\}$ fino) y un $M$ tal que $x_n|N = x|N$ para todo $n\geq M$, por lo que $d(f(x_n),f(x_m))<\eps$ si $n,m\geq M$. Luego, $f(x_n)\rightarrow y \in X$. Como cada $A_s$ es cerrado, $y\in A_{x|n}$ para todo $n$, por lo que $x\in D$ y $f(x)=y$. Por último, para probar \ref{i2:c}), basta ver que $f$ es abierta, lo que se sigue de $f(N_s\inters D) = f(D) \inters A_s$.
+\end{dem}
+
+%7.9
+\begin{teo}\label{t:bairepolaco}
+Sea $X$ un espacio Polaco. Entonces existe un conjunto cerrado $F\subseteq \Baire$ y una biyección continua $f:F\rightarrow X$. En particular, si $X$ es no vacío, $f$ se extiende a una $g:\Baire\rightarrow X$ continua y sobreyectiva.
+\end{teo}
+\begin{dem}
+La última afirmación se deduce de la primera y de la \propref{p:retracto}.
+Para probar la primera parte, fijemos una métrica compatible $d\leq 1$ sobre $X$. Construiremos un esquema de Lusin $\{F_s\}_{s\in \N^{<\N}}$ sobre $X$ tal que
+\begin{enumerate}[i\textup{)}]
+\item\label{i3:a} $F_\vacio = X$;
+\item\label{i3:b} $F_s$ es $F_\sigma$;
+\item\label{i3:c} $F_s = \Union_i F_{s\hat\ i} = \Union_i\overline{F_{s\hat\ i}}$;
+\item\label{i3:d} $\diam(F_s) \leq 2^{-\longi (s)}$
+\end{enumerate}
+Sea luego $\f{f}{D}{X}$ la función asociada. Por \ref{i3:c}), $f(D) = X$, y entonces por la \propref{p:flusin} $f$ es una biyección continua de $D$ en $X$. Por lo tanto, es suficiente probar que $D$ es cerrado. Si $x_n \in D$, $x_n\rightarrow x$, entonces, como en la prueba de la \propref{p:flusin}, $\{f(x_n)\}$ es de Cauchy, luego $f(x_n)\rightarrow y \in X$ y $y\in\Inters_n \overline{F_{x|n}} = \Inters_n F_{x|n}$ (por \ref{i3:c}), y entonces $X\in D$ y $f(x)=y$.
+
+Para construir $\{F_s\}$ alcanza con probar que dados $F\subseteq X$ un conjunto $F_\sigma$ y $\eps > 0$, podemos escribir $F = \Union_{i\in\N} F_i$, donde los $F_i$ son conjuntos $F_\sigma$ de diámetro $<\eps$ disjuntos dos a dos tales que $\overline{F_i}\subseteq F$. Sea entonces $F=\Union_{i\in\N} C_i$, con $C_i$ cerrados y $C_i \subseteq C_{i+1}$. Entonces, definiendo $C_0=\vacio$, tenemos $F = \Union_{i\in\N}(C_i\setminus C_{i-1})$. Ahora $C_i\setminus C_{i-1} = C_i \inters C_{i-1}^c$. 
+Como $X$ es separable, y $C_{i-1}^c$ es abierto, podemos escribir $C_{i-1}^c = \Union_{j\in\N} B_j^i$, donde las $B_j^i$ son bolas de diámetro racional $<\eps$ centradas en puntos de un denso numerable en $X$. Definimos ahora $E_j^i = C_i \inters (B_j^i \setminus (\Union_{k<j} B_k^i))$. Como todo abierto en un Polaco es $F_\sigma$, la diferencia de abiertos es también $F_\sigma$ y como la intersección de un $F_\sigma$ y un cerrado es $F_\sigma$, los $E_j^i$ son $F_\sigma$ de diámetro $<\eps$ con $C_i\setminus C_{i-1} = \Union_{j\in\N} E_j^i$. Luego $F= \Union_{i,j\in\N} E_j^i$ y $\overline{E_j^i}\subseteq \overline{C_i\setminus C_{i-1}} \subseteq C_i \subseteq F$.
+\end{dem}
+
+\section{Conjuntos Borel}
+
+\subsection{\salgebras y Generadores}
+
+Sea $X$ un conjunto. Una familia de subconjuntos de $X$ se dice un \textbf{álgebra sobre}\index{álgebra} $X$ si contiene a $\vacio$ y es cerrada por complementos y uniones finitas (por la ley de De Morgan resulta también cerrada por intersecciones finitas).
+Un álgebra se dice una \textbf{\salgebra}\index{sigmaalgebra@\salgebra} si es además cerrada por uniones numerables.
+
+Dada una familia $\mc{F} \subseteq \mc{P}(X)$ existe una menor \salgebra que contiene a $\mc{F}$, la llamaremos la \textbf{\salgebra generada por $\mc{F}$} y la denotaremos $\sigma(\mc{F})$. $\mc{F}$ se denominará un conjunto de \textbf{generadores}\index{\salgebra!generadores} de $\sigma(\mc{F})$.
+Una \salgebra es \textbf{numerablemente generada} si tiene un conjunto de generadores numerable.
+
+$\mc{F} \subseteq \mc{P}(X)$ es una \textbf{$\pi$-clase}\index{$\pi$-clase} si es cerrada por intersecciones finitas.
+$\mc{F}$ es una \textbf{$\lambda$-clase}\index{$\lambda$-clase} si es no vacía y cerrada por complementos y uniones disjuntas numerables.
+
+El siguiente teorema nos permitirá probar propiedades de una \salgebra limitándonos a trabajar en una $\pi$-clase de generadores, que generalmente tendrá una estructura mucho más simple. 
+\begin{teo}[$\lambda$-$\pi$ de Dynkin]\label{t:lambpi}\index{lambdapi@$\lambda$-$\pi$}
+Sea $X$ un conjunto y $\mc{F} \subseteq \mc{P}(X)$ una $\pi$-clase. Entonces $\sigma(\mc{F})$ es la menor
+$\lambda$-clase que contiene a $\mc{F}$.
+\end{teo}
+
+\begin{dem}
+Sea $\mc{K}$ la menor $\lambda$-clase que contiene a $\mc{F}$. 
+Probaremos que $\mc{K}$ es un álgebra. De aquí se deducirá que es una \salgebra, ya que 
+$\Union_n A_n = \Union_n (A_n \setminus \Union_{i<n} A_i)$ y esto último es una unión disjunta.
+
+Sea 
+\[\mc{K}_1 := \{A \included X :\ A\inters B \in \mc{K}\ \ \forall B \in \mc{F}\}\]
+Entonces $\mc{K}_1$ es una $\lambda$-clase ya que si $A\inters B \in \mc{K}$, entonces $\compl{A}\inters {B} =
+B \setminus A = \compl{(\compl{B}\union (A\inters B))} \in \mc{K}$; y si $(A_n\inters B) \in \mc{K}$ $\forall n$, entonces $(\Union_n A_n) \inters B = \Union_n(A_n \inters B)\in \mc{K}$.
+
+Ahora, si $A\in\mc{F}$, como $\mc{F}$ es $\pi$-clase tenemos $A\in\mc{K}_1$. Luego $\mc{F}\included\mc{K}_1$ y como $\mc{K}$ es la menor $\lambda$-clase que incluye a $\mc{F}$ se tiene $\mc{K}_1\includes\mc{K}$.
+Esto implica que si $A\in\mc{K}$ y $B\in\mc{F}$ entonces $A\inters B \in \mc{K}$.
+Sea ahora 
+\[\mc{K}_2 := \{A \included X :\ A\inters B \in \mc{K}\ \ \forall B \in \mc{K}\}\]
+Por la misma demostración dada para $\mc{K}_1$, $\mc{K}_2$ es una $\lambda$-clase y contiene a $\mc{F}$
+por lo dicho en el párrafo anterior. Como antes, esto implica $\mc{K}_2 \includes \mc{K}$. Luego, hemos probado
+que $\mc{K}$ es cerrada por intersecciones finitas. Como es cerrada por complementos, resulta que $\mc{K}$ es
+un álgebra.
+
+Como $\sigma(\mc{F})$ es la menor \salgebra que contiene a $\mc{F}$ resulta $\mc{K}\includes\sigma(\mc{F})$. Pero toda \salgebra es una $\lambda$-clase y entonces $\sigma(\mc{F}) \includes \mc{K}$.
+\end{dem}
+
+\subsection{Espacios y Funciones Medibles}
+Un \textbf{espacio medible}\index{medible!espacio} (o \textbf{Borel}) es un par $(X,\Sig)$, donde $X$ es un conjunto y $\Sig$ es una \salgebra sobre $X$. Los conjuntos en $\Sig$ se denominan \textbf{conjuntos medibles}\index{medible!conjunto}.
+
+Un \textbf{subespacio}\index{medible!subespacio} de $(X,\Sig)$ es un subconjunto $Y\subseteq X$ junto con la $\mathbf{\sigma}$\textbf{-álgebra relativa} $\Sig|Y = \{A\inters Y : A \in \Sig\}$. Notemos que si $\Sig=\sigma(\mc{E})$, entonces $\Sig|Y=\sigma(\mc{E}|Y)$.
+
+Sean $(X,\Sig), (Y,\Omega)$ espacios medibles. Una función $\f{f}{X}{Y}$ se dice \textbf{medible}\index{medible!función} si $f^{-1}(A)\in\Sig$ para todo $A\in\Omega$. Si $\mc{E}$ genera $\Omega$, alcanza con que esto se cumpla para $A\in\mc{E}$, ya que $f^{-1}(\sigma(\mc{E}))=\sigma(f^{-1}(\mc{E}))$ (donde $f^{-1}(\mc{D}) = \{f^{-1}(A) : A\in\mc{D}\}$ para $\mc{D}\subseteq \mc{P}(Y)$).
+
+Un \textbf{isomorfismo (medible)}\index{medible!isomorfismo} entre $X$ e $Y$ es una biyección $\f{f}{X}{Y}$ tal que $f$ y $f^{-1}$ son medibles. Si existe tal isomorfismo, decimos que $X$ e $Y$ son \textbf{isomorfos (mediblemente)}. Una \textbf{incrustación (medible)}\index{medible!incrustación} de $X$ en $Y$ es un isomorfismo entre $X$ y un subespacio de $Y$.
+
+Si $X$ es un conjunto, $\{(Y_i,\Sig_i)\}_{i\in I}$ es una familia de espacios medibles y $\f{f_i}{X}{Y_i}$ son funciones, existe una menor \salgebra $\Sig$ sobre $X$ tal que todas las $f_i$ resultan medibles. La llamamos la $\mathbf{\sigma}$\textbf{-álgebra generada por}\index{\salgebra!generada} $\{f_i\}$. Si $\mc{E}_i$ es un conjunto de generadores para $\Sig_i$, entonces $\{f_i^{-1}(A) : A\subseteq Y_i, A\in\mc{E}_i,i\in I\}$ genera $\Sig$.
+
+Sea $\{(X_i,\Sig_i)\}_{i\in I}$ una familia de espacios medibles. El \textbf{espacio medible producto}\index{producto!de espacios medibles} $(\prod_i X_i, \prod_i \Sig_i)$ es el espacio generado por las proyecciones $\f{\pi_{X_j}=\pi_j}{\prod_i X_i}{X_j}, j\in I, \pi_j((x_i)_{i\in I}) = x_j$. Equivalentemente, es el espacio generado por los conjuntos de la forma $\prod_i A_i$, donde $A_i\in \Sig_i$ y $A_i = X_i$ salvo para a lo sumo un $i$ (o equivalentemente, salvo para una cantidad finita de $i$). Si $\mc{E}_i$ es un conjunto de generadores de $\Sig_i$, entonces los conjuntos de la forma $\prod_i A_i$, donde $A_i = X_i$ salvo para a lo sumo un $i$ tal que $A_i\in\mc{E}_i$, forman un conjunto de generadores del espacio producto.
+
+La \textbf{suma}\index{suma!de espacios medibles} $(\bigoplus X_i, \bigoplus \Sig_i)$ de una familia de espacios medibles $\{(X_i,\Sig_i)\}_{i\in I}$ se define (salvo isomorfismo) como sigue: Reemplazando cada $X_i$ por una copia isomorfa, podemos asumir que los $X_i$ son disjuntos dos a dos. Sea $X = \Union_{i\in I}X_i$. Un conjunto $A\subseteq X$ es medible si y sólo si $A\inters X_i$ es medible para cada $i\in I$.
+
+\subsection{Conjuntos y Funciones Borel}
+
+\subsubsection{Conjuntos Borel en Espacios Topológicos}
+Sea $X$ un espacio topológico. La clase de los \textbf{conjuntos borelianos} (o \textbf{conjuntos Borel}\index{Borel!conjuntos}) de $X$ es la \salgebra generada por los abiertos de $X$ y la denotamos $\mathbf{B}(X)$. A $(X,\B(X))$ lo llamamos el \textbf{espacio Borel} de $X$.
+
+Si $\mc{E}$ es una sub-base numerable de $X$, entonces claramente $\B(X)=\sigma(\mc{E})$, por lo que $\B(X)$ es numerablemente generada si $X$ es $N_2$. Notemos también que si $Y$ es un subespacio de $X$ entonces $(Y,\B(Y))$
+es un subespacio de $(X,\B(X))$ (i.e., $\B(Y)=\B(X)|Y$). Es obvio que $\B(X)$ contiene todos los abiertos y cerrados, y los subconjuntos $F_\sigma$ y $G_\d$ de $X$.
+
+Si $(X,\Sig)$ es un espacio medible e $Y$ es un espacio topológico, diremos que $\f{f}{X}{Y}$ es \textbf{medible} si es medible respecto de $(X,\Sig), (Y,\B(Y))$. Si $Y$ tiene una sub-base numerable $\{V_n\}$ es suficiente pedir que $f^{-1}(V_n)\in\Sig$ para cada $n$.
+
+\begin{ejem}
+Un número $x$ en el intervalo $(0,1)$ es \textbf{normal (en base $2$)} si su desarrollo binario $x=0.b_1 b_2 b_3\ldots$ satisface
+\[\lim_{n\tends\infty}\frac{|\{i\leq n : b_i = 1\}|}{n} = \frac{1}{2}\]
+Sea $N$ el conjunto de los números normales. Veamos que es Borel. A tal fin, sea $d_n$ la función ``$n$-ésimo dígito'' en $(0,1)$. Luego $x=\sum_{n=1}^\infty d_n(x)/2^n$. Sea $\Q^+$ el conjunto de los racionales positivos. Entonces para $x\in(0,1)$ tenemos:
+\[x\in N \sii \forall \eps\in\Q^+\exists n\ \forall m\!\geq\!n \left(\left|\frac{\sum_{i=1}^m d_i(x)}{m}-\frac{1}{2}\right|<\eps\right)\]
+Ahora, $\sum_{i=1}^m d_i(x)$ es constante en cada intervalo de la forma $(\frac{k}{2^m},\frac{k+1}{2^m}]$, y entonces el conjunto $A_{m,\eps}:=\{x:|(\sum_{i=1}^m d_i(x))/m - 1/2|<\eps\}$ es una unión finita de tales intervalos. Como
+\[N = \Inters_{\eps\in\Q^+}\Union_n\Inters_{m\geq n} A_{m,\eps}\]
+se sigue que $N$ es Borel en (0,1).
+\end{ejem}
+\begin{nota}
+Puede observarse en el ejemplo anterior que existe un claro paralelismo entre las operaciones conjuntistas y los conectivos y cuantificadores lógicos. Un conjunto $A$ puede pensarse como una proposición (propiedad) que es satisfecha sólo por los elementos que le pertenecen, escribiendo $A(x)$ sii $x\in A$. Partiendo de esta noción básica tenemos, por ejemplo, $(A\union B)(x) \equiv A(x) \o B(x)$. Del mismo modo, podemos asociar $\inters$ y $^c$ con $\y$ y $\neg$ respectivamente. Intersecciones y uniones infinitas también pueden traducirse a expresiones lógicas cuantificadas (e.g., $(\Inters_n A_n)(x) \equiv (\forall n A_n(x))$).
+
+En vista de estas correspondencias, es usual emplear notación lógica para evaluar la complejidad descriptiva de conjuntos o funciones. Para ver que un conjunto es Borel será suficiente mostrar una definición de éste que contenga solamente otros conjuntos Borel conocidos y $\neg$, $\y$, $\o$, $\ent$, $\sii$ (notar que estos dos últimos pueden escribirse en términos de $\neg$ y $\o$), $\exists n$, $\forall n$ (con $n$ variando sobre un conjunto numerable de índices). Esta aplicación de la notación lógica a la teoría descriptiva de conjuntos se suele denominar el \emph{algoritmo de Tarski-Kuratowski}.
+\end{nota}
+
+\subsubsection{Funciones Borel}
+Sean $X, Y$ espacios topológicos. Una función $\f{f}{X}{Y}$ se dice \textbf{Borel (medible)}\index{Borel!función medible} si $f^{-1}(A)\in \B(Y)$ para todo $A\in \B(Y)$. Si $Y$ tiene una sub-base numerable $\{V_n\}$ es suficiente pedir que $f^{-1}(V_n)$ sea Borel para cada $n$. $f$ es un \textbf{isomorfismo Borel}\index{Borel!isomorfismo} si is biyectiva y $f,f^{-1}$ son funciones Borel, i.e., para $A\subseteq X, A\in \B(X) \sii f(A) \in \B(Y)$. Si $X=Y$, $f$ se denomina un \textbf{automorfismo Borel}\index{Borel!automorfismo}.
+
+Existe un conexión básica entre la medibilidad de una función y la medibilidad de su gráfico
+\begin{prop}\label{p:grafborel}
+Sean $(X,\Sig)$ un espacio medible, $Y$ un espacio metrizable separable, y $\f{f}{X}{Y}$ una función medible. Entonces $\graf(f)\subseteq X\times Y$ también es medible (respecto de $\Sig\times\B(Y)$).
+\end{prop}
+\begin{dem}
+Si $\{V_n\}$ es una base numerable de $Y$, tenemos
+\[f(x)=y\sii \forall n(y\in V_n \ent f(x)\in V_n) \sii \forall n(y\notin V_n \o f(x)\in V_n)\]
+de donde $\graf(f)=\Inters_n (X\times V_n^c \union f^{-1}(V_n)\times Y)$ es medible.
+\end{dem}
+
+\subsection{Espacios Borel Estándar}
+\begin{defn}
+Un espacio medible $(X,\Sig)$ es un \textbf{espacio Borel estándar}\index{Borel estándar, espacio} si es isomorfo a $(Y,\B(Y))$ para algún espacio Polaco $Y$ o equivalentemente, si existe una topología Polaca $\mc{T}$ en $X$ con $\Sig=\B(\mc{T})$.
+\end{defn}
+
+\subsubsection{Conjuntos Borel como Conjuntos Clopen}
+Llamaremos \textbf{clopen}\index{clopen} a los subconjuntos de un espacio topológico que sean cerrados y abiertos.
+La siguiente es una propiedad fundamental de los conjuntos Borel en un espacio Polaco
+
+\begin{teo}\label{t:borelclopen}
+Sea $(X,\mc{T})$ un espacio Polaco y $A\subseteq X$ un conjunto Borel. Entonces existe una topología Polaca $\mc{T}_a\supseteq \mc{T}$ tal que $\B(\mc{T}_a) = \B(\mc{T})$ y $A$ es clopen en $\mc{T}_a$.
+\end{teo}
+\begin{dem}
+Necesitamos los siguientes dos lemas
+
+\begin{lem}\label{l:cerrclopen}
+Sea $(X,\mc{T})$ un espacio Polaco y $F\subseteq X$ cerrado. Sea $\mc{T}_F$ la topología generada por $\mc{T}\union F$,i.e., la topología con base $\mc{T}\union\{U\inters F : U \in \mc{T}\}$. Entonces $\mc{T}_F$ es Polaca, $F$ es clopen en $\mc{T}_F$, y $\B(\mc{T}_F) = \B(\mc{T})$.
+\end{lem}
+\begin{dem}
+Notar que $\mc{T}_F$ es la suma directa de las topologías relativas sobre $F$ y $F^c$. Como todo cerrado en un Polaco es $G_\d$ (\propref{p:cerradogd}) entonces, por el \teoref{t:polacogd}, $\mc{T}_F$ es Polaca.
+\end{dem}
+
+\begin{lem}\label{l:topospolacas}
+Sea $(X,\mc{T})$ un espacio Polaco y sea $\{\mc{T}_n\}_{n\in\N}$ una sucesión de topologías Polacas sobre $X$ con $\mc{T}_n\supseteq \mc{T}$, $n\in\N$. Entonces la topología $\mc{T}_\infty$ generada por $\Union_n \mc{T}_n$ es Polaca. Además, si $\mc{T}_n \subseteq \B(\mc{T})$, entonces $\B(\mc{T}_\infty) = \B(\mc{T})$.
+\end{lem}
+\begin{dem}
+Sea $X_n=X$ para $n\in\N$. Definamos la función $\f{\varphi}{(X,\mc{T}_\infty)}{\prod_n X_n}$ dada por $\varphi(x)=(x,x,\ldots)$. Probamos primero que $\varphi$ es una incrustación. Los conjuntos de la forma $\pi_n^{-1}(U)\inters\varphi(X)$ con $U\in\mc{T}_n$ son base de la topología restringida a $\varphi(X)$, y $\Union_n \mc{T}_n$ es base de $\mc{T}_\infty$. Ahora, para $U\in\mc{T}_n$ se tiene $\varphi(U)=\pi_n^{-1}(U)\inters\varphi(X)$ y entonces $\varphi$ abierta y continua.
+
+ $\varphi^{-1}(\pi_n^{-1}(U))=U\in\mc{T}_n\subseteq\mc{T}_\infty$, entonces $\f{\varphi}{(X,\mc{T}_\infty)}{\varphi(X)}$ es continua. A su vez, $\Union_n \mc{T}_n$ es base de $\mc{T}_\infty$ y si $V\in\mc{T}_n$, entonces $\varphi(V)=\pi_n^{-1}(V)\inters\varphi(X)$, de donde $\varphi$ es abierta.
+
+Veamos ahora que $\varphi(X)$ es cerrado en $\prod_n (X_n,\mc{T}_n)$.
+Si $(x_n)_{n\in\N}\notin \varphi(X)$, entonces existen índices $i<j$ tales que $x_i\neq x_j$. Sean $U,V$ abiertos disjuntos en $\mc{T}$ (por lo tanto abiertos también en $\mc{T}_i$, $\mc{T}_j$ resp.) tales que $x_i\in U$, $x_j\in V$. Entonces
+\[(x_n) \in X_0\times\ldots\times X_{i-1}\times U\times X_{i+1}\times\ldots\times X_{j-1}\times V\times X_{j+1}\times\ldots \subseteq \varphi(X)^c\]
+Luego, por la \propref{p:polacos}, $\varphi(X)$ es Polaco. Pero $\varphi$ es un homeomorfismo de $(X,\mc{T}_\infty)$ en $\varphi(X)$, y entonces $(X,\mc{T}_\infty)$ es Polaco.
+
+Si $\mc{T}_n \subseteq \B(\mc{T})$ y $\{U_i^n\}_{i\in\N}$ es una base de $\mc{T}_n$, entonces $\{U_i^n\}_{i,n\in\N}$ es una sub-base de $\mc{T}_\infty$, y entonces $\mc{T}_\infty\subseteq \B(\mc{T})$. 
+\end{dem}
+
+Consideremos ahora la clase $\mc{S}$ de los subconjuntos $A$ de $X$ para los cuales existe una topología Polaca $\mc{T}_A\supseteq\mc{T}$ con $\B({T}_A)=\B(\mc{T})$ y $A$ clopen en $\mc{T}_A$. Para ver que $\B(\mc{T})\subseteq\mc{S}$ basta ver que $\mc{S}\supseteq\mc{T}$ y que $\mc{S}$ es una \salgebra. Lo primero se sigue del \lemaref{l:cerrclopen}. Claramente, $\mc{S}$ es cerrada por complementos. Sea $\{A_n\}_{n\in\N}\subseteq\mc{S}$. Sea $\mc{T}_n = \mc{T}_{A_n}$ una topología que satisfaga las condiciones de arriba. Sea $\mc{T}_\infty$ como en el \lemaref{l:topospolacas}. Entonces $A=\Union_n A_n$ es abierto en $\mc{T}_\infty$, y nuevamente por el \lemaref{l:cerrclopen} hay una topología $\mc{T}_A\supseteq\mc{T}_\infty$ ($\supseteq\mc{T}$) tal que $\B(\mc{T}_A)=\B(\mc{T}_\infty)$ ($=\B(\mc{T})$) con $A$ clopen en $\B(\mc{T}_A)$, luego $A\in\mc{S}$.
+
+\end{dem}
+
+\subsection{Borel como Imágenes de $\Baire$}
+
+La siguiente es una representación muy útil de los conjuntos Borel en un espacio Polaco
+
+%13.7 (usa 7.9)
+\begin{teo}[Lusin-Souslin]\label{t:lusinsouslin}
+Sea $X$ un espacio Polaco y $A\subseteq X$ Borel. Entonces existe un conjunto cerrado $F\subseteq \Baire$ y una biyección continua $f:F\rightarrow A$. En particular, si $A\neq\vacio$, $f$ se extiende a una $g:\Baire\rightarrow A$ continua y sobreyectiva.
+\end{teo}
+\begin{dem}
+Extendamos la topología $\mc{T}$ de $X$ a una topología Polaca $\mc{T}_A$ en la que $A$ sea clopen, y por ende Polaco. Por el \teoref{t:bairepolaco}, existe un cerrado $F\subseteq \Baire$ y una biyección $\f{f}{F}{A}$ continua con la topología $\mc{T}_A|A$. Como $\mc{T}\subseteq\mc{T}_A$, $\f{f}{F}{A}$ es también continua con $\mc{T}$. La última afirmación se deduce de la \propref{p:retracto}.
+\end{dem}
+
+\section{Conjuntos Analíticos y el Teorema de Separación}
+\begin{defn}
+Sea $X$ un espacio Polaco. Un conjunto $A\included X$ se dice \textbf{analítico}\index{analítico!en Polaco} si existen un espacio Polaco $Y$ y una función continua $f:Y\rightarrow X$ con $f(Y)=A$. (El conjunto vacío es analítico, tomando $Y=\vacio$.)
+\end{defn}
+
+Por el \teoref{t:bairepolaco}, si $A\neq\vacio$ podemos tomar $Y=\mc{N}$ en esta definición. La clase de conjuntos analíticos en $X$ se denota $\mathbf{\Sig_1^1}(X)$\index{Sig11@$\mathbf{\Sig_1^1}(X)$}. 
+
+Se sigue del \teoref{t:lusinsouslin} que $\B(X) \included \Sig_1^1(X)$.
+
+\begin{prop}
+\begin{enumerate}[i\textup{)}]
+\item Si $X$ es Polaco y $A_n \subseteq X$ son analíticos, entonces $\Union_n A_n , \Inters_n A_n$ son analíticos.
+\item Si $X,Y$ son Polacos y $\f{f}{X}{Y}$ es Borel, entonces si $A\subseteq X$ y $B\subseteq Y$ son analíticos, $f(A), f^{-1}(B)$ son analíticos.
+\end{enumerate}
+\end{prop}
+\begin{dem}
+\begin{enumerate}[i\textup{)}]
+\item
+Sean $Y_n$ espacios polacos y $\f{f_n}{Y_n}{X}$ funciones continuas con $f_n(Y_n)=A_n$. Podemos asumir que los espacios $Y_n$ son disjuntos y entonces $f = \Union_n f_n$ es una función continua que mapea a la suma directa $\bigoplus_n Y_n$ sobre $\Union_n A_n$, por lo que $\Union_n A_n$ es analítico.
+
+Sea ahora $Z=\{(y_n)\in \prod_n Y_n : f_n(y_n) = f_m(y_m),\ \forall n,m\}$. Entonces $Z$ es cerrado en $\prod_n Y_n$, y por ende es un Polaco. Si $\f{f}{Z}{X}$ se define como $f((x_n))=f_1(x_1)$, $f$ es continua y $f(Z)=\Inters_n A_n$, luego $\Inters_n A_n$ es analítico.
+
+\item Sea $F=\{(x,y)\in X\times Y : x\in A \y f(x)=y\}$. Entonces es claro que $f(A) = \pi_Y(F)$. Como la proyección es continua y la imagen continua de un analítico es analítica, es suficiente probar que $F$ es analítico. Por la \propref{p:grafborel}, $\{(x,y):f(x)=y\}$ es Borel, por lo que sólo resta probar que $\{(x,y):x\in A\} = A\times Y$ es $\Sigma_1^1(X\times Y)$. Sea $Z$ Polaco y $\f{g}{Z}{X}$ continua con $g(Z)=A$. Entonces $\f{g^*}{Z\times Y}{X\times Y}$ dada por $g^*(z,y)=(g(z),y)$ es continua y $g^*(Y\times Z)=Y\times A$.
+
+Por último, notemos que $f^{-1}(B) = \pi_X(\{(x,y)\in X\times Y : y\in B \y f(x)=y\})$, y luego se puede ver que $f^{-1}(B)$ es analítico con una prueba análoga a la de $f(A)$.
+\end{enumerate}
+\end{dem}
+
+\begin{defn}
+Si $X$ es un espacio Borel estándar y $A\subseteq X$, decimos que $A$ es \textbf{analítico}\index{analítico!en Borel estándar} si existe un espacio Polaco $Y$ y un isomorfismo Borel $f:X\rightarrow Y$ tal que $f(A)$ es analítico en $Y$. (Por la proposición anterior esto no depende de la elección de $Y,f$). Usamos también la notación $\mathbf{\Sig_1^1}(X)$\index{Sig11@$\mathbf{\Sig_1^1}(X)$} para la clase de los subconjuntos analíticos de $X$.
+\end{defn}
+
+Un conjunto $A\subseteq X$ en un espacio Polaco $X$ se dice \textbf{co-analítico}\index{co-analítico} si $A^c$ es analítico. La clase de los conjuntos co-analíticos de $X$ se denota $\mathbf{\Pi_1^1}(X)$. Los conjuntos \textbf{bianalíticos}\index{bianalítico} son aquellos que son analíticos y co-analíticos. Las mismas definiciones se aplican cuando $X$ es un espacio Borel estándar.
+
+\begin{teo}[Teorema de Separación de Lusin]\label{t:seplusin}\index{Separación de Lusin, teorema}
+Sea $X$ un espacio Borel estándar y sean $A,B\included X$ dos conjuntos analíticos disjuntos. Entonces existe un conjunto Borel $C\included X$ que separa a $A$ de $B$, i.e., $A\included C$ y $C\inters B = \vacio$.
+\end{teo}
+\begin{dem}
+Podemos asumir que $X$ es Polaco. Diremos que dos subconjuntos $P, Q \included X$ son \textbf{separables por Borel} si existe un conjunto Borel $R$ que separa a $P$ de $Q$.
+\begin{lem}\label{l:unionsep}
+Si $P=\Union_m P_m,\ Q=\Union_n Q_n$, y $P_m,Q_n$ son separables por Borel para cada $m$ y $n$, entonces $P,Q$ son separables por Borel.
+\end{lem}
+\begin{dem}
+Si $R_{m,n}$ separa a $P_m$ de $Q_n$, entonces $\Union_m \Inters_n R_{m,n}$ separa a $P$ de $Q$.
+\end{dem}
+
+Si alguno de los dos conjuntos es vacío el resultado se cumple trivialmente. Ahora, asumiendo $A,B$ no vacíos, sean $f:\mc{N}\rightarrow A$, $g:\mc{N}\rightarrow B$ funciones continuas sobreyectivas. Definamos $A_s:=f(N_s),\ B_s:=g(N_s)$. Entonces $A_s = \Union_m A_{s\hat{\ }m}$, $B_s = \Union_m B_{s\hat{\ }m}$.
+Supongamos ahora $A,B$ no separables. Entonces, aplicando repetidamente el \lemaref{l:unionsep} podemos
+definir recursivamente $x(n),y(n)\in\N$ tales que para cada $n\in\N$, $A_{x|n}, B_{y|n}$ no son separables por Borel.
+
+Luego $f(x)\in A$, $g(y)\in B$ y entonces $f(x)\neq g(y)$. Sean $U,V$ abiertos disjuntos con $f(x)\in U$, $g(y)\in V$. Por la continuidad de $f$ y $g$, para $n$ suficientemente grande tenemos $f(N_{x|n})\included U$, 
+$g(N_{y|n})\included V$, pero entonces $U$ separa a $A_{x|n}$ de $B_{y|n}$, absurdo.
+\end{dem}
+
+\begin{coro}[Teorema de Souslin]\label{t:souslin}\index{Souslin, teorema}
+Si $X$ es un espacio Borel estándar, entonces todo conjunto bianalítico $A\subseteq X$ es Borel.
+\end{coro}
+\begin{dem}
+Tomar $B=A^c$ en el \teoref{t:seplusin}.
+\end{dem}
+
+Los siguientes dos teoremas se deducen de este corolario y nos permitirán más adelante probar resultados fundamentales para la teoría de NLMP, sobre medibilidad de conjuntos definibles y coincidencia de medidas  respectivamente.
+
+\begin{teo}[Lusin-Novikov]\label{t:lusinnovikov}\index{Lusin-Novikov, teorema}
+Sean $X,Y$ espacios Borel estándar y $P\subseteq X \times Y$ un conjunto Borel. Si para cada $x\in X$ la \textbf{sección}\index{sección} $P_x := \{y\in Y : (x,y)\in P\}$ es numerable, entonces $\pi_X(P)$ es Borel.
+\end{teo}
+\begin{dem}
+Usaremos el siguiente resultado, cuya demostración puede consultarse en \cite{Kechris} (p.123, 125-127; teorema 18.11).
+\begin{teo}[El conjunto de unicidad de un conjunto Borel]\label{t:conjunic}
+Sean $X,Y$ espacios Borel estándar y $R\subseteq X \times Y$ un conjunto Borel. Entonces
+\[\{x\in X:\exists ! y (x,y)\in R \}\]
+es $\Pi_1^1$.
+\end{teo}
+Podemos asumir $X$ e $Y$ Polacos. Por el \teoref{t:lusinsouslin}, existen $F\subseteq\Baire$ cerrado y $\f{f}{F}{X\times Y}$ continua e inyectiva con $f(F)=P$. Definamos $Q\subseteq X\times\Baire$ por $Q:=\{(\pi_X(f(z)),z) : \in F\}$. Entonces $Q$ es cerrado (por ser $\pi_X \comp f$ continua), cada sección $Q_x$ es numerable, y $\pi_X(P) = \pi_X(Q)$. Por lo tanto, podemos asumir, sin pérdida de generalidad, que $P$ es cerrado.
+
+Como $P_x$ es cerrado es un Polaco (por la \propref{p:polacos}). Como además es numerable, por el \cororef{c:perfectnonum} debe tener un punto aislado. Si $\{U_n\}$ es una base de abiertos de $Y$ y definimos
+\[A_n:=\{x: \exists !y((x,y)\in P \y y \in U_n\}\]
+entonces, por el \teoref{t:conjunic}, $A_n$ es $\Pi_1^1$ y por nuestra observación anterior $\pi_X(P)=\Union_n A_n$. Como los conjuntos $\Pi_1^1$ son cerrados por uniones numerables, $P$ resulta ser $\Pi_1^1$ y como claramente es $\Sigma_1^1$, es Borel, por el teorema de Souslin.
+\end{dem}
+
+Si $R$ es una relación sobre un conjunto $S$, diremos que $Q \subset S$ es $R$\textbf{-cerrado}\index{Rcerrado@\rcerrado{R}} si 
+\[\forall s \in Q,\ t \in S,\ sRt \ent t \in Q\]
+
+\begin{teo}[Blackwell]\label{t:blackwell}\index{Blackwell}
+Sea $X$ un espacio Borel estándar y $\{A_n\}_{n\in\N}$ una sucesión de conjuntos Borel en $X$. Consideremos la relación de equivalencia
+\[ x\approx y\ \sii\ (\forall n\ x\in A_n \sii y\in A_n)\]
+Sea $B_\approx = \{A \in \B(X)\ :\ A \rcerrado{\approx\!}\}$. Entonces $B_\approx=\sigma(\{A_n\}_{n\in\N})$
+\end{teo}
+\begin{dem}
+Sea $\Sig = \sigma(\{A_n\}_{n\in\N})$. Es fácil ver que $B_\approx \includes \{A_n\}$ y que es una \salgebra, por lo que $B_\approx\includes\Sig$.
+
+Sea $f:X\rightarrow 2^\N$ dada por $f(x)_n=1\ \sii\ x\in A_n$.
+Ahora como $f^{-1}(\pi_n^{-1}(\{1\})) = A_n$ y los $\pi_n^{-1}(\{1\})$ son una base de $\B(2^\N)$, $f$ resulta $(\Sig,\B(2^\N))$-medible.
+
+Si $A\in B_\approx$ entonces por 14.6 $f(A)$ y $f(\compl{A})$ son analíticos disjuntos y además $f(A) \union f(\compl{A}) = 2^\N$. Luego $f(A)$ es bianalítico y por el \teoref{t:souslin}, es Borel.
+
+Como $f$ es una función Borel, se tiene $A=f^{-1}(f(A)) \in \Sig$. Luego, $B_\approx\included\Sig$.
+\end{dem}
+
+%Los siguientes dos lemas serán fundamentales para probar nuestros resultados de caracterización lógica más adelante:
+
+%\begin{lem}
+%Sea $X$ un espacio Borel analítico y sea $\approx$ una relación de equivalencia en $X$. Supongamos que existe una sucesión $\{f_n\}_{n\in\N}$ de funciones reales Borel sobre $X$ tales que para cualquier par de puntos $x, y \in X$ se tiene 
+%\[x\approx y\ \ \sii\ \ f_n(x)=f_n(y)\ \forall n\]
+%Entonces $X/\!\!\approx$ es un espacio Borel analítico.
+%\end{lem}
+%\begin{dem}
+%Si definimos la siguiente familia numerable de conjuntos:
+%\[A_{n,q}:=\{x\in X\ |\ f_n(x)<q\}\ \ n\in\N,\ q\in\Q\]
+%vemos que alcanza con probar el lema para funciones de la forma $f_n = \chi_{A_n}$, ya que 
+%\[f_n(x)=f_n(y)\ \forall n\ \sii\ \chi_{A_{n,q}}(x) = \chi_{A_{n,q}}(y)\ \forall n,q\]
+%\end{dem}
+%
+%\begin{lem}
+%Sea $(X,B)$ un espacio Borel analítico y sea $B_0$ una sub-\salgebra numerablemente generada de $B$ que separa
+%puntos en $X$. Entonces $B_0=B$.
+%\end{lem}
+
+\section{Teoría de la Medida}
+
+\subsection{Probabilidades y Subprobabilidades}
+Una \textbf{medida finita}\index{medida!finita} sobre un espacio medible $(X,\Sig)$ es una función 
+$\mu : \Sig \rightarrow [0,\infty)$ tal que $\mu(\vacio)=0$, y para toda sucesión $\{A_n\}_{n\in \N} \subseteq \Sig$  de conjuntos disjuntos dos a dos se cumple
+$\mu(\Union_n A_n)=\sum_n \mu(A_n)$.
+
+$\mu$ se dice una \textbf{medida de subprobabilidad}\index{medida!de subprobabilidad}\index{subprobabilidad} si $\mu(X)\leq 1$, y es una \textbf{medida de probabilidad}\index{medida!de probabilidad}\index{probabilidad} si $\mu(X)=1$. 
+
+\begin{ejem}
+La \emph{medida de Lebesgue}\index{medida!de Lebesgue} $m_{[0,1]}$ (ver \cite{Rudin}, p.300) es una medida de probabilidad sobre $([0,1],\mc{M})$, donde $\mc{M}$ es la \salgebra de los conjuntos medibles Lebesgue e incluye a los conjuntos Borel, por lo que su restricción también es una medida de probabilidad sobre $([0,1],\B([0,1]))$.
+\end{ejem}
+
+Denotaremos al conjunto de todas las medidas de probabilidad sobre $(X,\Sig)$ con $\prob(X,\Sig)$ (ó $\prob(X)$\index{P(X)@$\prob(X)$}), y al de las medidas de subprobabilidad con $\subp(X,\Sig)$ (ó $\subp(X)$\index{P(X)@$\subp(X)$}).
+%\begin{defn}[Soporte]
+%Sea $(X,\Sig,\mu)$ un espacio de medida y $\mc{T}$ una topología sobre $X$ tal que la \salgebra $\Sig$ 
+%contiene a todos los abiertos $U \in \mc{T}$. Entonces el \textbf{soporte} de la medida $\mu$ se define
+%como el conjunto de todos los puntos $x \in X$ tales que todo entorno abierto de $x$ tiene medida positiva:
+%\[\textbf{sop}(\mu) := \{x\in X\;|\;\forall U \in N_x\:,\:\mu(U)>0\}\]
+%Si $sop(\mu) = A$ se dice que $\mu$ está \textbf{concentrada} en $A$.
+%\end{defn}
+Fijado $Q \in \Sig$, definimos sobre $\subp(X,\Sig)$ la función \textbf{medida en $Q$}\index{medida!en $Q$}, 
+$\f{M_Q}{\subp(X)}{[0,\infty)}$, como $M_Q(\mu) = \mu(Q)$.
+
+\begin{defn}[Espacio de Medidas de Subprobabilidad]
+La definición anterior nos permite dotar al conjunto $\subp(X)$ de una estructura de espacio medible, definiendo $\Sig_{\subp(X)}$ como la \salgebra generada por $\{M_Q\}_{Q\in\Sig}$.
+Se ve entonces que 
+\[\Sig_{\subp(X)} = \sigma(\{M_Q^{-1}(A)\ :\ Q \in \Sig\ ,\ A \in \B(\R)\}) = \sigma(\{M_Q^{-1}((a,b))\ :\ Q \in \Sig\ ,\ a, b \in \R\})\]
+
+$\prob(X)$ puede verse como un subespacio medible de $\subp(X)$, con $\Sig_{\prob(X)}:=\Sig_{\subp(X)}|\prob(X) = \sigma(\{(M_Q|\prob(X))^{-1}((a,b))\ :\ Q \in \Sig\ ,\ a, b \in \R\})$. Por abuso de notación, escribiremos simplemente $M_Q$ en lugar de $M_Q|P(X)$ cuando no dé lugar a confusión.
+\end{defn}
+
+En \cite{Kechris}(pp.112, 113; teoremas 17.23 y 17.24) se prueba el siguiente resultado
+\begin{teo}\label{t:probBorelEst}
+Si $X$ es un espacio Borel estándar, entonces $(\prob(X),\Sig_{\prob(X)})$ es un espacio Borel estándar, con $\Sig_{\prob(X)}=\B(\mc{T})$, donde $\mc{T}$ es la topología generada por las funciones $\mu\mapsto\int f d\mu$, con $f$ que varía sobre las funciones Borel acotadas de $X$ en $\R$.
+\end{teo}
+
+Usando este teorema podemos probar lo siguiente:
+\begin{teo}\label{t:subpBorelEst}
+Si $X$ es un espacio Borel estándar, entonces $\subp(X)$ es un espacio Borel estándar.
+\end{teo}
+\begin{dem}
+Sea $x^*\notin X$ y consideremos el espacio medible $X^*:=X\oplus \{x^*\}$. Es fácil ver que $X^*$ es también Borel estándar. Consideremos la biyección $\mu\in\subp(X)\mapsto\overline{\mu}=f(\mu)\in\prob(X^*)$, donde $\overline{\mu}$ es la única medida de probabilidad en $X^*$ tal que
+\begin{center}
+\begin{tabular}{rl} 
+$\overline{\mu}(Q)\!\!$&$=\mu(Q),\ \forall Q\in\B(X)$\\
+$\overline{\mu}(\{x^*\})\!\!$&$=1-\mu(X)$\\
+\end{tabular}
+\end{center}
+Probemos que es un isomorfismo Borel. Como $\Sig_{\subp(X)}$ es generada por $\mc{E}:=\{M_Q^{-1}((a,b)) : Q\!\in\!\B(X),\ a,b\!\in\!\R\}$ y $\Sig_{\prob(X^*)}$ es generada por $\mc{E}^*:=\{M_Q^{-1}((a,b)) : Q\!\in\!\B(X^*),\ a,b\!\in\!\R\}$, basta con ver que $\{f(A): A\in\mc{E}\}  \subseteq \mc{E}^*$ y $\{f^{-1}(B):B\in \mc{E}^*\}\subseteq\mc{E}$. 
+
+Si $Q \in \B(X)$, entonces $\overline{\mu}(Q)=\mu(Q)$ y luego para todo $A = M_Q^{-1}((a,b))\in\mc{E}$ se da $f(M_Q^{-1}((a,b))) = M_Q^{-1}((a,b))\in\mc{E}^*$.
+
+Por la observación anterior, si $B=M_Q^{-1}((a,b))\in\mc{E}^*$ entonces $f^{-1}(M_Q^{-1}((a,b))) = M_Q^{-1}((a,b))\in\mc{E}$. Por otra parte, tenemos
+\[\overline{\mu}(Q\union\{x^*\}) = \mu(Q)+(1 - \mu(X)) = 1 - \mu(Q^c)\]
+por lo que se cumple
+\[\overline{\mu}(Q\union\{x^*\})\in(a,b) \sii \mu(Q^c)\in(1-b,1-a)\]
+y entonces, para $B=M_{Q\union \{x^*\}}^{-1}((a,b))\in\mc{E}^*$ se
+tiene 
+\[f^{-1}(M_{Q\union \{x^*\}}^{-1}((a,b))) = M_{Q^c}^{-1}((1-b,1-a))\in\mc{E}.\]
+
+Luego $\subp(X)$ es isomorfo a $\prob(X^*)$ y este último es Borel estándar por el \teoref{t:probBorelEst}.
+\end{dem}
+
+\subsection{Lemas de Coincidencia}\index{coincidencia}
+Los siguientes dos lemas serán fundamentales, junto con el \teoref{t:blackwell}, para probar nuestros resultados de caracterización lógica de la bisimulación.
+
+\begin{lem}[Imitación dos a uno]\label{l:coincidencia}
+Sean $(X,\Sig)$ un espacio medible, $\Gamma \subseteq \Sig$ un álgebra, $\mu$, $\mu_1$, $\mu_2$ medidas de subprobabilidad en $(X,\Sig)$ tales que 
+\[\forall B \en \Gamma : \mu(B) = \mu_1(B) \vee \mu(B) = \mu_2(B)\]
+y definamos $\Gamma_1$ y $\Gamma_2$ como
+\[\Gamma_k := \{B \en \Gamma : \mu(B) = \mu_k(B)\}\]
+entonces $\Gamma = \Gamma_1$ ó $\Gamma = \Gamma_2$.
+Es decir, si hay dos medidas tales que en cada conjunto de $\Gamma$ alguna coincide con $\mu$, entonces necesariamente una de estas dos medidas coincide con $\mu$ en todos los conjuntos de $\Gamma$.
+\end{lem}
+\begin{dem}
+Supongamos $\Gamma_1 \neq \Gamma$ y $\Gamma_2 \neq \Gamma$ y tomemos $Q_1 \en \Gamma \setminus \Gamma_1$ y $Q_2 \en \Gamma \setminus \Gamma_2$. Como $\Gamma = \Gamma_1 \union \Gamma_2$, tenemos que $A \en \Gamma_2$ y $B \en \Gamma_1$.
+Ahora, si $A$ y $B$ son conjuntos medibles disjuntos, por aditividad se tiene
+\begin{equation}
+ \mu(A \union B) = \mu_k(A \union B) \sii \mu(A)+\mu(B) = \mu_k(A)+\mu_k(B) 
+ \label{e:adit}
+\end{equation}
+de donde se sigue que si dos de los conjuntos $\{ A, B, A\union B\}$ están en $\Gamma_k$ entonces el tercero también está.
+Dado que $Q_1 \inters Q_2 \in \Gamma$ podemos suponer, sin pérdida de generalidad, que $Q_1 \inters Q_2 \in \Gamma_1$.
+Aplicando \eqref{e:adit} a $Q_2 = (Q_1 \inters Q_2) \union (Q_2 \setminus Q_1)$ 
+obtenemos $Q_2 \setminus Q_1 \in \Gamma_1$.
+\\
+Ahora, no puede ser $Q_1 \union Q_2 \in \Gamma_1$, porque \eqref{e:adit} sobre
+$Q_1 \union Q_2 = Q_1 \union (Q_2 \setminus Q_1)$ implicaría $Q_1 \in \Gamma_1$.
+Debe ser entonces $Q_1 \union Q_2 \in \Gamma_2$. 
+\\
+Por otra parte, $Q_1 \setminus Q_2 \not\in \Gamma_2$ porque de lo contrario,  por \eqref{e:adit} sobre $Q_1 \union Q_2 = Q_2 \union (Q_1 \setminus Q_2)$, se obtendría $Q_2 \in \Gamma_2$.
+\\
+Tenemos entonces $Q_1 \setminus Q_2 , Q_1 \inters Q_2 \in \Gamma_1$, y por \eqref{e:adit} resulta $Q_1 = (Q_1 \setminus Q_2) \union (Q_1 \inters Q_2) \in \Gamma_1$, contradicción.
+\end{dem}
+
+\begin{lem}\label{l:coincid2}
+Sea $X$ un conjunto y $\mc{F}$ una $\pi$-clase sobre $X$ tal que $X\in\mc{F}$. Sean $\mu_1, \mu_2$ medidas finitas sobre $\sigma(\mc{F})$. Si $\mu_1$ y $\mu_2$ coinciden sobre $\mc{F}$ entonces coinciden sobre $\sigma(\mc{F})$.
+\end{lem}
+\begin{dem}
+Sea $\mc{K} = \{A \in \sigma(\mc{F})\ :\ \mu_1(A) = \mu_2(A)\}$. Como $\mu_1(X)=\mu_2(X)$ y $\mu(\compl{A}) = \mu(X) - \mu(A)$, $\mc{K}$ es cerrada por complementos, y por la aditividad numerable de las medidas es también
+cerrada por uniones disjuntas numerables. Luego $\mc{K}$ es una $\lambda$-clase que contiene a $\mc{F}$ y por el \teoref{t:lambpi} concluimos $\mc{K}=\sigma(\mc{F})$.
+\end{dem}
+
+
+\chapter{Aplicación a Procesos de Markov Etiquetados}\label{cap:nlmp}
+\section{Introducción}
+Los procesos de Markov con espacios de estados continuos o evolución continua del tiempo (o ambos) aparecen de manera natural en varias áreas de la física, la biología, la economía o la computación. Ejemplos de sistemas de este tipo son el movimiento browniano, la difusión de gas, los modelos de crecimiento poblacional, los sistemas de control con ruido o los sistemas de comunicación.
+
+En computación es común encontrarse con sistemas híbridos en los que se combinan un sistema físico continuo con un proceso de control discreto y finito. Un ejemplo simple es el sistema de control de una barrera en un cruce ferroviario. El movimiento del tren y de los vehículos es continuo, pero los estados del control de la barrera son discretos. Aunque en la práctica todos estos sistemas suelen discretizarse para poder razonar sobre ellos e implementar soluciones, es útil contar con una teoría sobre sistemas continuos que nos permita saber de alguna manera que nuestra discretización es buena.
+
+Los sistemas que estudiamos tienen un espacio de estados continuo pero funcionan a pasos discretos. Por ejemplo, la computadora de a bordo de un automóvil toma, cada un cierto intervalo de tiempo, lecturas de algunos parámetros y de acuerdo a dicha información toma algunas acciones para mantener al vehículo en un funcionamiento óptimo. El número de posibles estados es continuo, pero los pasos de la computadora son discretos.
+
+En \cite{Desharnais} se introduce una teoría que permite estudiar un proceso continuo en relación a su interacción con su entorno. Intuitivamente, un proceso es un sistema que evoluciona en el tiempo ejecutando ciertas acciones en respuesta a acciones ejecutadas por el entorno. El sistema se encuentra en un estado en un cierto momento y realiza transiciones entre estados dependiendo de qué interacción con el entorno tenga lugar. El formalismo introducido son los procesos de Markov etiquetados (Labelled Markov Processes, LMP), en los que se usa un conjunto continuo de estados, un conjunto numerable de etiquetas y un conjunto de transiciones etiquetadas. La etiqueta representa la interacción con el entorno: un proceso efectúa una transición etiquetada con $a$ sólo si simultáneamente el entorno efectúa una transición etiquetada con $a$. Las transiciones asocian a cada estado $s$ y cada acción $a$ una medida de subprobabilidad que describe el efecto de la acción $a$ cuando el proceso está en el estado $s$.
+
+Con la idea de caracterizar el comportamiento observable desde el entorno, se introduce una noción de equivalencia entre procesos, la denominada relación de bisimulación. Luego, con la intención de dar un primer paso en el desarrollo de métodos formales para tratar con este tipo de sistemas, se trata de dar una caracterización lógica de esta equivalencia, logrando de este modo capturar el comportamiento de los LMP mediante fórmulas lógicas discretas.
+
+En un LMP, dados un estado y una acción existe un único comportamiento probabilista dado por la subprobabilidad correspondiente. En este sentido un LMP es determinista, más allá de ser probabilista. Existen situaciones en las cuales necesitamos modelar un no determinismo no cuantificado que vaya más allá de lo probabilista. Es decir, que para un estado y una acción puedan darse dos o más comportamientos probabilistas totalmente distintos. Por ejemplo, un servidor que recibe mensajes de dos terminales diferentes, y que cambia de estado de acuerdo al mensaje recibido podría tener asociadas, para la única acción de leer un mensaje, dos distribuciones de probabilidad diferentes para los mensajes de una terminal u otra. Pensando en esta posibilidad, y siguiendo la línea de \cite{Nico}, definimos los NLMP (Non-deterministic Labelled Markov Processes), incorporando el no determinismo al especificar una relación de transición en la que para cada estado y acción pueda haber más de una comportamiento posible. En este capítulo extendemos la noción de bisimulación y su caracterización a través de una lógica a sistemas probabilistas no deterministas. 
+
+\section{NLMP}
+
+\begin{defn}[NLMP]\index{NLMP}
+Una \textbf{relación de transición subprobabilista}\index{relación de transición subprobabilista} sobre un espacio medible $(S,\Sig)$ es una relación
+$\tau \in \Sig \times \Sig_{\subp(S)}$, es decir, una relación entre puntos y medidas de subprobabilidad que es medible como subconjunto de $S \times \subp(S)$.
+
+Un \textbf{NLMP}\index{NLMP} con conjunto de \textbf{etiquetas}\index{etiquetas} $\mc{A}$ es una estructura $\mc{S} = (S,\Sig,\{\tau_a\ |\ a \in \mc{A}\})$, donde $(S,\Sig)$ es un espacio Borel estándar que llamaremos de \textbf{estados}, y 
+\[\forall a \in \mc{A}\ ,\ \tau_a \subseteq S \times \subp(S)\]
+es una relación de transición subprobabilista.
+\end{defn}
+Es importante notar que, por el \teoref{t:subpBorelEst}, $\subp(S)$ también es Borel estándar.
+
+Emplearemos la notación $s\stackrel{a}{\rightarrow}\mu$ para indicar que $(s,\mu) \in \tau_a$, y diremos en tal caso que la terna $(s,a,\mu)$ es una \textbf{transición}\index{transición}. Las etiquetas $\mc{A}$ representan posibles acciones del entorno, por lo que usaremos los términos acción o etiqueta indistintamente.
+
+\remark{ver esto:}
+No todo NLMP acepta cualquier acción en cualquier estado con probabilidad uno. De hecho, si así fuera siempre, todos tendrían el mismo comportamiento observable. Si para una acción $a$ y un estado $s$ tenemos $(\tau_a)_s = \vacio$, se considera que $a$ no se acepta en $s$.
+Por otra parte, el uso de subprobabilidades permite dejar parte del comportamiento sin especificar.
+
+\remark{ver}
+\begin{ejem}[La Pulga de Markov]\label{e:pulga}\index{Pulga@$\mc{P}_{ulga}$}
+Una pulga amaestrada se mueve sobre una cuerda de longitud $1$ y ante un estímulo externo (e.g., un chasquido de dedos de su entrenador) elige arbitrariamente saltar hacia la derecha o izquierda, y luego da un salto en esa dirección. La distancia que salta es aleatoria y distribuida uniformemente en $[0,1]$. Esto implica que generalmente habrá una probabilidad de que la pulga se caiga de la cuerda, lo que modelaremos con subprobabilidades ya que no nos interesa modelar lo que hace la pulga luego de caerse. Supondremos que la pulga tiene la inteligencia suficiente para saltar sólo en la dirección segura cuando se halle parada en alguno de los extremos de la cuerda. La modelamos con un NLMP con una sola acción $\mc{A}=\{a\}$, $\mc{P}_{ulga}=([0,1], \B([0,1]), \{\tau_a\})$, con 
+\[\tau_a=\{(x, m_{[0,x]}) : x\in(0,1]\}\union\{(x,m_{[x,1]}) : x\in[0,1)\}\] 
+donde $m_I$ es la medida de Lebesgue concentrada en $I$, dada por $m_I(Q) = m(I\inters Q)\forall Q\in\B([0,1])$.
+
+El espacio $([0,1], \B([0,1]))$ es claramente Borel estándar y los conjuntos $\{(x,m_{[0,x]}) : x\in(0,1]\}$ y $\{(x,m_{[x,1]}) : x\in[0,1)\}$ son gráficos de funciones medibles. Entonces, por la \propref{p:grafborel}, son ambos medibles en ${S\times\subp([0,1])}$. Luego $\tau_a$ es medible y $\mc{S}$ es un NLMP.
+\end{ejem}
+
+Fijados un estado $s \in S$ y una etiqueta $a \in \mc{A}$, definimos el \textbf{grado}\index{grado} de $s$ respecto de $a$ como la cantidad de transiciones posibles desde $s$ con etiqueta $a$, y lo denotaremos 
+\[\d_a(s) := |\{\mu \in \subp(S,\Sigma_S): \trans{s}{a}{\mu}\}|\]
+
+$\mc{S}$ se dirá de \textbf{imagen numerable}\index{imagen numerable} si todos sus grados son numerables, es decir, si para todos
+$s \in S , a \in \mc{A}$, $\d_a(s)$ es numerable. En particular, si todos los grados son finitos, decimos que $\mc{S}$ es de \textbf{imagen finita}\index{imagen finita}. Si $n\in \N$, un $\mc{S}$ de imagen finita se dice un $n$\textbf{-NLMP}\index{nNLMP@$n$-NLMP} si $\d_a(s) \leq n$, para todo $s \in S$ y $a \in \mc{A}$. Notemos que no todo NLMP de imagen finita es un $n$-NLMP, ya que los grados podrían ser finitos pero no acotados.
+
+Dada una etiqueta $a\in\mc{A}$, definimos el \textbf{dominio}\index{dominio de una acción} de la acción $a$ como el conjunto de aquellos estados que pueden efectuar alguna transición en respuesta a $a$, es decir
+\[\dom_{\mc{S}}(a):=\{s\in S:\d_a(s)\geq 1\} = \pi_S(\tau_a)\]
+
+Fijaremos de ahora en adelante un conjunto de etiquetas $\mc{A}$ numerable, y usaremos $\mc{S} = (S,\Sig,\tau)$ para denotar un NLMP cuando se conveniente, en lugar de la versión más precisa $(S,\Sig,\{\tau_a\ |\ a \in \mc{A}\})$.
+
+La numerabilidad de las etiquetas servirá luego para garantizar la numerabilidad de las fórmulas lógicas, que será esencial para poder probar propiedades de medibilidad y coincidencia de medidas. Asimismo, requerir que el espacio de estados sea un espacio Borel estándar se verá justificado más adelante cuando probemos las caracterizaciones de la bisimulación por lógicas modales. Recordemos que, por ejemplo, todos los conjuntos $G_\d$ (en particular todos los abiertos y cerrados) en $\R^n$ son Polacos y por lo tanto son espacios Borel estándar con la \salgebra $\B(\R)$ restringida. En la práctica, esto es suficiente para representar el espacio de estados de un proceso.
+
+La clase más general que estudiaremos en este trabajo son los NLMP de imagen finita.
+
+\section{Simulación y Bisimulación}
+La idea intuitiva de simulación en un NLMP es que un estado $s'$
+simula a otro estado $s$ si $s'$ es capaz de imitar cada uno de los
+posibles comportamientos de $s$. En este contexto, querríamos que una transición
+$t$ sea imitada por otra $t'$ cuando su probabilidad de
+moverse a cualquier conjunto $A$ sea la misma que la probabilidad de $t'$ de
+moverse a un conjunto de estados que simulan a los estados de $A$.
+
+De alguna manera, necesitamos saber de antemano qué estados se simulan
+para verificar la igualdad. Además, no podemos hablar directamente del
+conjunto de estados que simulan a $A$ en general porque, incluso si
+$A$ fuera medible, no podemos asegurar que este otro conjunto lo
+sea. Resultará conveniente entonces, si $R$ es una relación que define
+una simulación, usar la noción de conjuntos \rcerrados{R} para describirla. Recordemos que un conjunto $Q$ es \rcerrado{R}\index{Rcerrado@\rcerrado{R}} si contiene todos los estados que están relacionados por $R$ con estados de $Q$.
+
+\subsection{Conjuntos \rcerrados{R}}
+Veamos algunas de las propiedades de los conjuntos \rcerrados{R}.
+\begin{prop}\label{p:rcerrados}
+\begin{enumerate}[i\textup{)}]
+\item\label{p:rc1} Si $Q$ es \rcerrado{R} entonces $Q^c$ es \rcerrado{(R^{-1})}, donde $R^{-1}$ es la relación inversa a $R$.
+\item\label{p:rc2} Si $R\subseteq R'$ y $Q$ es \rcerrado{R'}, entonces $Q$ es \rcerrado{R}.
+\item\label{p:rc3} Si $R, R'$ son reflexivas y $Q$ es \rcerrado{(R\comp R')}, entonces también es \rcerrado{R} y \rcerrado{R'}
+\end{enumerate}
+\end{prop}
+\begin{dem}
+\begin{enumerate}[i\textup{)}]
+\item Sean $x\in Q^c$, $y\in S$ tal que $x R^{-1} y$. Entonces $y R x$ y si fuera $y\in Q$ por ser $Q$ \rcerrado{R} tendríamos $x\in Q$. Como esto es falso, debe ser $y\in Q^c$.
+\item Si $x\in Q$, $y\in S$ satisfacen $x R y$, entonces se cumple también $x R' y$ y luego $y\in Q$ por ser $Q$ \rcerrado{R'}
+\item Si $R$ y $R'$ son reflexivas, se cumple $R,R'\subseteq R\comp R'$ y entonces podemos aplicar el punto anterior.
+\end{enumerate}
+\end{dem}
+
+Usando conjuntos \rcerrados{R}, podemos levantar una relación $R$ sobre un espacio medible $(S,\Sig)$ a una relación sobre $\subp(S)$, diciendo que $\mu R \mu'$ si para cada \rcerrado{R} $Q\in\Sig$ se cumple $\mu(Q) = \mu'(Q)$. Usando la \propref{p:rcerrados} podemos ver algunas propiedades útiles de estas relaciones:
+\begin{prop}\label{p:rmedidas}
+Sean $(S,\Sig)$ un espacio medible, $\mu, \mu', \nu \in \subp(S)$, $R,R'$ relaciones sobre $S$.
+\begin{enumerate}[i\textup{)}]
+\item\label{p:rm1} Si $\mu(S)=\mu'(S)$ y $\mu R \mu'$ entonces $\mu R^{-1} \mu'$.
+\item\label{p:rm2} Si $R\subseteq R'$ y $\mu R \mu'$, entonces $\mu R' \mu'$.
+\item\label{p:rm3} Si $R, R'$ son reflexivas y $\mu R \nu R' \mu'$, entonces $\mu (R\comp R') \mu'$
+\end{enumerate}
+\end{prop}
+\begin{dem}
+\begin{enumerate}[i\textup{)}]
+\item Sea $Q\in\Sig$ \rcerrado{R^{-1}}. Por la \propref{p:rcerrados}.\ref{p:rc1}, $Q^c$ es \rcerrado{R} y entonces $\mu R \mu'$ implica $\mu(Q^c) = \mu'(Q^c) \ent \mu(S)-\mu(Q) = \mu'(S)-\mu'(Q)$, y como $\mu(S)=\mu'(S)$, concluimos que $\mu(Q)=\mu(Q')$. 
+\item Si $Q\in\Sig$ es \rcerrado{R'}, entonces por la \propref{p:rcerrados}.\ref{p:rc2} $Q$ es \rcerrado{R}, y como $\mu R \mu'$, resulta $\mu(Q)=\mu'(Q)$.
+\item Sea $Q\in\Sig$ \rcerrado{(R\comp R')}. Por la \propref{p:rcerrados}.\ref{p:rc3}, $Q$ es \rcerrado{R} y \rcerrado{R'}, y como $\mu R \nu R' \mu'$, tenemos $\mu(Q) = \nu(Q)$ y $\nu(Q)=\mu'(Q)$, de donde resulta $\mu(Q)=\mu'(Q)$.
+\end{enumerate}
+\end{dem}
+
+\subsection{Simulación}
+\begin{defn}\label{p:simula}
+Una \textbf{simulación}\index{simulación} sobre el NLMP $\mc{S}$ es una relación $R$ sobre $S$ tal que, para cualquier par
+de estados $s, s' \in S$ con $s R s'$ y cada transición $\trans{s}{a}{\mu}$ hay otra transición $\trans{s'}{a}{\mu'}$ con $\mu'R\mu$. Si $s R s'$, con $R$ una simulación, decimos que $s$ es \textbf{simulado} por $s'$.
+\end{defn}
+Las relaciones de simulación tienen las siguientes propiedades:
+\begin{prop}
+\begin{enumerate}[i\textup{)}]
+\item\label{p:s1} id$_S$ es una simulación.
+\item\label{p:s2} Si $\{R_i\}_{i\in I}$ es una familia de simulaciones, $\Union_{i\in I} R_i$ es una simulación.
+\item\label{p:s3} Si $R$ y $R'$ son simulaciones reflexivas, entonces $R\comp R'$ es una simulación reflexiva.
+\end{enumerate}
+\end{prop}
+\begin{dem}
+\begin{enumerate}[i\textup{)}]
+\item Inmediato, pues dado $s\ \text{id}_S s$, la transición $\trans{s}{a}{\mu}$ es imitada por si misma, ya que $\mu\ \text{id}_S\mu$.
+\item Si $s (\Union_{i\in I} R_i) s'$ entonces $s R_i s'$ para algún $i\in I$. Luego $\trans{s}{a}{\mu}$ es imitada por alguna $\trans{s'}{a}{\mu'}$ con $\mu R_i \mu'$, y entonces por la \propref{p:rmedidas}.\ref{p:rm2}, tenemos $\mu (\Union_{i\in I} R_i) \mu'$, lo que prueba que $\Union_{i\in I} R_i$ es una simulación.
+\item Supongamos $s(R\comp R')s''$ y $\trans{s}{a}{\mu}$. Por definición de composición de relaciones, existe $s'$ tal que $s R s' R' s''$. Como $R$ es una simulación, hay una transición $\trans{s'}{a}{\mu'}$ con $\mu R \mu'$ y, dado que $R'$ también es una simulación, hay una transición $\trans{s''}{a}{\mu''}$ con $\mu' R' \mu''$. Entonces, como $R, R'$ son reflexivas y $\mu R \mu' R' \mu''$, por la \propref{p:rmedidas}.\ref{p:rm3} concluimos que $\mu (R\comp R') \mu''$. Luego, $R\comp R'$ es una simulación reflexiva. 
+\end{enumerate}
+\end{dem}
+
+\subsection{Bisimulación}
+Podemos dar ahora la definición de bisimulación en términos de relaciones de simulación.
+\begin{defn}
+$R$ es una \textbf{bisimulación}\index{bisimulación!en NLMP} sobre el NLMP $\mc{S}$ si $R$ y $R^{-1}$ son simulaciones.
+\end{defn}
+
+Las bisimulaciones cumplen las siguientes propiedades:
+\begin{prop}\label{p:bisimula}
+\begin{enumerate}[i\textup{)}]
+\item\label{p:bs1} $id_S$ es una bisimulación.
+\item\label{p:bs2} Si $R$ es una bisimulación, entonces $R^{-1}$ es una bisimulación.
+\item\label{p:bs3} Si $\{R_i\}_{i\in I}$ es una familia de bisimulaciones, entonces $\Union_{i\in I}R_i$ es una bisimulación.
+\item\label{p:bs4} Si $R$ y $R'$ son bisimulaciones reflexivas, $R\comp R'$ también es una bisimulación reflexiva.
+\end{enumerate}
+\end{prop}
+\begin{dem}
+\begin{enumerate}[i\textup{)}]
+\item Inmediato por la \propref{p:simula}.\ref{p:s1}.
+\item Es obvio por la definición y el hecho de que $(R^{-1})^{-1} = R$.
+\item $\Union_{i\in I}R_i$ es una simulación por la \propref{p:simula}.\ref{p:s2}, y $(\Union_{i\in I}R_i)^{-1} = \Union_{i\in I}R_i^{-1}$ es una simulación por la misma proposición, ya que $\{R_i^{-1}\}_{i\in I}$ son simulaciones.
+\item $R\comp R'$ es un simulación por la \propref{p:simula}.\ref{p:s3} y $(R\comp R')^{-1}=(R')^{-1}\comp R^{-1}$ es una simulación aplicando lo mismo a las simulaciones $(R')^{-1}$ y $R^{-1}$.
+\end{enumerate}
+\end{dem}
+
+\begin{defn}
+Decimos que dos estados $s$ y $s'$ son \textbf{bisimilares}\index{bisimilares!NLMP, estados} ($s\sim s'$) si existe una bisimulación $R$, tal que $sRs'$. Es decir, $\sim = \Union\{R : R \text{ es un bisimulación}\}$.
+\end{defn}
+
+Notemos que, por la \propref{p:bisimula}.\ref{p:bs3}, $\sim$\index{bisimulación!$\sim$} es una bisimulación, a la que podemos llamar \textbf{la} relación de bisimulación.
+
+\begin{prop}
+La relación de bisimulación $\sim$ es de equivalencia.
+\end{prop}
+\begin{dem}
+Por la \propref{p:bisimula}.\ref{p:bs1}, id$_S$ es un bisimulación y entonces id$_S \!\!\subseteq\sim$, por lo que $\sim$ es reflexiva. Dado que $\sim$ es una bisimulación, $\sim^{-1}$ también lo es (por la \propref{p:bisimula}.\ref{p:bs2}, y entonces $\sim^{-1}\subseteq\sim$, de donde se sigue que $\sim$ es simétrica. Por último, como $\sim$ es un bisimulación reflexiva, por la \propref{p:bisimula}.\ref{p:bs4} $\sim\comp\sim$ es una bisimulación, y entonces $\sim\comp\sim\subseteq\sim$. Luego, $\sim$ es transitiva.
+\end{dem}
+
+\begin{ejem}\index{Pulga@$\mc{P}_{ulga}$}
+En el ejemplo \ref{e:pulga} ($\mc{P}_{ulga}$), la relación de simetría respecto de $\frac{1}{2}$ sobre $[0,1]$, $x R y \sii x+y = 1$, es una bisimulación. Como $R$ es simétrica (i.e., $R=R^{-1}$), basta ver que es una simulación. Todo conjunto \rcerrado{R} $Q$ es simétrico, y por lo tanto, si se cumple $xRy$ valen las igualdades $m_{[0,x]}(Q)=m_{[y,1]}(Q)$ y $m_{[x,1]}(Q)=m_{[0,y]}(Q)$.
+\end{ejem}
+
+
+\section{LMP a la Desharnais}
+Además del uso de espacios Borel estándar en lugar de analíticos, este trabajo se diferencia de \cite{Desharnais} en que no hemos distinguido un estado inicial y por lo tanto probaremos todos
+nuestros resultados dentro del ámbito de un único NLMP (hablamos sólo de bisimulación entre estados y no entre procesos). Esta elección simplifica mucho la escritura de de las demostraciones y no le resta alcance a nuestros resultados, ya que fácilmente pueden adaptarse al estilo de \cite{Desharnais} (para el caso en que el conjunto de estados es un espacio Borel estándar). En esta sección nos ocuparemos de crear una \emph{interfaz} de definiciones entre ambos trabajos.
+
+Recordemos primero brevemente las definiciones de LMP y bisimulación de \cite{Desharnais}
+
+\begin{defn}[DLMP]
+Una \textbf{función de transición subprobabilista}\index{función de transición subprobabilista} sobre un espacio medible $(X,\Sig)$ es una función $\f{\tau}{X\times\Sig}{[0,1]}$ tal que para cada $x\in X$ fijo, la función $\f{\tau(x,\cdot)}{\Sig}{[0,1]}$ es una medida de subprobabilidad, y para cada $Q\in\Sig$ fijo, la función $\f{\tau(\cdot,Q)}{X}{[0,1]}$ es medible.
+\remark{está mejor acá?}
+
+Un espacio separable metrizable se dice \textbf{analítico} si es homeomorfo a un conjunto analítico en un espacio Polaco (con la topología relativa), o equivalentemente si es imagen continua de un espacio Polaco.
+
+Además, un espacio medible es un \textbf{espacio Borel analítico}\index{Borel analítico, espacio} si es isomorfo a $(X,\B(X))$ para algún espacio analítico $X$. Notemos que como todo espacio Polaco es analítico, en particular todo espacio Borel estándar es Borel analítico.
+
+Un \textbf{DLMP}\index{DLMP} (D por Desharnais o por Deterministic) con conjunto de etiquetas $\mc{A}$ es una estructura $\mc{S} = (S,i,\Sig,\{\mu_a\ |\ a \in \mc{A}\})$, donde $(S,\Sig)$ es un espacio Borel analítico (de estados), $i\in S$ es el estado inicial, y
+\[\forall a \in \mc{A}\ ,\ \f{\tau_a}{X\times\Sig}{[0,1]}\]
+es una función de transición subprobabilista.
+Al igual que con los NLMP, fijamos $\mc{A}$ y escribimos los DLMP en la forma más breve $\mc{S} = (S,i,\Sig,\mu)$.
+
+Una \textbf{bisimulación}\index{bisimulación!entre DLMP} entre dos DLMP $\mc{S}_1=(S_1,i_1,\Sig_1,\{\mu^1_a\})$ y $\mc{S}_2=(S_2,i_2,\Sig_2,\{\mu^2_a\})$ es una relación de equivalencia $R$ sobre $S_1\uplus S_2$ tal que, para $s_1\in S_1$ y $s_2\in S_2$ con $s_1 R s_2$, para cada conjunto \rcerrado{R} $Q\subseteq S_1\uplus S_2$ tal que $Q\inters S_1 \in \Sig_1$ y $Q\inters S_2 \in \Sig_2$, se tiene
+\[\mu^1_a(s,Q\inters S_1) = \mu^2_a(s,Q\inters S_2)\]
+para cada $a\in\mc{A}$. Dos estados son \textbf{bisimilares} si están relacionados por una bisimulación.
+Decimos que $\mc{S}_1$ y $\mc{S}_2$ son \textbf{bisimilares}\index{bisimilares!DLMP} si sus estados iniciales lo son.
+\end{defn}
+
+Las siguientes definiciones permiten ver que nuestros resultados implican los de \cite{Desharnais}.
+\begin{defn}
+Un \textbf{LMP}\index{LMP} es un $1$-NLMP $(S,\Sig,\{\tau_a\ |\ a \in \mc{A}\})$ con $\d_a(s)\!=\!1\ \forall s\in S$. Es decir, para cada $s \in S$ y $a \in \mc{A}$, existe una única $\eta = \eta(s)$ tal que $\trans{s}{a}{\eta}$. Podemos asociar a $\tau_a$ una función de transición subprobabilista $\tilde{\tau}_a$, definiendo $\tilde{\tau}_a(s,Q) = (\eta(s))(Q)$ para cada $Q \in \Sig$.
+
+Un \textbf{iLMP}\index{iLMP} es una estructura $\mc{S} = (S,i,\Sig,\{\mu_a\ |\ a \in \mc{A}\})$, tal que $i\in S$ y $\mu_a = \tilde{\tau}_a$, donde $(S,\Sig,\{\tau_a\ |\ a \in \mc{A}\})$ es un LMP. $i$ se denomina el \textbf{estado inicial}\index{estado inicial} de $\mc{S}$.
+
+Si $\mc{S}_1=(S_1,i_1,\Sig_1,\{\mu^1_a\})$ y $\mc{S}_2=(S_2,i_2,\Sig_2,\{\mu^2_a\})$ son iLMP con $S_1 \inters S_2 = \vacio$ (si no fueran disjuntos podemos reemplazar a $(S_1,\Sig_1)$ por una copia isomorfa), su \textbf{suma directa}\index{suma!de iLMP} es un LMP (sin estado inicial) 
+\[\mc{S}_1\oplus\mc{S}_2:=(S_1\union S_2,\Sig_1\oplus\Sig_2,\{\mu_a\ |\ a \in \mc{A}\})\]
+tal que para toda $a\in\mc{A}$ y todo $Q\in\Sig_1\oplus\Sig_2$ se cumple
+\[\mu_a(s,Q)=\mu^1_a(s,Q\inters S_1)\ \forall s\in S_1\]
+\[\mu_a(s,Q)=\mu^2_a(s,Q\inters S_2)\ \forall s\in S_2\]
+
+Dos iLMP $\mc{S}_1$ y $\mc{S}_2$ con estados iniciales $i_1$ e $i_2$ respectivamente, son \textbf{bisimilares}\index{bisimilares!iLMP} si existe una bisimulación $R$ sobre $\mc{S}_1\oplus\mc{S}_2$ tal que $i_1 R i_2$.
+\end{defn}
+
+\begin{lem}
+Todo iLMP es un DLMP y dos iLMP son bisimilares si y sólo si son bisimilares como DLMP.
+\end{lem}
+\begin{dem}
+Sea $\mc{S} = (S,i,\Sig,\{\mu_a\ |\ a \in \mc{A}\})$ un iLMP y sea $\{\tau_a\}$ tal que $\mu_a = \tau'_a$. $(S,\Sig)$ es un espacio Borel analítico, por ser Borel estándar. 
+
+Para probar que $\mu_a$ es una función de transición subprobabilista, debemos ver que  para cada $Q\in\Sig$ fijo, la función $\f{\mu_a(\cdot,Q)}{X}{[0,1]}$ es medible. Sea $I$ medible en $\R$. Entonces $(\mu_a(\cdot,Q))^{-1}(I) = \pi_S(\tau_a \inters [S\times M_Q^{-1}(I)])$. $M_Q^{-1}(I)$ es medible en $\subp(S)$, y entonces $S\times M_Q^{-1}(I)$ es un rectángulo medible en $S\times\subp(S)$. Como $\tau_a$ es medible, resulta $A:=\tau_a \inters [S\times M_Q^{-1}(I)]$ medible. Como $\d_a(s)=1\  \forall s\in S$ y $\subp(S)$ es Borel estándar, podemos aplicar el \teoref{t:conjunic} y concluir que $\pi_S(A)={\{s\in S : \exists ! \eta ((s,\eta)\in \tau_a)\}}$ es medible.
+
+La equivalencia de las nociones de bisimilaridad es una mera aplicación de definiciones.
+\end{dem} 
+
+\section{Lógicas Modales}\label{s:logicas}\index{lógicas modales}
+Las lógicas modales (ver \cite{modallogic}) agregan a la lógica
+clásica las nociones de posibilidad y necesidad, introduciendo
+\emph{modalidades} que permiten expresarlas. Variantes de estas
+lógicas se han usado para caracterizar equivalencias semánticas como
+la bisimulación, en un contexto probabilista (ver, por ejemplo
+\cite{vanGlabbeek}). En esta sección definiremos lógicas de este tipo,
+que emplearemos sobre los NLMP para expresar propiedades que caractericen la bisimulación. 
+\subsection{Sintaxis}
+Describimos a continuación algunas lógicas modales que serán empleadas luego para caracterizar
+la bisimulación sobre distintas clases de NLMP. La más simple de ellas se denota $\mc{L}_>$ y tiene una sintaxis dada por las siguientes fórmulas:
+\[\true\ |\ \phi_1 \y \phi_2\ |\ \langle a \rangle_{>q} \phi\]
+donde $a \in \mc{A}$ y $q \in \Q$.
+
+Usaremos también las siguientes extensiones y variantes de $\mc{L}_>$:
+\begin{center}
+\begin{tabular}{ll}
+$\mc{L}_{<>}$\index{Lmen@$\mc{L}_{<>}$} &  := $\mc{L}_>\ |\ \langle a \rangle_{<q} \phi\ , \text{con } q \in \Q$\\
+$\mc{L}_\neg$\index{Lneg@$\mc{L}_\neg$}& := $\mc{L}_{<>}\ |\ \neg \phi$ \\
+$\mc{L}_\omega$\index{Lomega@$\mc{L}_\omega$}& := $\true\ |\ \phi_1 \y \phi_2\ |\ \neg \phi\ |\ \langle a \rangle [_{\bowtie_1 q_1}\phi_1,\ldots,_{\bowtie_n q_n}\phi_n]$\\
+\end{tabular}
+\end{center}
+con $a\in\mc{A}$, $n \in \N$, $\bowtie_i \in \{<,>\}$, $q_i \in \Q$, para $i=1,\ldots,n$.
+
+Definimos también, para $m\in\N$, la lógica $\mc{L}_m$\index{Lm@$\mc{L}_m$} que tendrá la misma sintaxis que $\mc{L}_\omega$,
+pero con la restricción de que sea $n\leq m$ en las fórmulas $\langle
+a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n$.
+Notemos que gracias a la numerabilidad de $\mc{A}$ y a la restricción a cotas probabilistas racionales, todas las lógicas definidas poseen un conjunto numerable de fórmulas.
+
+\subsection{Semántica}
+
+Emplearemos la notación $s \sat \phi$\index{sat@satisfacción ($\sat$)} para indicar que la fórmula $\phi$ es satisfecha por el estado $s$.
+Fijada una lógica $\mc{L}$ y una interpretación de $\sat$, decimos que
+dos estados $s$ y $t$ son \textbf{equivalentes}\index{equivalencia de
+  estados} (respecto de $\mc{L}$) si satisfacen las mismas fórmulas de
+$\mc{L}$ (es decir, si $\forall \phi \in \mc{L} : s\sat \phi \sii
+s'\sat \phi$), y lo denotaremos $s\approx_{\mc{L}} t$ (o simplemente
+$s\approx s'$ si no hay ambigüedad) . Definimos también la
+\textbf{semántica}\index{semántica@semántica ($\abst{\phi}$)} de una
+fórmula $\phi$ como el conjunto de todos los estados que la
+satisfacen: 
+\[ \abst{\phi} := \{s\in S\ |\ s \sat \phi\}\] 
+Notemos que $\approx_{\mc{L}}$ es una relación de equivalencia, y que los conjuntos $\abst{\phi}$ son
+$\approx_{\mc{L}}$-cerrados.
+
+Definimos a continuación la interpretación de la satisfacción de fórmulas.
+La semántica de $\true$, $\y$ y $\neg$ es la esperada:
+\\
+\begin{center}
+\begin{tabular}{ll}
+$s \sat \true$                     & $\forall s \in S $\\  
+$s \sat \phi_1 \y \phi_2$          & sii $s \sat \phi_1$ y $s \sat \phi_2$ \\
+$s \sat \neg \phi$                 & sii $s \nsat \phi$ \\
+\end{tabular}
+\end{center}
+
+Diremos que $s \sat \langle a \rangle_{>q} \phi$, si ante la acción $a$ hay una transición desde $s$ con
+probabilidad mayor a $q$ de moverse a un estado que satisfaga $\phi$. Es decir, si 
+\[\exists \mu \in \subp(S,\Sig_S),\:Q \in \Sig : \trans{s}{a}{\mu} \y (\abst{\phi} \supseteq Q) \y (\mu(Q) > q)\]
+La semántica de $s \sat \langle a \rangle_{<q} \phi$ se define en forma análoga:
+\[\exists \mu \in \subp(S,\Sig_S),\:Q \in \Sig : \trans{s}{a}{\mu} \y (\abst{\phi} \subseteq Q) \y (\mu(Q) < q)\]
+La fórmula $\langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n$ funciona como una conjunción de las fórmulas $\langle a \rangle _{\bowtie_i q_i}\phi_i$, pero con la condición adicional de que todas las cotas probabilistas se satisfagan a través de una única transición. Interpretamos $s\sat \langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n$ como 
+\[\exists \mu \in \subp(S,\Sig_S),\: \{Q_i\}_{i=1}^n \subseteq \Sig : \trans{s}{a}{\mu} \y \forall i ((\abst{\phi_i}\ r_{\bowtie_i}\ Q_i) \y (\mu(Q_i) \bowtie_i q_i))\]
+donde interpretamos $r_{>}=\ \supseteq$ y $r_{<}=\ \subseteq$.
+Probaremos más adelante que para cada $\phi$ resulta $\abst{\phi}$ medible, lo que eliminará la necesidad de hablar de un conjunto $Q$ medible en las interpretaciones. La necesidad de emplear estas extensiones quedará clara en la próxima sección, a medida que surjan las distintas limitaciones expresivas de cada lógica.
+
+\begin{ejem}\index{Pulga@$\mc{P}_{ulga}$}
+Volviendo al ejemplo \ref{e:pulga}, podemos escribir una fórmula $\phi\in\mc{L}_2$ que sea satisfecha por los estados con la siguiente propiedad:
+
+\emph{``Saltando en alguna dirección, hay una probabilidad mayor al $60\%$ de no caer fuera de la cuerda y una probabilidad menor al $50\%$ de caer en un punto en el que el próximo salto tenga probabilidad de éxito mayor que $75\%$ en alguna dirección''} (Obviamente asumimos que la pulga es obediente y sólo salta cuando se le da la orden $a$).
+
+Dicha fórmula es $\langle a \rangle [_{>0,6}\true\ ,\
+  _{<0,5}\!(\langle a \rangle [_{>0,75}\true])]$.
+\end{ejem}
+\section{Caracterización Lógica de la Bisimulación}
+
+Probaremos diferentes caracterizaciones lógicas de la bisimulación, con lógicas cada vez más fuertes a medida que tratamos con sistemas de mayor grado de no determinismo. El caso más simple es el de los LMP. 
+
+Adaptaremos la estructura de la prueba de caracterización dada en \cite{Desharnais}.
+El principal cambio será que daremos una versión interna de esta prueba, en el sentido de que trabajaremos con bisimulación de estados dentro de un único NLMP, en contraposición con la prueba original que trabajaba con dos LMP con estados iniciales y definía una bisimulación entre sistemas.
+
+\subsection{Resultados Centrales}
+Probaremos en esta sección una serie de proposiciones y teoremas que no dependen del tipo de NLMP escogido y son comunes a todas las pruebas de caracterización de la bisimulación
+
+Nuestra primera proposición dice que en un NLMP los conjuntos de estados definibles por fórmulas son siempre medibles. Lo probaremos para $\mc{L}_\omega$, de donde se cumplirá para las otras lógicas definidas por ser $\mc{L}_\omega$ la más expresiva de ellas.
+
+\begin{prop}\label{p:absmed}
+Sea $\mc{S} = (S,\Sig,\tau)$ un NLMP de imagen numerable. Entonces para toda fórmula $\phi \in \mc{L}_\omega$, se tiene $\abst{\phi} \in \Sig$.
+\end{prop}
+\begin{dem}
+Lo probamos por inducción en la estructura de $\phi$. El caso base $\true$ es obvio, pues $\abst{\true}=S \in \Sig$. La conjunción y la negación son también inmediatas, ya que por definición una \salgebra es siempre cerrada por intersección y complemento. Supongamos ahore que la proposición es cierta para $\{\phi_i\}_{i=1}^n$ y sea $\psi:= \langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n$. Por hipótesis inductiva, cada $\abst{\phi_i}$ es medible y entonces $\abst{\psi} = \abst{\langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n} =\pi_S(\tau_a \inters [S \times \Inters_{i=1}^n M_{\abst{\phi_i}}^{-1}(I_i)])$, con $I_i = [0,q_i)$ ó $(q_i,1]$,
+según sea $\bowtie_i = <$ ó $>$. Cada $M_{\abst{\phi_i}}^{-1}(I_i)$ es medible en $\subp(S)$ por definición de $\Sig_{\subp(S)}$.
+Como la intersección numerable de medibles es un medible, $S \times \Inters_{i=1}^n M_{\abst{\phi_i}}^{-1}(I_i)$ es un rectángulo medible, y es entonces medible en $S \times \subp(S)$. Luego, como $\tau_a$ es medible y todas sus secciones $(\tau_a)_s,\ s\in S$ son numerables, deducimos que $A:= \tau_a \inters [S \times \Inters_{i=1}^n M_{\abst{\phi_i}}^{-1}(I_i)]$ es medible con $A_s$ numerable para todo $s\in S$. Como $\subp(S)$ es Borel estándar , podemos aplicar el \teoref{t:lusinnovikov} y concluir que $\pi_S(A) =\abst{\langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n}$ es medible. 
+\end{dem}
+\begin{nota}\label{n:lomegafuerte}
+Notemos que para cualquier lógica $\mc{L}$ de las definidas en \ref{s:logicas}, dada una fórmula $\phi\in\mc{L}$, hay otra fórmula $\phi'\in\mc{L}_\omega$ tal que $\abst{\phi'}=\abst{\phi}$, por lo que el resultado anterior es válido para cualquiera de estas $\mc{L}$. 
+\end{nota}
+
+\begin{nota}
+Al saber que cada $\abst{\phi}$ es medible, ya no necesitamos hablar de inclusiones con medibles en la
+semántica, quedando simplificadas las interpretaciones a lo siguiente:
+
+\begin{center}
+\begin{tabular}{ll}
+$s \sat \langle a \rangle_{>q} \phi$, & si $\exists \mu \in \subp(S,\Sig_S) : \trans{s}{a}{\mu} \y (\mu(\abst{\phi}) > q)$\\
+
+$s \sat \langle a \rangle_{<q} \phi$, & si
+$\exists \mu \in \subp(S,\Sig_S) : \trans{s}{a}{\mu} \y (\mu(\abst{\phi}) < q)$\\
+
+$s \sat \langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n$, &si
+$\exists \mu \in \subp(S,\Sig_S) : \trans{s}{a}{\mu} \y \forall i (\mu(\abst{\phi_i}) \bowtie_i q_i)$\\
+\end{tabular}
+\end{center}
+
+\end{nota}
+
+
+Podemos probar ahora una dirección de nuestra caracterización
+\begin{teo}\label{t:caractida}
+Si $s$ y $s'$ son dos estados bisimilares en un NLMP $\mc{S} = (S,\Sig,\tau)$, entonces son equivalentes respecto de $\mc{L}_\omega$. Es decir, $s\sim s' \ent s \approx_{\mc{L}_\omega} s'$.
+\end{teo}
+\begin{dem}
+Sea $R$ una bisimulación en $\mc{S}$. Probamos por inducción en fórmulas que si $sRs'$ y $\phi \in \mc{L}_\omega$ entonces $s\sat \phi \sii s' \sat \phi$. Los casos de $\true$, la conjunción y la negación son obvios. Ahora supongamos que el enunciado es cierto para $\{\phi_i\}_{i=1}^n$, i.e. para cada par de estados $R$-relacionados, cada $\phi_i$ es satisfecha o bien por ambos o por ninguno de los dos estados. Esto significa que cada $\abst{\phi_i}$ es un \rcerrado{R}, y además es medible por la \propref{p:absmed}. Como $R$ es una bisimulación, para cada $\trans{s}{a}{\mu}$ hay una $\trans{s'}{a}{\mu'}$ con $\mu R \mu'$, de donde $\mu(\abst{\phi_i})=\mu'(\abst{\phi_i})\ \forall i=1\ldots n$.
+Entonces si $s\sat \psi :=\langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^n$, con $\bowtie_i \in \{<,>\}$, se da también $s'\sat\psi$. Aplicando el mismo razonamiento, vemos que también vale $s'\sat\psi \ent s\sat\psi$.
+\end{dem}
+\begin{nota}
+La misma observación que hicimos en la nota \ref{n:lomegafuerte}, garantiza que el resultado es también válido para cualquiera de las otras lógicas $\mc{L}$.
+\end{nota}
+
+Para probar que una lógica $\mc{L}$ caracteriza completamente la bisimulación, deberemos ver el recíproco del teorema anterior: ($s\approx_\mc{L} s' \ent s\sim s'$). 
+Para lograr esto, queremos probar que $s\approx_\mc{L} s'$ es una bisimulación, es decir, que para cada para $s,s' \in S$ con $s\approx_\mc{L} s'$ se cumple que por cada transición $\trans{s}{a}{\mu}$ hay una $\trans{s'}{a}{\mu'}$, con $\mu'\approx_\mc{L} \mu$. Recordemos que esto último significa $\mu(Q) = \mu'(Q)$ para todo $Q$ $\rcerrado{\approx_\mc{L}\!\!}$ medible. 
+Podríamos comenzar tratando de probar que esto vale para los $Q$ definibles por fórmulas (o sea, para $Q = \abst{\phi}$, con $\phi\in\mc{L}$). El siguiente teorema nos dice que dicha condición es suficiente, y usa fuertemente el hecho de que $S$ sea un espacio Borel estándar.
+
+\begin{teo}\label{t:caractvuelta}
+Sea $\mc{S}$ un NLMP y $\mc{L}$ una lógica modal tal que para todo par de estados $s\approx_\mc{L} s'$ y toda transición $\trans{s}{a}{\mu}$, existe una transición $\trans{s'}{a}{\mu'}$ tal que 
+\[\mu'(\abst{\phi}) = \mu(\abst{\phi}),\ \forall \phi \in \mc{L}\]
+Entonces si dos estados $s, s'$ son equivalentes, son bisimilares.
+Es decir, $s \approx_\mc{L} s' \ent s\sim s'$.
+\end{teo}
+\begin{dem}
+Sea $\mc{F}:=\{\abst{\phi}\ |\ \phi\in\mc{L}\}$. Como $\abst{\true}=S$ y $\abst{\phi}\inters\abst{\psi}=\abst{\phi\y\psi}$, $\mc{F}$ es una $\pi$-clase y $S\in\mc{F}$. Como $\mu$ y
+$\mu'$ coinciden sobre $\mc{F}$, por el \lemaref{l:coincid2} coinciden sobre $\sigma(\mc{F})$.
+
+Por la \propref{p:absmed}, cada $\abst{\phi_n}$ es medible. Además hay una cantidad numerable $\{\phi_n\}$ de fórmulas y se cumple
+\[x \approx y\ \sii\ \forall n(x\in\abst{\phi_n} \sii y\in\abst{\phi_n})\]
+Se verifican entonces las hipótesis del \teoref{t:blackwell} y concluimos que $\sigma(\mc{F}) = \{A\included S\ |\ A\in\Sig,\ \ A\rcerrado{\approx\!}\}$.
+
+Luego, $\mu$ y $\mu'$ coinciden sobre todos los medibles \rcerrados{\approx} y entonces $\approx_\mc{L}$ es una simulación. Como $\approx_\mc{L}$ es simétrica, resulta una bisimulación.
+
+Luego, $s\approx_\mc{L} s' \ent s\sim s'$.
+\end{dem}
+
+\subsection{Cada Loco con su Lógica}
+
+Por lo visto hasta ahora, el ``esqueleto'' de la prueba de caracterización está formado por la \propref{p:absmed} y los teoremas \ref{t:caractida} y \ref{t:caractvuelta}. Dado un NLMP, cualquier lógica que satisfaga la hipótesis del \teoref{t:caractvuelta} caracterizará a la bisimulación en ese NLMP. En esta sección nos dedicaremos a encontrar, para clases particulares de NLMP, lógicas que satisfagan esta hipótesis. Comenzaremos con el caso LMP, y luego exhibiremos ejemplos de NLMP con mayor grado de no determinismo en los que se verá la necesidad de emplear lógicas más expresivas.
+
+\subsubsection{LMP}
+Nuestro primer lema completa la reconstrucción de la prueba de la caracterización
+de \cite{Desharnais} para LMP.
+
+\begin{lem}\label{l:fLMP}
+Sea $\mc{S} = (S,\Sig,\tau)$ un LMP. Entonces para todo par de estados $s\approx_{\mc{L}_>} s'$ y toda $a \in \mc{A}$, se cumple $\mu_a(s,\abst{\phi}) = \mu_a(s',\abst{\phi}),\ \forall \phi \in \mc{L}_>$.
+\end{lem}
+\begin{dem}
+Supongamos que la ecuación no es cierta. Entonces, para alguna $\phi$ se tiene, por ejemplo, 
+$\mu_a(s,\abst{\phi}) < \mu_a(s',\abst{\phi})$. Tomemos un racional $q$ entre estos dos valores. Entonces
+se sigue que $s'\sat \langle a \rangle_{>q} \phi$ pero $s \nsat \langle a \rangle_{>q} \phi$
+\end{dem}
+
+\subsubsection{$2$-NLMP}
+Si deseamos probar un resultado análogo al anterior para $2$-NLMP, la lógica $\mc{L}_>$ resulta insuficiente, e incluso $\mc{L}_{<>}$ tampoco alcanza. Podemos verlo en el siguiente ejemplo:
+\begin{ejem}
+
+\[
+	\xymatrix{
+		\bullet{s}\ar_{a}[d]\ar^{a}[dr] & & & \bullet{s'}\ar_{a}[dl]\ar_{a}[d] \\
+		\mu_0\ar@{-->}[dr] & \mu_1\ar@{-->}[d]  &   \eta_0\ar@{-->}[d] & \eta_1\ar@{-->}[dl] \\
+		& \ldots & \ldots & & \\
+		 & \bullet{x}\ar_{b[1]}@(dr,ur) & \bullet{y} &  \\ 
+		}
+\]
+
+La notación $b[1]$ indica que $\trans{x}{b}{\mu}$ con $\mu(\{x\})=1$.
+Las $\mu_i$ y $\eta_i$ se anulan fuera de $\{x,y\}$ y vienen dadas por la siguiente tabla:
+\[
+\begin{array}{|r|c|c||c|c|}\hline
+*     & \mu_0 & \mu_1 & \eta_0 & \eta_1 \\ \hline
+\{x\} & 0.1   & 0.2   & 0.1    & 0.2    \\ \hline
+\{y\} & 0.2   & 0.2   & 0.3    & 0.1    \\ \hline
+\end{array}
+\]
+Veremos que $s\approx_{\mc{L}_{<>}} s'$, pero $s\nsim s'$.\\
+
+Si fuera $s\sim s'$, ya que $\trans{s}{a}{\mu_0}$, debería ser $\mu_0 \sim \eta_k$, para algún $k$. Pero
+$\{x\},\{y\}$ son $\rcerrados{\sim\!}$ y vemos en la tabla que $\mu_0 \nsim \eta_k$ para todo $k$. Luego, $s \nsim s'$.\\
+
+Veamos por inducción en fórmulas que $s \approx_{\mc{L}_{<>}} s'$. Los casos $\true$, y $\y$ son inmediatos. Supongamos $s \sat \psi := \langle l \rangle_{>q} \phi$. Entonces, debe ser $l = a$ y para algún $k$ se tiene 
+\[\mu_k(\abst{\phi} \inters \{x,y\}) = \mu_k(\abst{\phi}) > q\]
+Ahora, $\abst{\phi} \inters \{x,y\}$ puede ser sólo $\{x\}$ o $\{x,y\}$ (sin $\neg$ es imposible distinguir a $y$ por una fórmula) y por construcción de las $\mu_i$ y $\eta_j$, hay una $\eta_j$ tal que 
+$\eta_j(\abst{\phi}) = \mu_k(\abst{\phi})$ y entonces $\eta_j(\abst{\phi}) > q$, con lo que
+$s' \sat \psi$. Análogamente, asumiendo $s' \sat \psi$ podemos concluir que $s \sat \psi$. Del mismo modo
+vemos que se cumplen las mismas fórmulas de la forma $\langle l \rangle_{<q} \phi$.
+\end{ejem}
+
+
+Reforzando la lógica a $\mc{L}_\neg$ podemos probar la hipótesis para $2$-NLMP:
+\begin{lem}\label{l:f2NLMP}
+Sea $\mc{S} = (S,\Sig,\tau)$ un $2$-NLMP. Entonces para todo par de estados $s\approx_{\mc{L}_\neg} s'$ y toda
+transición $\trans{s}{a}{\mu}$, existe una transición $\trans{s'}{a}{\mu'}$ tal que 
+$\mu'(\abst{\phi}) = \mu(\abst{\phi}),\ \forall \phi \in \mc{L}_\neg$.
+\end{lem}
+\begin{dem}
+Si $\d_a(s)=0$ no hay nada que probar. Si $\d_a(s)\neq 0$ existe al menos una transición $\trans{s}{a}{\mu}$. Sea $q\in\Q, q>\mu(S)$. Como $s\sat \phi:=\langle a\rangle_{<q}\true$, se tiene $s'\sat\phi$, de donde $\d_a(s')\neq 0$.
+
+Sin pérdida de generalidad, podemos asumir que $\d_a(s) = \d_a(s') = 2$ y que $\trans{s}{a}{\mu_1}$, $\trans{s}{a}{\mu_2}$, $\trans{s'}{a}{\mu'_1}$, $\trans{s'}{a}{\mu'_2}$ son todas las transiciones posibles
+para $s$ y $s'$ (por ejemplo, el caso $\d_a(s) = 1$ podrá deducirse de esta prueba poniendo
+$\mu_1=\mu_2$).
+
+Sea $\phi \in \mc{L}_\neg$, y sean $M := \max\{\mu_1(\abst{\phi}),\mu_2(\abst{\phi})\},\ 
+M' := \max\{\mu'_1(\abst{\phi}),\mu'_2(\abst{\phi})\}$. Tiene que ser $M=M'$, ya que si, por ejemplo, $M < M'$,
+tomando un racional $q$ tal que $M < q < M'$ se tiene $s' \sat \langle a \rangle_{>q}\phi$
+pero $s \nsat \langle a \rangle_{>q}\phi$, lo que contradice $s\approx s'$.
+
+Análogamente si tuviéramos, por ejemplo, 
+\[\min\{\mu_1(\abst{\phi}),\mu_2(\abst{\phi})\} <
+\min\{\mu'_1(\abst{\phi}),\mu'_2(\abst{\phi})\},\]
+podríamos tomar $q$ tal que  
+$s' \sat \langle a \rangle_{<q}\phi$ y $s \nsat \langle a \rangle_{<q}\phi$. Podemos ver entonces que los mínimos también coinciden.
+ 
+Combinando estos dos resultados obtenemos
+$\{\mu_1(\abst{\phi}),\mu_2(\abst{\phi})\}=\{\mu'_1(\abst{\phi}),\mu'_2(\abst{\phi})\}$.
+
+Dado que $\abst{\phi}\union \abst{\psi} = \abst{\neg(\neg\phi\y\neg\psi)}$ y 
+$\abst{\phi}\setminus \abst{\psi} = \abst{\phi\y\neg\psi}$, deducimos que 
+$\Gamma = \{\abst{\phi}\ |\ \phi\in\mc{L}_\neg\}$ es un álgebra. Entonces tomando $\mu=\mu_1$ ó $\mu_2$,
+tenemos que $\Gamma, \mu, \mu'_1, \mu'_2$ satisfacen las hipótesis del \lemaref{l:coincidencia} y podemos concluir que alguna $\mu'_k$ cumple $\mu'_k(B) = \mu(B)\ \forall B \in \Gamma$, 
+es decir, $\mu'_k(\abst{\phi}) = \mu(\abst{\phi})\ \forall \phi \in\mc{L}_\neg$. 
+\end{dem}
+
+\subsubsection{$n$-NLMP y NLMP de imagen finita}
+Al pasar a estudiar NLMP con mayor grado de no determinismo, nuevamente es necesario extender la lógica, ya que resulta demasiado débil para caracterizar la bisimulación. Veamos un ejemplo que muestra la insuficiencia de $\mc{L}_\neg$:
+
+\begin{ejem}
+\[
+	\xymatrix{
+		& \bullet{s}\ar_{a}[dl]\ar_{a}[d]\ar^{a}[dr] & & & \bullet{s'}\ar_{a}[dl]\ar_{a}[d]\ar^{a}[dr] & \\
+		\mu_0\ar@{-->}[dr] & \mu_1\ar@{-->}[d] & \mu_2\ar@{-->}[d]  &   \eta_0\ar@{-->}[d] & \eta_1\ar@{-->}[d] & \eta_2\ar@{-->}[dl] \\
+		& & \ldots & \ldots & & \\
+		 & \bullet{x}\ar_{b[1]}@(dr,ur) & \bullet{y}\ar_{c[1]}@(dr,ur) & \bullet{z}\ar_{d[1]}@(dr,ur) \\ 
+		}
+\]
+Las $\mu_i$ y $\eta_i$ se anulan fuera de $\{x,y,z\}$ y vienen dadas por la siguiente tabla:
+\[
+\begin{array}{|r|c|c|c||c|c|c|}\hline
+*     & \mu_0 & \mu_1 & \mu_2 & \eta_0 & \eta_1 & \eta_2 \\ \hline
+\{x\} & \frac{1}{3}  & \frac{2}{3}  & 0    & \frac{2}{3}    & \frac{1}{3}    & 0      \\ \hline
+\{y\} & 0    & \frac{1}{3}  & \frac{2}{3}  & 0      & \frac{2}{3}    & \frac{1}{3}    \\ \hline
+\{z\} & \frac{2}{3}  & 0    & \frac{1}{3}  & \frac{1}{3}    & 0      & \frac{2}{3}    \\ \hline
+\end{array}
+\]
+Veremos que $s\approx_{\mc{L}_\neg} s'$, pero $s\nsim s'$.\\
+
+Si fuera $s\sim s'$, ya que $\trans{s}{a}{\mu_0}$, debería ser $\mu_0 \sim \eta_k$, para algún $k$. Pero
+$\{x\},\{y\},\{z\}$ son $\rcerrados{\sim\!}$ y vemos en la tabla que $\mu_0 \nsim \eta_k$ para todo $k$. Luego, $s \nsim s'$.\\
+
+Veamos por inducción en fórmulas que $s \approx_{\mc{L}_\neg} s'$. Los casos $\true$, $\neg$ y $\y$ son inmediatos. Supongamos $s \sat \psi := \langle l \rangle_{>q} \phi$. Entonces, debe ser $l = a$ y para algún $k$ se tiene \[\mu_k(\abst{\phi} \inters \{x,y,z\}) = \mu_k(\abst{\phi}) > q\] Ahora, por construcción de las $\mu_i$ y $\eta_j$, hay una $\eta_j$ tal que $\eta_j(\abst{\phi}) = \mu_k(\abst{\phi})$ y entonces $\eta_j(\abst{\phi}) > q$, con lo que $s' \sat \psi$. Análogamente, asumiendo $s' \sat \psi$ podemos concluir que $s \sat \psi$. Del mismo modo vemos que se cumplen las mismas fórmulas de la forma $\langle l \rangle_{<q} \phi$.
+\end{ejem}
+
+El fallo de la caracterización lógica en este ejemplo radica en la imposibilidad de $\mc{L}_\neg$
+de imponer condiciones múltiples que deban cumplirse a través de una única transición. Es por esto que
+nuestro ejemplo explota las propiedades de ``imitación cruzada'' de las medidas asociadas a uno y otro estado.
+Esta necesidad es la que nos impulsó a introducir las lógicas $\mc{L}_n$ y $\mc{L}_\omega$.
+
+\begin{lem}\label{l:fNLMP}
+Sea $\mc{S} = (S,\Sig,\tau)$ un $n$-NLMP. Entonces para todo par de estados $s\approx_{\mc{L}_n}s'$ y toda transición $\trans{s}{a}{\mu}$, existe una transición $\trans{s'}{a}{\mu'}$ tal que $\mu'(\abst{\phi}) = \mu(\abst{\phi}),\ \forall \phi \in \mc{L}_n$.
+\end{lem}
+\begin{dem}
+Al igual que en el caso $2$-NLMP, se puede probar que si $s\approx_{\mc{L}_n}s'$ entonces para todo $a$, $\d_a(s)=0\sii \d_a(s')=0$.
+Supongamos que el lema es falso. Entonces existen $s$ y $s'$, con $s\approx s'$, y una transición $\trans{s}{a}{\mu}$ tal que para cada transición $\trans{s'}{a}{\mu_i}$ hay al menos una fórmula $\phi_i \in \mc{L}_\omega$ con $\mu(\abst{\phi_i}) \neq \mu_i(\abst{\phi_i})$. Como $\mc{S}$ es un $n$-NLMP, hay a lo sumo $n$ transiciones $\trans{s'}{a}{\mu_i}$. Sean $\mu_1,\ldots,\mu_m$, $m\leq n$ todas las medidas de estas transiciones.
+
+Para $i=1\ldots m$, sea $q_i$ un racional estrictamente entre $\mu(\abst{\phi_i})$ y $\mu_i(\abst{\phi_i})$, y definamos $\bowtie_i := >$ ó $<$, según sea $\mu(\abst{\phi_i})$ mayor o menor que $\mu_i(\abst{\phi_i})$.
+Entonces definiendo $\gamma := \langle a \rangle [_{\bowtie_i q_i}\phi_i]_{i=1}^m$, tenemos que $s\sat\gamma$, pero $s'\nsat\gamma$, lo que contradice $s\approx s'$. 
+\end{dem}
+\begin{coro}
+Si $\mc{S}$ es un NLMP de imagen finita, entonces para todo par de estados $s\approx_{\mc{L}_\omega}s'$ y toda transición $\trans{s}{a}{\mu}$, existe una transición $\trans{s'}{a}{\mu'}$ tal que $\mu'(\abst{\phi}) = \mu(\abst{\phi}),\ \forall \phi \in \mc{L}_\omega$.
+\end{coro}
+
+\subsection[Teorema de Caracterización]{Teorema de Caracterización Lógica de la Bisimulación}\index{Caracterización Lógica, teorema}
+
+Finalmente, aplicando la \propref{p:absmed} y los teoremas \ref{t:caractida} y \ref{t:caractvuelta}, junto con los lemas \ref{l:fLMP}, \ref{l:f2NLMP} y \ref{l:fNLMP}, obtenemos el siguiente teorema general:
+\begin{teo}[Caracterización lógica de la bisimulación para NLMP de imagen finita]
+Sea $\mc{S} = (S,\Sig,\tau)$ un NLMP de imagen finita (LMP, 2-NLMP, n-NLMP) y sea $\mc{L}=\mc{L}_\omega$ ($\mc{L}_>$, $\mc{L}_\neg$, $\mc{L}_n$ respectivamente). Entonces para todo par de estados $s$, $s'\in S$, se satisface
+\[ s \approx_\mc{L} s' \sii s\sim s' \]
+\end{teo}
+
+\chapter{Conclusiones y Trabajo Futuro}
+El principal aporte de este trabajo es la construcción de la teoría de NLMP sobre espacios Polacos en vez de analíticos, abriendo una línea que no aparecía como posible en \cite{Desharnais}. Si bien los espacios analíticos son más generales que los Polacos, su definición es más técnica, con las complicaciones que ello conlleva. Notemos que los espacios analíticos no fueron introducidos para darle más generalidad a la teoría sino por una limitación técnica que impedía usar sólo espacios Polacos (debido al uso de cocientes en la prueba). En la práctica, es difícil imaginar procesos que requieran el uso de un espacio analítico no Polaco como conjunto de estados.  
+
+El estudio de los espacios Polacos y analíticos y sus propiedades relevantes en la teoría de NLMP, permitió lograr, además del aporte ya mencionado, una mejor estructuración de las pruebas de caracterización lógica de la bisimulación, aislando una propiedad central que garantiza que una lógica caracteriza la bisimulación. Notemos que los conjuntos analíticos, a pesar de ya no ser usados como espacios de estados, siguen teniendo un rol fundamental en la demostración de los resultados técnicos utilizados (los teoremas de Blackwell y de Lusin-Novikov, son ambos consecuencias del Teorema de Separación de Lusin).
+
+Sin embargo, puede ser interesante ver que nuestros resultados se verifican también sobre espacios analíticos de estados, ya que esto permitiría una mejor integración con los resultados de \cite{Desharnais} y todo el desarrollo subsiguiente. También se podría intentar dar una organización categórica de los NLMP. Otras posibles mejoras se refieren a la eliminación de algunas de las restricciones impuestas aquí, como por ejemplo, retirar la condición de imagen finita
+o trabajar sobre procesos con conjuntos no numerables de acciones (por ejemplo, en los que la interacción con el entorno pueda estar dada por variables temporales o físicas continuas).
+
+\newpage
+\footnotesize
+\begin{thebibliography}{[06W-D'A]}%{8888m}
+
+\bibitem[06W-D'A]{Nico} {\sc Nicolás Wolovick, Pedro D'Argenio}: Trabajo en progreso. \emph{FaMAF, Córdoba}
+
+\bibitem[05Des]{DanosDesh} {\sc Vincent Danos, Josée Desharnais, François Laviolette, Prakash Panangaden}: ``Bisimulation and Cocongruence for Probabilistic Systems''. \emph{McGill University, Montréal, Québec - Université Paris 7 and CNRS - Université Laval, Québec, 2005}
+
+\bibitem[01vanG]{vanGlabbeek} {\sc Rob J. van Glabbeek}: ``The linear time - branching time spectrum I; the semantics of concrete, sequential processes'', en: ``Handbook of Process Algebra''. \emph{Chapter 1, Elsevier, 2001, pp. 3-99}
+
+\bibitem[99Des]{Desharnais} {\sc Josée Desharnais}: ``Labelled Markov Processes'' \emph{School
+of Computer Science. McGill University, Montréal, 1999}
+
+\bibitem[96CrHu]{modallogic} {\sc Max J. Cresswell, G. E. Hughes}: ``A New Introduction to Modal Logic'' \emph{Routledge, London, 1996}
+
+\bibitem[95Kec]{Kechris} {\sc Alexander S Kechris}: ``Classical Descriptive Set Theory''. \emph{Springer-Verlag, 1995}
+
+\bibitem[91LS]{LarsenSkou} {\sc K.G. Larsen, A. Skou}: ``Bisimulation through Probabilistic Testing'' en ``Information and Computation'', \emph{94(1):1-28, 1991}
+
+\bibitem[89Mil]{Milner}{\sc R.Milner}: ``Communication and Concurrency''\emph{Prentice Hall, 1989}
+
+\bibitem[86Bil]{Billingsley} {\sc Patrick Billingsley}: ``Probability and Measure''. \emph{John Wiley and Sons, New York, 1986}
+
+\bibitem[70Rud]{Rudin} {\sc Walter Rudin}: ``Real and Complex Analysis''. \emph{McGraw Hill, 1970}
+\bibitem[Wiki]{Wikipedia} Wikipedia \url{http://wikipedia.org}
+
+%\bibitem{84Foll}{\sc Gerald B. Folland}: ``Real Analysis, Modern Techniques and Their Applications"\emph{New %York: John Wiley and Sons}
+
+\end{thebibliography}
+
+\printindex
+
+\end{document}
+
+
