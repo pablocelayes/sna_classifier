@@ -3,6 +3,7 @@ from dbmodels import open_session, Tweet
 from ttp import ttp
 import time
 from utils import json_dump_unicode
+import os
 
 TWEET_PARSER = ttp.Parser()
 
@@ -27,10 +28,17 @@ def extract_content(url):
     return article
 
 if __name__ == '__main__':
+    # don't repeat already processed ids
+
+    processed_ids = [int(f.split('.')[0]) for f in os.listdir('tweet_content/')]
     session = open_session()
 
     # iterate over all tweets
     for tweet in session.query(Tweet).all():
+        if tweet.id in processed_ids:
+            # print "already processed, ignoring..."
+            continue
+        
         # extract links
         urls = extract_urls(tweet.text)
 
