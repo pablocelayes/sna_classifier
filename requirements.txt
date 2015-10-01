@@ -4,3 +4,5 @@ pandas==0.15.2
 ipdb==0.8.1
 SQLAlchemy==1.0.8
 SQLAlchemy-Utils==0.30.17
+newspaper==0.0.9.8
+twitter-text-python==1.1.0
