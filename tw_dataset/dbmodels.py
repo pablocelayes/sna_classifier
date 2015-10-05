@@ -13,6 +13,8 @@ import time
 from datetime import timedelta, datetime, date
 import pickle
 
+from tw_dataset.settings import PROJECT_PATH
+
 
 DATE_LOWER_LIMIT = datetime(year=2015, month=8, day=24)
 
@@ -21,7 +23,7 @@ DATE_UPPER_LIMIT = datetime(year=2015, month=9, day=24)
 
 Base = declarative_base()
 
-SQLITE_CONNECTION = 'sqlite:///twitter_sample.db'
+SQLITE_CONNECTION = 'sqlite:///%s/tw_dataset/twitter_sample.db' % PROJECT_PATH
 
 def db_connect():
     """
@@ -29,8 +31,6 @@ def db_connect():
     Returns sqlalchemy engine instance
     """
     return create_engine(SQLITE_CONNECTION)
-
-SESSION = sessionmaker(db_connect())
 
 def open_session(engine=None):
     if engine is None:
@@ -240,7 +240,13 @@ if __name__ == '__main__':
     graph = nx.read_gpickle('subgraph.gpickle')
     user_ids = graph.nodes()
     users = [User(id=int(uid)) for uid in user_ids]
-    
+
+    TW = API_HANDLER.get_fresh_connection()
+    for i, u in enumerate(users):
+        u.username = TW.get_user(u.id).name
+        if (i + 1) % 20 == 0:
+            TW = API_HANDLER.get_fresh_connection()
+
     session = open_session()
     session.add_all(users)
     session.close()

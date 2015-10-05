@@ -7,3 +7,5 @@ SQLAlchemy-Utils==0.30.17
 newspaper==0.0.9.8
 twitter-text-python==1.1.0
 Scrapy==1.0.3
+oauthlib==1.0.3
+requests-oauthlib==0.4.1
