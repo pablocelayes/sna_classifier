@@ -25,16 +25,20 @@ Base = declarative_base()
 
 SQLITE_CONNECTION = 'sqlite:///%s/tw_dataset/twitter_sample.db' % PROJECT_PATH
 
-def db_connect():
+SQLITE_CONNECTION1 = 'sqlite:///%s/tw_dataset/twitter_sample1.db' % PROJECT_PATH
+
+SQLITE_CONNECTION2 = 'sqlite:///%s/tw_dataset/twitter_sample2.db' % PROJECT_PATH
+
+def db_connect(connection=SQLITE_CONNECTION):
     """
     Performs database connection using database settings from settings.py.
     Returns sqlalchemy engine instance
     """
-    return create_engine(SQLITE_CONNECTION)
+    return create_engine(connection)
 
-def open_session(engine=None):
+def open_session(connection=SQLITE_CONNECTION, engine=None):
     if engine is None:
-        engine = db_connect()
+        engine = db_connect(connection)
     Session = sessionmaker(bind=engine)
     session = Session()
 

@@ -4,7 +4,7 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.item import Item, Field
 from scrapy.http.request import Request
 
-from tw_dataset.dbmodels import open_session, Tweet
+from tw_dataset.dbmodels import open_session, Tweet, SQLITE_CONNECTION1
 from ttp import ttp
 import time
 from tw_dataset.utils import json_dump_unicode
@@ -54,7 +54,7 @@ class TweetContentSpider(CrawlSpider):
             ids_for_urls =  json.load(open('ids_for_urls.json'))
             self.ids_for_urls = {u: i for (u, i) in ids_for_urls.items() if i not in processed_ids}
         else:
-            session = open_session()
+            session = open_session(connection=SQLITE_CONNECTION1)
             self.ids_for_urls = {}
             # iterate over all tweets
             for tweet in session.query(Tweet).all():
