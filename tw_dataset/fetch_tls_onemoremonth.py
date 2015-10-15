@@ -21,6 +21,7 @@ if __name__ == '__main__':
     user_ids = graph.nodes()
 
     s = open_session()
+
     visited_user_ids = [u.id for u in s.query(User).all() if u and len(u.timeline)]
     print "%d visited users" % len(visited_user_ids)
 

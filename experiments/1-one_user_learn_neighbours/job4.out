@@ -1,0 +1,52 @@
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+Dataset loaded.
+Size (#tweets): 185847
+Dimension (#neighbours): 618
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.80      0.89       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       0.96      0.82      0.88       250
+
+avg / total       1.00      1.00      1.00     55755
+
+==================================
+Loading dataset for user sexpoerotica (id 144310601)
+Dataset loaded.
+Size (#tweets): 82063
+Dimension (#neighbours): 462
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     56667
+        1.0       1.00      0.99      0.99       777
+
+avg / total       1.00      1.00      1.00     57444
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     24286
+        1.0       0.97      0.99      0.98       333
+
+avg / total       1.00      1.00      1.00     24619
+

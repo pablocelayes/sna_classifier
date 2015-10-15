@@ -1,0 +1,377 @@
+Switching to API Credentials #4
+Loading dataset for user Gustavo Gomez (id 203030351)
+Dataset loaded.
+Size (#tweets): 174663
+Dimension (#neighbours): 20
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    121148
+        1.0       1.00      0.94      0.97      1116
+
+avg / total       1.00      1.00      1.00    122264
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     51950
+        1.0       1.00      0.92      0.96       449
+
+avg / total       1.00      1.00      1.00     52399
+
+Testing on others
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+Dataset loaded.
+Size (#tweets): 239699
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.80      0.89      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       1.00      0.82      0.90       842
+
+avg / total       1.00      1.00      1.00     71910
+
+==================================
+Loading dataset for user @elprofesionalll (id 142800528)
+Dataset loaded.
+Size (#tweets): 227342
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    157268
+        1.0       1.00      0.85      0.92      1871
+
+avg / total       1.00      1.00      1.00    159139
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     67414
+        1.0       1.00      0.85      0.92       789
+
+avg / total       1.00      1.00      1.00     68203
+
+==================================
+Loading dataset for user RadioLaRioja.com.ar (id 18623370)
+Dataset loaded.
+Size (#tweets): 105871
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     72426
+        1.0       1.00      0.90      0.95      1683
+
+avg / total       1.00      1.00      1.00     74109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     31051
+        1.0       1.00      0.91      0.95       711
+
+avg / total       1.00      1.00      1.00     31762
+
+==================================
+Loading dataset for user Leandro Deyuanini (id 37226353)
+Dataset loaded.
+Size (#tweets): 121585
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     83742
+        1.0       1.00      0.60      0.75      1367
+
+avg / total       0.99      0.99      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     35876
+        1.0       1.00      0.58      0.73       600
+
+avg / total       0.99      0.99      0.99     36476
+
+==================================
+Loading dataset for user Javier A Lewkowicz (id 101047126)
+Dataset loaded.
+Size (#tweets): 147924
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    102892
+        1.0       1.00      0.95      0.97       654
+
+avg / total       1.00      1.00      1.00    103546
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     44102
+        1.0       1.00      0.95      0.97       276
+
+avg / total       1.00      1.00      1.00     44378
+
+==================================
+Loading dataset for user Décimo Doctor (id 126527644)
+Dataset loaded.
+Size (#tweets): 322971
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    225177
+        1.0       1.00      0.99      0.99       902
+
+avg / total       1.00      1.00      1.00    226079
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     96524
+        1.0       1.00      0.98      0.99       368
+
+avg / total       1.00      1.00      1.00     96892
+
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+Dataset loaded.
+Size (#tweets): 185847
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.77      0.87       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       1.00      0.80      0.89       250
+
+avg / total       1.00      1.00      1.00     55755
+
+==================================
+Loading dataset for user sexpoerotica (id 144310601)
+Dataset loaded.
+Size (#tweets): 82063
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     56667
+        1.0       1.00      0.99      0.99       777
+
+avg / total       1.00      1.00      1.00     57444
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     24286
+        1.0       1.00      0.99      1.00       333
+
+avg / total       1.00      1.00      1.00     24619
+
+==================================
+Loading dataset for user Juan Muñoz (id 20611326)
+Dataset loaded.
+Size (#tweets): 212737
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    148301
+        1.0       1.00      0.96      0.98       614
+
+avg / total       1.00      1.00      1.00    148915
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     63571
+        1.0       1.00      0.96      0.98       251
+
+avg / total       1.00      1.00      1.00     63822
+
+==================================
+Loading dataset for user Evelyn (id 1566310694)
+Dataset loaded.
+Size (#tweets): 305666
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    213505
+        1.0       1.00      1.00      1.00       461
+
+avg / total       1.00      1.00      1.00    213966
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     91495
+        1.0       1.00      1.00      1.00       205
+
+avg / total       1.00      1.00      1.00     91700
+
+==================================
+Loading dataset for user Mundo D  (id 59857143)
+Dataset loaded.
+Size (#tweets): 222880
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    154975
+        1.0       1.00      0.95      0.98      1041
+
+avg / total       1.00      1.00      1.00    156016
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     66391
+        1.0       1.00      0.96      0.98       473
+
+avg / total       1.00      1.00      1.00     66864
+
+==================================
+Loading dataset for user Mario Montoya (id 76684633)
+Dataset loaded.
+Size (#tweets): 184886
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129227
+        1.0       1.00      0.84      0.92       193
+
+avg / total       1.00      1.00      1.00    129420
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55387
+        1.0       1.00      0.84      0.91        79
+
+avg / total       1.00      1.00      1.00     55466
+
+==================================
+Loading dataset for user Mariano (id 85123028)
+Dataset loaded.
+Size (#tweets): 238942
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    166109
+        1.0       1.00      0.95      0.97      1150
+
+avg / total       1.00      1.00      1.00    167259
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71213
+        1.0       1.00      0.95      0.97       470
+
+avg / total       1.00      1.00      1.00     71683
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+Dataset loaded.
+Size (#tweets): 192571
+Dimension (#neighbours): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.85      0.92       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+

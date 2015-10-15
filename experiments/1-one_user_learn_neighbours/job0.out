@@ -1,0 +1,52 @@
+==================================
+Loading dataset for user Gustavo Gomez (id 203030351)
+Dataset loaded.
+Size (#tweets): 174663
+Dimension (#neighbours): 572
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    121148
+        1.0       1.00      0.95      0.97      1116
+
+avg / total       1.00      1.00      1.00    122264
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     51950
+        1.0       0.97      0.92      0.95       449
+
+avg / total       1.00      1.00      1.00     52399
+
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+Dataset loaded.
+Size (#tweets): 239699
+Dimension (#neighbours): 625
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.84      0.91      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       0.97      0.82      0.89       842
+
+avg / total       1.00      1.00      1.00     71910
+
