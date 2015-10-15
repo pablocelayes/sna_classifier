@@ -171,6 +171,7 @@ def load_or_create_dataset(uid=USER_ID):
 
     return dataset
 
+
 def load_or_create_dataframe(uid=USER_ID):
     fname = join(DATAFRAMES_FOLDER, "dfX_%d.pickle" % uid)
     yfname = join(DATAFRAMES_FOLDER, "y_%d.pickle" % uid)
@@ -271,6 +272,7 @@ def build_datapoints(sample_uids, njob=None):
 
     return datapoints
 
+
 def build_datapoints_job():
     njob = int(sys.argv[1])
     sample_uids = get_full_graph_usersample()
@@ -278,11 +280,13 @@ def build_datapoints_job():
     uids = sample_uids[part_size * njob: part_size * (njob + 1)]
     build_datapoints(uids, njob)
 
+
 def combine_datapoints():
     fnames = [join(DATASETS_FOLDER, 'datapoints%d.pickle' % i) for i in range(6)]
     parts = [pd.read_pickle(f) for f in fnames]
     datapoints = pd.concat(parts)
     return datapoints
+
 
 def build_dataset_from_datapoints(dp=None, njob=None, nbuckets=20):
     """
@@ -320,6 +324,7 @@ def build_dataset_from_datapoints(dp=None, njob=None, nbuckets=20):
     pickle.dump(y, open(yfname, 'wb'))
     
     return dfX, y
+
 
 def build_dataset_from_datapoints_job():
     njob = int(sys.argv[1])
