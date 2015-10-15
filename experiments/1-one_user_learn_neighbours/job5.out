@@ -1,0 +1,53 @@
+Switching to API Credentials #8
+==================================
+Loading dataset for user Juan Muñoz (id 20611326)
+Dataset loaded.
+Size (#tweets): 212737
+Dimension (#neighbours): 703
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    148301
+        1.0       0.99      0.96      0.98       614
+
+avg / total       1.00      1.00      1.00    148915
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     63571
+        1.0       0.95      0.96      0.96       251
+
+avg / total       1.00      1.00      1.00     63822
+
+==================================
+Loading dataset for user Evelyn (id 1566310694)
+Dataset loaded.
+Size (#tweets): 305666
+Dimension (#neighbours): 744
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    213505
+        1.0       1.00      1.00      1.00       461
+
+avg / total       1.00      1.00      1.00    213966
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     91495
+        1.0       0.92      1.00      0.96       205
+
+avg / total       1.00      1.00      1.00     91700
+

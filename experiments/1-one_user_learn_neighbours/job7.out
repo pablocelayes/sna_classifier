@@ -1,0 +1,53 @@
+Switching to API Credentials #5
+==================================
+Loading dataset for user Mariano (id 85123028)
+Dataset loaded.
+Size (#tweets): 238942
+Dimension (#neighbours): 561
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    166109
+        1.0       1.00      0.95      0.98      1150
+
+avg / total       1.00      1.00      1.00    167259
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71213
+        1.0       0.99      0.95      0.97       470
+
+avg / total       1.00      1.00      1.00     71683
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+Dataset loaded.
+Size (#tweets): 192571
+Dimension (#neighbours): 559
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.88      0.94       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       0.88      0.76      0.82        70
+
+avg / total       1.00      1.00      1.00     57772
+
