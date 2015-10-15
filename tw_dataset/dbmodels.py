@@ -13,7 +13,7 @@ import time
 from datetime import timedelta, datetime, date
 import pickle
 
-from tw_dataset.settings import PROJECT_PATH
+from tw_dataset.settings import PROJECT_PATH, SQLITE_CONNECTION, SQLITE_CONNECTION1, SQLITE_CONNECTION2
 
 
 DATE_LOWER_LIMIT = datetime(year=2015, month=8, day=24)
@@ -23,11 +23,6 @@ DATE_UPPER_LIMIT = datetime(year=2015, month=9, day=24)
 
 Base = declarative_base()
 
-SQLITE_CONNECTION = 'sqlite:///%s/tw_dataset/twitter_sample.db' % PROJECT_PATH
-
-SQLITE_CONNECTION1 = 'sqlite:///%s/tw_dataset/twitter_sample1.db' % PROJECT_PATH
-
-SQLITE_CONNECTION2 = 'sqlite:///%s/tw_dataset/twitter_sample2.db' % PROJECT_PATH
 
 def db_connect(connection=SQLITE_CONNECTION):
     """

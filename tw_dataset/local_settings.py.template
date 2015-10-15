@@ -1,3 +1,9 @@
 DATASETS_FOLDER = "/media/pablo/7e992aad-f878-403e-b7ba-c75c10d4aeff/Tesis/datasets/"
 
 DATAFRAMES_FOLDER = "/media/pablo/7e992aad-f878-403e-b7ba-c75c10d4aeff/Tesis/dataframes/"
+
+SQLITE_CONNECTION = 'sqlite:///%s/tw_dataset/twitter_sample.db' % PROJECT_PATH
+
+SQLITE_CONNECTION1 = 'sqlite:///%s/tw_dataset/twitter_sample1.db' % PROJECT_PATH
+
+SQLITE_CONNECTION2 = 'sqlite:///%s/tw_dataset/twitter_sample2.db' % PROJECT_PATH
