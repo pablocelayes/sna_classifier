@@ -10,15 +10,13 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import  RandomForestClassifier
 
 from tw_dataset.dbmodels import *
+from tw_dataset.settings import DATASETS_FOLDER, DATAFRAMES_FOLDER
 from experiments.utils import *
 import pickle, os
 import pandas as pd
 from os.path import join
 import sys
 
-DATASETS_FOLDER = "/media/pablo/7e992aad-f878-403e-b7ba-c75c10d4aeff/Tesis/datasets/"
-
-DATAFRAMES_FOLDER = "/media/pablo/7e992aad-f878-403e-b7ba-c75c10d4aeff/Tesis/dataframes/"
 
 TEST_USERS = [
     [

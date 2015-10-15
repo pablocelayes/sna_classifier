@@ -10,3 +10,4 @@ tw_dataset/big_graph.gpickle
 *.graphml
 *.gt
 *.sublime*
+local_settings.py

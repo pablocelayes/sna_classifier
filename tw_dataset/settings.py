@@ -75,3 +75,5 @@ PROJECT_PATH = abspath(join(dirname(__file__), '..'))
 GT_GRAPH_PATH = join(PROJECT_PATH, 'tw_dataset/subgraph.gt')
 
 NX_GRAPH_PATH = join(PROJECT_PATH, 'tw_dataset/subgraph.gpickle')
+
+from local_settings import *
