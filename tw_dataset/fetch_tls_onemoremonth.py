@@ -23,8 +23,10 @@ if __name__ == '__main__':
 
     s = open_session()
     visited_user_ids = [u.id for u in s.query(User).all() if len(u.timeline)]
+    print "%d visited users" % len(visited_user_ids)
 
     unvisited_users = [uid for uid in user_ids if uid not in visited_user_ids]
+    print "%d unvisited users pending" % len(un)
     
     for user in unvisited_users:
         user.fetch_timeline(s)
