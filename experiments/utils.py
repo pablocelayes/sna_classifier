@@ -62,16 +62,20 @@ def get_level2_neighbours(user, session):
         An ordered list of up to level-2 neighbours is created
         (followed and their followed)
     """
-    g = gt.load_graph(GT_GRAPH_PATH)
-    v = get_vertex_by_twid(g, user.id)
-    neighbourhood = set()
-    neighbourhood.update(v.out_neighbours())
+    # g = load_gt_graph()
+    g = load_nx_graph()
+    # v = get_vertex_by_twid(g, user.id)
+    uid = str(user.id)
 
-    for n in v.out_neighbours():
-        neighbourhood.update(n.out_neighbours())
+    # neighbourhood = set(v.out_neighbours())
+    neighbourhood = set(g.successors(uid))
 
-    neighbourhood_twids = [get_twitter_id(g, n) for n in neighbourhood]
-    neighbour_users = [session.query(User).get(twid) for twid in neighbourhood_twids]
+    for nid in g.successors(uid):
+        neighbourhood.update(g.successors(nid))
+
+    # neighbourhood_twids = [get_twitter_id(g, n) for n in neighbourhood]
+    # neighbour_users = [session.query(User).get(twid) for twid in neighbourhood_twids]
+    neighbour_users = [session.query(User).get(twid) for twid in neighbourhood]
 
     # Remove None elements and own user (TODO: see why this happens)
     neighbour_users = [u for u in neighbour_users if u and u.id != user.id]
