@@ -14,6 +14,8 @@ from datetime import timedelta, datetime, date
 import pickle
 
 from tw_dataset.settings import PROJECT_PATH
+from tweepy import TweepError    
+
 
 SQLITE_CONNECTION = 'sqlite:///%s/tw_dataset/twitter_sample_rts.db' % PROJECT_PATH
 
@@ -221,11 +223,15 @@ if __name__ == '__main__':
     import networkx as nx
     graph = nx.read_gpickle('subgraph.gpickle')
     user_ids = graph.nodes()
-    users = [User(id=int(uid)) for uid in user_ids]
+    users = []
 
     TW = API_HANDLER.get_fresh_connection()
-    for i, u in enumerate(users):
-        u.username = TW.get_user(u.id).name
+    for i, uid in enumerate(user_ids):
+        try:
+            u = TW.get_user(uid)
+            users.append(User(id=uid, username=u.name))
+        except TweepError:
+            continue
         if (i + 1) % 20 == 0:
             TW = API_HANDLER.get_fresh_connection()
 
