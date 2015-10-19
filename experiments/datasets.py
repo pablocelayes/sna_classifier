@@ -304,8 +304,8 @@ def build_dataset_from_datapoints(dp=None, njob=None, nbuckets=20):
         user = s.query(User).get(uid)        
         neighbours = get_level2_neighbours(user, s)
         ngids = [n.id for n in neighbours]
-        tweets = [s.query(Tweet).get(tid) for tid in dp.loc[uid]]
-        df_index = [(uid, tid) for tid in dp.loc[uid]]
+        tweets = s.query(Tweet).filter(Tweet.id.in_(dp.loc[uid]))
+        df_index = [(uid, t.id) for t in tweets]
 
         X, y = extract_features(tweets, neighbours, user)
         X = transform_ngfeats_to_bucketfeats(uid, ngids, X, nbuckets)
