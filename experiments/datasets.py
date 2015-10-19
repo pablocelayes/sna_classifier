@@ -300,9 +300,12 @@ def build_dataset_from_datapoints(dp=None, njob=None, nbuckets=20):
     s = open_session()
     dfs = []
     ys = []
+
     for uid in dp.index:
         user = s.query(User).get(uid)        
         neighbours = get_level2_neighbours(user, s)
+        if not neighbours:
+            continue
         ngids = [n.id for n in neighbours]
         tweets = s.query(Tweet).filter(Tweet.id.in_(dp.loc[uid])).all()
         df_index = [(uid, t.id) for t in tweets]
