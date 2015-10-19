@@ -1,7 +1,5 @@
 from datetime import date, timedelta
 
-from os.path import dirname, abspath, join
-
 DATE_LIMIT = date.today() - timedelta(days=30)
 
 AUTH_DATA = [
@@ -69,11 +67,5 @@ USER_DATA = {
 SEARCH_STRING = "the OR a"
 
 N_USERS = 50
-
-PROJECT_PATH = abspath(join(dirname(__file__), '..'))
-
-GT_GRAPH_PATH = join(PROJECT_PATH, 'tw_dataset/subgraph.gt')
-
-NX_GRAPH_PATH = join(PROJECT_PATH, 'tw_dataset/subgraph.gpickle')
 
 from local_settings import *

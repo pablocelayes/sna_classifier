@@ -1,3 +1,11 @@
+from os.path import dirname, abspath, join
+
+PROJECT_PATH = abspath(join(dirname(__file__), '..'))
+
+GT_GRAPH_PATH = join(PROJECT_PATH, 'tw_dataset/subgraph.gt')
+
+NX_GRAPH_PATH = join(PROJECT_PATH, 'tw_dataset/subgraph.gpickle')
+
 DATASETS_FOLDER = "/media/pablo/7e992aad-f878-403e-b7ba-c75c10d4aeff/Tesis/datasets/"
 
 DATAFRAMES_FOLDER = "/media/pablo/7e992aad-f878-403e-b7ba-c75c10d4aeff/Tesis/dataframes/"
