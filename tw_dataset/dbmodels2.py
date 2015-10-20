@@ -152,7 +152,7 @@ class User(Base):
                         
                         if isretweet:
                             retweet = Retweet(userid=self.id, tweetid=t.id, retweeted_at=retweeted_at)
-                            self.retweets.append(tweet)                            
+                            session.add(retweet)                            
 
                         self.timeline.append(tweet)
                            
