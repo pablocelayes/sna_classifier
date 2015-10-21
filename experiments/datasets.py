@@ -172,6 +172,77 @@ def load_or_create_dataset(uid=USER_ID):
     return dataset
 
 
+def load_or_create_combined_dataset_small(nbuckets, test_size=0.3):
+    fname = join(DATASETS_FOLDER, "dataset_combined_small_b%02d.pickle" % nbuckets)
+    if os.path.exists(fname):
+        dataset = pickle.load(open(fname, 'rb'))
+    else:
+        user_border = int((1 - test_size) * len(TEST_USERS))
+        train_users, test_users = TEST_USERS[:user_border], TEST_USERS[user_border:]
+        
+        s = open_session()
+        # print("Creating training set based on %d users" % user_border)
+        X_train = None
+        for uid, username, tweet_count in train_users:
+            # print("==================================")
+            # print("Loading training set for user %s (id %d)" % (username, uid))
+            u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataset(uid)
+
+            ds_size, ds_dimension = u_X_train.shape
+            # print("Size (#tweets): %d" % ds_size)
+            # print("Dimension (#neighbours): %d" % ds_dimension)
+            user = s.query(User).get(uid)
+            neighbours = get_level2_neighbours(user, s)
+            ngids = [str(ng.id) for ng in neighbours]
+
+            u_X = np.vstack((u_X_train, u_X_test))
+            u_y = np.hstack((u_y_train, u_y_test))
+            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X, nbuckets)
+
+            if X_train is None:
+                X_train = u_X
+                y_train = u_y
+            else:
+                X_train = np.vstack((X_train, u_X))
+                y_train = np.hstack((y_train, u_y))
+        
+        ds_size, ds_dimension = X_train.shape
+        # print("==================================")    
+        # print("Combined training set created.")
+        # print("Size (#tweets): %d" % ds_size)
+        # print("Dimension (#neighbour buckets): %d" % ds_dimension)
+
+        # print("Creating test set based on remaining users" % user_border)
+        X_test = None    
+        for uid, username, tweet_count in test_users:
+            # print("==================================")
+            # print("Loading training set for user %s (id %d)" % (username, uid))
+            u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataset(uid)
+
+            ds_size, ds_dimension = u_X_train.shape
+            # print("Size (#tweets): %d" % ds_size)
+            # print("Dimension (#neighbours): %d" % ds_dimension)
+            user = s.query(User).get(uid)
+            neighbours = get_level2_neighbours(user, s)
+            ngids = [str(ng.id) for ng in neighbours]
+
+            u_X = np.vstack((u_X_train, u_X_test))
+            u_y = np.hstack((u_y_train, u_y_test))
+            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X, nbuckets)
+
+            if X_test is None:
+                X_test = u_X
+                y_test = u_y
+            else:
+                X_test = np.vstack((X_train, u_X))
+                y_test = np.hstack((y_train, u_y))
+        dataset = (X_train, X_test, y_train, y_test)
+        pickle.dump(dataset, open(fname, 'wb'))
+        s.close()
+
+    return dataset
+
+
 def load_or_create_dataframe(uid=USER_ID):
     fname = join(DATAFRAMES_FOLDER, "dfX_%d.pickle" % uid)
     yfname = join(DATAFRAMES_FOLDER, "y_%d.pickle" % uid)

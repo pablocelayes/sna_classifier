@@ -1,0 +1,306 @@
+Switching to API Credentials #1
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.80      0.89      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       1.00      0.82      0.90       842
+
+avg / total       1.00      1.00      1.00     71910
+
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.80      0.89      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       1.00      0.82      0.90       842
+
+avg / total       1.00      1.00      1.00     71910
+
+Switching to API Credentials #7
+==================================
+Loading dataset for user @elprofesionalll (id 142800528)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    157268
+        1.0       1.00      0.85      0.92      1871
+
+avg / total       1.00      1.00      1.00    159139
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     67414
+        1.0       1.00      0.85      0.92       789
+
+avg / total       1.00      1.00      1.00     68203
+
+==================================
+Loading dataset for user @elprofesionalll (id 142800528)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    157268
+        1.0       1.00      0.86      0.92      1871
+
+avg / total       1.00      1.00      1.00    159139
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     67414
+        1.0       1.00      0.85      0.92       789
+
+avg / total       1.00      1.00      1.00     68203
+
+Switching to API Credentials #5
+==================================
+Loading dataset for user Leandro Deyuanini (id 37226353)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     83742
+        1.0       1.00      0.60      0.75      1367
+
+avg / total       0.99      0.99      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     35876
+        1.0       1.00      0.58      0.73       600
+
+avg / total       0.99      0.99      0.99     36476
+
+==================================
+Loading dataset for user Leandro Deyuanini (id 37226353)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     83742
+        1.0       1.00      0.60      0.75      1367
+
+avg / total       0.99      0.99      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     35876
+        1.0       1.00      0.58      0.73       600
+
+avg / total       0.99      0.99      0.99     36476
+
+Switching to API Credentials #3
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.77      0.87       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       1.00      0.80      0.89       250
+
+avg / total       1.00      1.00      1.00     55755
+
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.77      0.87       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       1.00      0.80      0.89       250
+
+avg / total       1.00      1.00      1.00     55755
+
+Switching to API Credentials #2
+==================================
+Loading dataset for user Mario Montoya (id 76684633)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129227
+        1.0       1.00      0.84      0.92       193
+
+avg / total       1.00      1.00      1.00    129420
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55387
+        1.0       1.00      0.84      0.91        79
+
+avg / total       1.00      1.00      1.00     55466
+
+==================================
+Loading dataset for user Mario Montoya (id 76684633)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129227
+        1.0       1.00      0.86      0.92       193
+
+avg / total       1.00      1.00      1.00    129420
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55387
+        1.0       0.99      0.84      0.90        79
+
+avg / total       1.00      1.00      1.00     55466
+
+Switching to API Credentials #2
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.85      0.92       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.85      0.92       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+

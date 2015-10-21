@@ -11,3 +11,7 @@ tw_dataset/big_graph.gpickle
 *.gt
 *.sublime*
 local_settings.py
+accesoserver.txt
+*.npz
+*.pickle
+*.json

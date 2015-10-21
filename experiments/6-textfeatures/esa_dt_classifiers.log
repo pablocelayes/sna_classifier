@@ -1,0 +1,156 @@
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+Dataset loaded.
+Size (#tweets): 300
+Dimension (#ESA features): 166227
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       145
+        1.0       1.00      1.00      1.00        65
+
+avg / total       1.00      1.00      1.00       210
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00        55
+        1.0       1.00      1.00      1.00        35
+
+avg / total       1.00      1.00      1.00        90
+
+==================================
+Loading dataset for user @elprofesionalll (id 142800528)
+Dataset loaded.
+Size (#tweets): 300
+Dimension (#ESA features): 166227
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       145
+        1.0       1.00      1.00      1.00        65
+
+avg / total       1.00      1.00      1.00       210
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00        55
+        1.0       1.00      1.00      1.00        35
+
+avg / total       1.00      1.00      1.00        90
+
+==================================
+Loading dataset for user Leandro Deyuanini (id 37226353)
+Dataset loaded.
+Size (#tweets): 300
+Dimension (#ESA features): 166227
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       145
+        1.0       1.00      0.97      0.98        65
+
+avg / total       0.99      0.99      0.99       210
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99        55
+        1.0       1.00      0.97      0.99        35
+
+avg / total       0.99      0.99      0.99        90
+
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+Dataset loaded.
+Size (#tweets): 300
+Dimension (#ESA features): 166227
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       145
+        1.0       1.00      1.00      1.00        65
+
+avg / total       1.00      1.00      1.00       210
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00        55
+        1.0       1.00      1.00      1.00        35
+
+avg / total       1.00      1.00      1.00        90
+
+==================================
+Loading dataset for user Mario Montoya (id 76684633)
+Dataset loaded.
+Size (#tweets): 300
+Dimension (#ESA features): 166227
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       145
+        1.0       1.00      0.98      0.99        65
+
+avg / total       1.00      1.00      1.00       210
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00        55
+        1.0       1.00      1.00      1.00        35
+
+avg / total       1.00      1.00      1.00        90
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+Dataset loaded.
+Size (#tweets): 300
+Dimension (#ESA features): 166227
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       145
+        1.0       1.00      0.98      0.99        65
+
+avg / total       1.00      1.00      1.00       210
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00        55
+        1.0       1.00      1.00      1.00        35
+
+avg / total       1.00      1.00      1.00        90
+

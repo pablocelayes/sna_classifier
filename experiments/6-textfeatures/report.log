@@ -1,0 +1,20 @@
+In [44]:         clf = RandomForestClassifier()
+In [45]:      clf_fit = clf.fit(X_train, y_train, sample_weight=sample_weights)
+In [46]: y_true, y_pred = y_train, clf.predict(X_train)
+In [47]: print(classification_report(y_true, y_pred))
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      1290
+        1.0       1.00      1.00      1.00      1283
+
+avg / total       1.00      1.00      1.00      2573
+
+
+In [48]: y_true, y_pred = y_test, clf.predict(X_test)
+In [49]: print(classification_report(y_true, y_pred))
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       574
+        1.0       1.00      1.00      1.00       530
+
+avg / total       1.00      1.00      1.00      1104
