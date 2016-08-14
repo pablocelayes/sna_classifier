@@ -35,7 +35,7 @@ def get_most_central_twids(N=100):
     g = gt.load_graph(GT_GRAPH_PATH)
     katzc=gt.katz(g)
     katzc_array = katzc.get_array()
-    katzc_sorted=sorted(enumerate(katzc_array), key=lambda (i, v):v)
+    katzc_sorted = sorted(enumerate(katzc_array), key=lambda (i, v):v)
     most_central = [id for (id, c) in katzc_sorted][:N]
     most_central_twids = [get_twitter_id(g,id) for id in most_central]
     
@@ -52,10 +52,16 @@ def get_retweets(user_ids):
 
     return retweets
 
-def get_followed_and_retweets(uid):
-    g = gt.load_graph(GT_GRAPH_PATH)
-    v = g.vertex()
-    pass
+def get_followed(user, session, g):
+    uid = str(user.id)
+    followed = set(g.successors(uid))
+    followed_users = [session.query(User).get(twid) for twid in followed]
+
+    # Remove None elements and own user (TODO: see why this happens)
+    followed_users = [u for u in followed_users if u and u.id != user.id]
+    
+    return followed_users
+
 
 def get_level2_neighbours(user, session):
     """
