@@ -43,7 +43,7 @@ def model_select_rdf(dataset):
 
 
     scores = [
-        'precision',
+        # 'precision',
         'recall',
         'f1'
     ]
@@ -83,5 +83,5 @@ def model_select_rdf(dataset):
 
 
 if __name__ == '__main__':
-    dataset = load_or_create_dataset()
+    dataset = load_or_create_dataset(37226353)
     model_select_rdf(dataset)

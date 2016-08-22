@@ -329,28 +329,33 @@ def build_datapoints(sample_uids, njob):
             progress = i * 100 / len(sample_uids)
             print("%.2f %%" % progress)
         user = s.query(User).get(uid)                    
-        user_tweets = set(user.timeline)
+        user_rts = set([t for t in user.timeline if t.author_id != int(uid)])
         
-        # Ignore users with less than 30 tweets
-        if len(user_tweets) < 30:
+        # Ignore users with less than 30 retweets
+        if len(user_rts) < 30:
             continue
 
         # Fetch tweet universe 
         # (timeline of ownuser + followed)
-        followed = get_followed(user, s, g)
-        tweets_from_followed = set()
-        for u in followed:
-            tweets_from_followed.update(u.timeline)
+        neighbours = get_level2_neighbours(user, s)
+        tweets_from_neighbours = set()
+        for u in neighbours:
+            tweets_from_neighbours.update(u.timeline)
+
+        # Keep only RTs that are shared with at least one neighbour
+        # ( due to changes in followers it can happen that 
+        #   an RT is not shared with any neighbour )
+        user_rts = [t for t in user_rts if t in tweets_from_neighbours]
         
         # Make sure that positives (tweets from user) are at
         # least 10% of the sample
-        max_followed_tweets = 9 * len(user_tweets)
-        if len(tweets_from_followed) > max_followed_tweets:
-            tweets_from_followed = random.sample(tweets_from_followed, max_followed_tweets)
+        max_followed_tweets = 9 * len(user_rts)
+        if len(tweets_from_neighbours) > max_followed_tweets:
+            tweets_from_neighbours = random.sample(tweets_from_neighbours, max_followed_tweets)
 
         tweets = set()
-        tweets.update(user_tweets)
-        tweets.update(tweets_from_followed)
+        tweets.update(user_rts)
+        tweets.update(tweets_from_neighbours)
 
         # Reduce sample to 300 per user
         if len(tweets) > 300:
@@ -388,11 +393,11 @@ def combine_datapoints():
     return datapoints
 
 
-def build_dataset_from_datapoints(njob, set_type, nbuckets=20):
+def build_dataset_from_datapoints(njob, set_type, nbuckets=20, nmostsimilar=30):
     '''
-        Given a dataframe of points (users and associated tweets)
+        Given a dictionary of points (users and associated tweets)
         this generates a dataframe of features for those points
-        and a vector y of output values. (retweeted or not)
+        and a vector y of output values. (1 = retweeted, 0 = not retweeted )
     '''
     fname = join(DATASETS_FOLDER, 'datapoints_%s_%d.pickle' % (set_type, njob))
     dp = pickle.load(open(fname, 'rb'))
@@ -403,28 +408,27 @@ def build_dataset_from_datapoints(njob, set_type, nbuckets=20):
     for uid in dp:
         user = s.query(User).get(uid)        
         neighbours = get_level2_neighbours(user, s)
-        if not neighbours:
+
+        if (len(neighbours) < nmostsimilar + 1):
             continue
+
         ngids = [n.id for n in neighbours]
+
         tweets = s.query(Tweet).filter(Tweet.id.in_(dp[uid])).all()
         df_index = [(uid, t.id) for t in tweets]
 
         Xb, y = extract_features(tweets, neighbours, user)
-        X = transform_ngfeats_to_bucketfeats(uid, ngids, Xb, nbuckets)
+        X = transform_ngfeats_to_bucketfeats(uid, ngids, Xb, nmostsimilar, nbuckets)
 
-        df = pd.DataFrame(data=X, index=df_index, columns=range(nbuckets))
+        df = pd.DataFrame(data=X, index=df_index, columns=range(X.shape[1]))
         dfs.append(df)
         ys.append(y)
     s.close()
     dfX = pd.concat(dfs)
     y = np.hstack(ys)
 
-    if set_type == 'train':
-        xfname = join(DATASETS_FOLDER, 'large_X%d.pickle' % njob)
-        yfname = join(DATASETS_FOLDER, 'large_y%d.pickle' % njob)
-    elif set_type == "testtime":
-        xfname = join(DATASETS_FOLDER, 'large_Xtt_%d.pickle' % njob)
-        yfname = join(DATASETS_FOLDER, 'large_ytt_%d.pickle' % njob)
+    xfname = join(DATASETS_FOLDER, 'dataset_X_%s_%d.pickle' % (set_type, njob))
+    yfname = join(DATASETS_FOLDER, 'dataset_y_%s_%d.pickle' % (set_type, njob))
             
     dfX.to_pickle(xfname)
     pickle.dump(y, open(yfname, 'wb'))
@@ -433,13 +437,8 @@ def build_dataset_from_datapoints(njob, set_type, nbuckets=20):
 
 
 def load_large_dataset_piece(npiece, set_type):
-    if set_type == "train":
-        xfname = join(DATASETS_FOLDER, 'large_X%d.pickle' % npiece)
-        yfname = join(DATASETS_FOLDER, 'large_y%d.pickle' % npiece)
-    elif set_type == "testtime":
-        xfname = join(DATASETS_FOLDER, 'large_Xtt_%d.pickle' % npiece)
-        yfname = join(DATASETS_FOLDER, 'large_ytt_%d.pickle' % npiece)
-
+    xfname = join(DATASETS_FOLDER, 'dataset_X_%s_%d.pickle' % (set_type, npiece))
+    yfname = join(DATASETS_FOLDER, 'dataset_y_%s_%d.pickle' % (set_type, npiece))
 
     dfX = pd.read_pickle(xfname)
     y = pickle.load(open(yfname,'rb'))

@@ -11,9 +11,7 @@ from sklearn.cross_validation import train_test_split, StratifiedKFold
 from sklearn.grid_search import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import  RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import make_moons, make_circles, make_classification
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -32,7 +30,7 @@ names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Decision Tree",
 classifiers = [
     KNeighborsClassifier(5),
     SVC(kernel="linear", C=0.025, class_weight='auto'),
-    SVC(gamma=2, C=1, class_weight='auto'),
+    SVC(kernel="rbf", gamma=1, C=0.1, class_weight='auto'),
     DecisionTreeClassifier(class_weight='auto'),
     RandomForestClassifier(class_weight='auto'),
     AdaBoostClassifier(),
@@ -40,10 +38,7 @@ classifiers = [
     LDA(),
     QDA()]
 
-
-if __name__ == '__main__':
-    njob = int(sys.argv[1])
-    # nbuckets_values = range(5, 100, 10)
+def evaluate_combined_small(njob):
     nbuckets_values = [5]
     for nbuckets in nbuckets_values:
         print("=============================")
@@ -56,7 +51,7 @@ if __name__ == '__main__':
         w0 = 1 - w1
         sample_weight = np.array([w0 if x==0 else w1 for x in y_train])        
         
-        for name, clf in zip(names, classifiers)[njob: njob + 1]:
+        for name, clf in zip(names, classifiers)[2 * njob: 2 * njob + 1]:
             print("--------------------")
             print("Training %s" % name)
             clf.fit(X_train, y_train)
@@ -64,3 +59,33 @@ if __name__ == '__main__':
             y_true, y_pred = y_test, clf.predict(X_test)
             print("Scores on test set.\n")
             print(classification_report(y_true, y_pred))
+
+def evaluate_individual(uid, njob):
+    print("=============================")
+    print("Evaluating for uid=%d" % uid)
+    print("Loading dataset...")
+    X_train, X_test, y_train, y_test = load_or_create_dataset(uid)
+    print("OK")
+
+    w1 = sum(y_train)/len(y_train)
+    w0 = 1 - w1
+    sample_weight = np.array([w0 if x==0 else w1 for x in y_train])        
+    
+    for name, clf in zip(names, classifiers)[2 * njob: 2 * njob + 2]:
+        print("--------------------")
+        print("Training %s" % name)
+        try:
+            clf.fit(X_train, y_train, sample_weight=sample_weight)            
+        except Exception:
+            print("Doesn't accept sample weight, calling without...")
+            clf.fit(X_train, y_train)
+        print("OK")
+        
+        y_true, y_pred = y_test, clf.predict(X_test)
+        print("Scores on test set.\n")
+        print(classification_report(y_true, y_pred))
+
+if __name__ == '__main__':
+    import sys
+    njob = int(sys.argv[1])
+    evaluate_individual(37226353, njob)

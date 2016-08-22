@@ -76,7 +76,7 @@ def get_lang_classified_twids(uid, lang):
     if os.path.exists(fname):
         twids, y = pickle.load(open(fname, 'rb'))
     else:
-        print("Go to create samples and create them!")
+        print("Go to create_samples and create them!")
 
     return twids, y
 

@@ -72,6 +72,7 @@ def commute_time(graph, node_a, node_b):
 def hitting_time(graph, node_a, node_b):
     raise NotImplementedError
 
+
 def all_finite_katz_measures(G, alpha=0.2, K=10):
     """
         Given a a graph, this computes a truncated version of Katz 

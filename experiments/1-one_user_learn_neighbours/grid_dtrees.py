@@ -35,18 +35,18 @@ def model_select_dtree(dataset):
     X_train, X_test, y_train, y_test = dataset
 
     # Set the parameters by cross-validation
-    params = {'max_depth':[2,5,10,20],
-                'min_samples_split':[2,8,32,128],
-                'min_samples_leaf':[1,2,5,10],
+    params = {'max_depth':[5,10, None],
+                'min_samples_split':[2,8,32],
+                'min_samples_leaf':[1,5,10],
                 # 'compute_importances':[True],
                 # 'max_features': [25, 50, 75, 100, 150]
                 # 'max_features': [5, 10, 15]
             }
 
     scores = [
-        'precision',
+        # 'precision',
         'recall',
-        'f1'
+        # 'f1'
     ]
 
 
@@ -85,6 +85,6 @@ def model_select_dtree(dataset):
 
 
 if __name__ == '__main__':
-    dataset = load_or_create_dataset()
+    dataset = load_or_create_dataset(37226353)
     model_select_dtree(dataset)
     # model_select_rdf()
