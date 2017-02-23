@@ -3,6 +3,7 @@ import networkx as nx
 from tw_dataset.dbmodels import *
 from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH
 from experiments.relatedness import finite_katz_measures
+from collections import defaultdict
 
 from os.path import join
 import numpy as np
@@ -62,6 +63,16 @@ def get_followed(user, session, g):
     
     return followed_users
 
+def get_followers(user, session, g):
+    uid = str(user.id)
+    followers = set(g.predecessors(uid))
+    follower_users = [session.query(User).get(twid) for twid in followers]
+
+    # Remove None elements and own user (TODO: see why this happens)
+    follower_users = [u for u in follower_users if u and u.id != user.id]
+    
+    return follower_users
+
 
 def get_level2_neighbours(user, session):
     """
@@ -88,7 +99,6 @@ def get_level2_neighbours(user, session):
     
     return neighbour_users
 
-
 # Feature transformations
 def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats, nmostsimilar=30, nbuckets=20):
     '''
@@ -103,14 +113,18 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats, nmostsimilar=30, nbucke
     fkatz_sims = finite_katz_measures(g, str(uid), K=10, alpha=0.2)
     ngs_fkatz = {i: fkatz_sims[str(i)] for i in ngids}
     sorted_ngs_fkatz = sorted(ngs_fkatz.items(), key=lambda (i, s): s)
-
-    # Create first 30 buckets with most similar users
     twid_to_colind = { twid: colind for colind, twid in enumerate(ngids)}
-    most_similar = sorted_ngs_fkatz[-nmostsimilar:]
-    most_similar_colinds = [[twid_to_colind[twid]] for twid, s in most_similar]
+
+    # Create first buckets with most similar users
+    if nmostsimilar:
+        most_similar = sorted_ngs_fkatz[-nmostsimilar:]
+        most_similar_colinds = [[twid_to_colind[twid]] for twid, s in most_similar]
+        sorted_ngs_fkatz = sorted_ngs_fkatz[:-nmostsimilar]
+    else:
+        most_similar_colinds = []
 
     # Group the remaining ones in nbuckets
-    ngs_logfkatz = [(x, np.log(k)) for (x,k) in sorted_ngs_fkatz[:-nmostsimilar]]
+    ngs_logfkatz = [(x, np.log(k)) for (x,k) in sorted_ngs_fkatz]
     lfk_range = [ngs_logfkatz[i][1] for i in [0,-1]]
     
     minfk, maxfk = lfk_range
@@ -134,3 +148,65 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats, nmostsimilar=30, nbucke
 
     return grXfeats
 
+def get_unique_rows(a):
+    """
+        Given a numpy array, it returns
+        a new array containing only its unique rows,
+        with no repetitions
+    """
+    b = np.ascontiguousarray(a).view(np.dtype((np.void, a.dtype.itemsize * a.shape[1])))
+    _, idx, counts = np.unique(b, return_index=True, return_counts=True)
+
+    return a[idx], counts
+
+def vector_to_neighbour_list(v, neighbours):
+    ns = [neighbours[i] for i in range(len(v)) if v[i]]
+    return [n.username for n in ns]
+
+def count_doomed_samples(X, y):
+    """
+        Given a training dataset, we find
+        its contradictions and compute the minimum
+        possible number of missclassified samples
+        by summing the sizes of smallest groups among
+        all pairs of contradictory groups
+    """
+    s = open_session()
+    neighbours = [s.query(User).get(uid) for uid in X.columns]
+    Xy = merge_Xy(X, y)
+    Xy_u, counts = get_unique_rows(Xy)
+
+    miss_clf_counts = defaultdict(float)
+    sample_counts={}
+    details = []
+    for i, r in enumerate(Xy_u):
+        s = r[:-1].tostring()
+        y = r[-1]
+        c = counts[i]
+        if s in sample_counts:
+            if c > sample_counts[s]:
+                miss_clf_counts[int(1-y)] += sample_counts[s]
+            elif c < sample_counts[s]:
+                miss_clf_counts[int(y)] += c
+            # TODO: decidir q hacer en este caso
+            # else:
+            #     miss_clf_counts[0] += c * 0.5
+            #     miss_clf_counts[1] += c * 0.5
+            v = r[:-1]
+            cs = {y: c, 1-y: sample_counts[s]}
+            nl = vector_to_neighbour_list(v, neighbours)
+            details.append((nl, cs))
+        else:
+            sample_counts[s] = c
+
+    # The cost of an inconsistency is the minimum number of missclasified
+    # samples
+    details = sorted(details, key=lambda (x, y): -min(y.values()))
+
+    return miss_clf_counts, details
+
+def merge_Xy(X, y):
+    Xy = np.hstack((X, np.zeros((X.shape[0],1))))
+    Xy[:,-1] = y
+
+    return Xy

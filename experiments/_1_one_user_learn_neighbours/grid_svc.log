@@ -1,0 +1,50 @@
+(For User Leandro Deyauani)
+
+# Tuning hyper-parameters for f1
+
+
+{'kernel': 'rbf', 'C': 0.1, 'gamma': 1}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     83742
+        1.0       1.00      0.60      0.75      1367
+
+avg / total       0.99      0.99      0.99     85109
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     35876
+        1.0       1.00      0.58      0.73       600
+
+avg / total       0.99      0.99      0.99     36476
+
+# Tuning hyper-parameters for recall
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'gamma': 10}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     83742
+        1.0       1.00      0.64      0.78      1367
+
+avg / total       0.99      0.99      0.99     85109
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     35876
+        1.0       0.98      0.59      0.73       600
+
+avg / total       0.99      0.99      0.99     36476

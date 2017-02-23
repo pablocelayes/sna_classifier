@@ -1,0 +1,21 @@
+Switching to API Credentials #6
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00   1080156
+        1.0       1.00      0.90      0.95      2844
+
+avg / total       1.00      1.00      1.00   1083000
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00   1080145
+        1.0       1.00      0.92      0.96      2855
+
+avg / total       1.00      1.00      1.00   1083000
+

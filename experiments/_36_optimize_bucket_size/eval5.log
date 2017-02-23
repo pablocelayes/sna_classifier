@@ -1,0 +1,126 @@
+Switching to API Credentials #3
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.85      0.92       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.86      0.92       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+==================================
+Transforming to 10 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.86      0.93       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+==================================
+Transforming to 20 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.87      0.93       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+
+==================================
+Loading dataset for user pablorgarcia (id 54987976)
+==================================
+Transforming to 30 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    134640
+        1.0       1.00      0.86      0.93       159
+
+avg / total       1.00      1.00      1.00    134799
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     57702
+        1.0       1.00      0.76      0.86        70
+
+avg / total       1.00      1.00      1.00     57772
+

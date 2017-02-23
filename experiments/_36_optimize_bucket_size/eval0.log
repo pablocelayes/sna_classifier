@@ -1,0 +1,126 @@
+Switching to API Credentials #8
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.80      0.89      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       1.00      0.82      0.90       842
+
+avg / total       1.00      1.00      1.00     71910
+
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.80      0.89      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       1.00      0.82      0.90       842
+
+avg / total       1.00      1.00      1.00     71910
+
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+==================================
+Transforming to 10 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.81      0.89      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       1.00      0.82      0.90       842
+
+avg / total       1.00      1.00      1.00     71910
+
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+==================================
+Transforming to 20 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.81      0.90      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       0.99      0.82      0.89       842
+
+avg / total       1.00      1.00      1.00     71910
+
+==================================
+Loading dataset for user LAWRENCE JPD ARABIA  (id 228252737)
+==================================
+Transforming to 30 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    165760
+        1.0       1.00      0.82      0.90      2029
+
+avg / total       1.00      1.00      1.00    167789
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     71068
+        1.0       0.99      0.82      0.89       842
+
+avg / total       1.00      1.00      1.00     71910
+

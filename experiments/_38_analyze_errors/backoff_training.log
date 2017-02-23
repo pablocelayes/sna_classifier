@@ -1,0 +1,101 @@
+Loading dataset...
+
+#Zeros =  #RecallErrors
+
+Trying some alternative models to separate recall errors...
+(With balanced classes)
+====================
+MultinomialNB
+             precision    recall  f1-score   support
+
+          0       0.96      0.94      0.95       517
+          1       0.94      0.96      0.95       517
+
+avg / total       0.95      0.95      0.95      1034
+
+====================
+BernoulliNB
+             precision    recall  f1-score   support
+
+          0       0.96      0.94      0.95       517
+          1       0.94      0.96      0.95       517
+
+avg / total       0.95      0.95      0.95      1034
+
+====================
+SVC_RBF
+             precision    recall  f1-score   support
+
+          0       0.82      0.97      0.89       517
+          1       0.96      0.79      0.86       517
+
+avg / total       0.89      0.88      0.87      1034
+
+====================
+GaussianNB
+             precision    recall  f1-score   support
+
+          0       1.00      0.80      0.89       517
+          1       0.83      1.00      0.91       517
+
+avg / total       0.92      0.90      0.90      1034
+
+====================
+RandomForestClassifier
+             precision    recall  f1-score   support
+
+          0       0.95      0.94      0.95       517
+          1       0.94      0.96      0.95       517
+
+avg / total       0.95      0.95      0.95      1034
+
+
+====================
+====================
+
+#Zeros =  2 * #RecallErrors
+
+====================
+MultinomialNB
+             precision    recall  f1-score   support
+
+          0       0.97      0.96      0.97      1034
+          1       0.92      0.95      0.93       517
+
+avg / total       0.96      0.96      0.96      1551
+
+====================
+BernoulliNB
+             precision    recall  f1-score   support
+
+          0       0.97      0.96      0.97      1034
+          1       0.93      0.94      0.93       517
+
+avg / total       0.96      0.96      0.96      1551
+
+====================
+SVC_RBF
+             precision    recall  f1-score   support
+
+          0       0.92      0.97      0.94      1034
+          1       0.93      0.83      0.88       517
+
+avg / total       0.92      0.92      0.92      1551
+
+====================
+GaussianNB
+             precision    recall  f1-score   support
+
+          0       1.00      0.81      0.90      1034
+          1       0.73      1.00      0.84       517
+
+avg / total       0.91      0.88      0.88      1551
+
+====================
+RandomForestClassifier
+             precision    recall  f1-score   support
+
+          0       0.97      0.96      0.97      1034
+          1       0.93      0.95      0.94       517
+
+avg / total       0.96      0.96      0.96      1551

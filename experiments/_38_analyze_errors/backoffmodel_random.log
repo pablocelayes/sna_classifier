@@ -1,0 +1,74 @@
+==================================
+#Zeros : #RecallErrors =  5
+
+Balanced coin
+(zero) main_pred : backoff_pred = 1
+
+Loading dataset for user Leandro Deyuanini (id 37226353)
+Training model <class '__main__.BackoffClassifier'>
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99     83713
+        1.0       0.44      0.79      0.57      1396
+
+avg / total       0.99      0.98      0.98     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99     35905
+        1.0       0.43      0.79      0.55       571
+
+avg / total       0.99      0.98      0.98     36476
+
+==================================
+#Zeros : #RecallErrors =  5
+
+(zero) main_pred : backoff_pred = 2
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99     83713
+        1.0       0.52      0.74      0.61      1396
+
+avg / total       0.99      0.98      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99     35905
+        1.0       0.53      0.75      0.62       571
+
+avg / total       0.99      0.99      0.99     36476
+
+================================
+#Zeros : #RecallErrors =  5
+
+(zero) main_pred : backoff_pred = 3
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99     83713
+        1.0       0.57      0.71      0.63      1396
+
+avg / total       0.99      0.99      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99     35905
+        1.0       0.54      0.70      0.61       571
+
+avg / total       0.99      0.99      0.99     36476
+

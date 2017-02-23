@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from sklearn.cross_validation import train_test_split, StratifiedKFold
-from sklearn.grid_search import GridSearchCV
+from sklearn.model_selection import train_test_split, StratifiedKFold
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import  RandomForestClassifier
@@ -16,7 +16,7 @@ import pandas as pd
 from os.path import join
 import random
 import sys
-
+import json
 
 TEST_USERS = [
     [
@@ -103,6 +103,258 @@ TEST_USERS = [
     ] 
 ]
 
+TEST_USERS_2 = [
+    [
+        1252764865, 
+        "Nicolás Maduro", 
+        2734
+    ], 
+    [
+        152657495, 
+        "Juan M. Rapacioli", 
+        2680
+    ], 
+    [
+        449712065, 
+        "Wakje", 
+        2679
+    ], 
+    [
+        84156832, 
+        "Graciela Melgarejo", 
+        2658
+    ], 
+    [
+        169962449, 
+        "Jose Cervera", 
+        2318
+    ], 
+    [
+        2411324736, 
+        "Andrea Rodriguez", 
+        2052
+    ], 
+    [
+        54943340, 
+        "Ministra del Patache", 
+        1847
+    ], 
+    [
+        57195194, 
+        "Gustavo Leonardo", 
+        1773
+    ], 
+    [
+        308039808, 
+        "J.M. Stella", 
+        1763
+    ], 
+    [
+        824157, 
+        "Mathew Ingram", 
+        1703
+    ], 
+    [
+        1311735576, 
+        "Horacio Roggero", 
+        1693
+    ], 
+    [
+        80462161, 
+        "Alejandro", 
+        1587
+    ], 
+    [
+        110325813, 
+        "✌TeresitaSilva✌", 
+        1553
+    ], 
+    [
+        254316467, 
+        "#CorrupcionPRO", 
+        1521
+    ],
+    [
+        5943622, 
+        "Marc Andreessen", 
+        1501
+    ], 
+    [
+        263780425, 
+        "Pedro J. Ramírez", 
+        1496
+    ]
+]
+
+TEST_USERS_3 = [
+    [
+        778653451, 
+        "Maria Valenzuela", 
+        1447
+    ], 
+    [
+        146431317, 
+        "Alejandra Paz", 
+        1394
+    ], 
+    [
+        90453671, 
+        "Pablo Lopez Fiorito", 
+        1386
+    ], 
+    [
+        60239907, 
+        "CESAR", 
+        1324
+    ], 
+    [
+        226011872, 
+        "#NoFueMagia #CFK", 
+        1307
+    ], 
+    [
+        214777467, 
+        "IVI POCASPULGAS", 
+        1280
+    ], 
+    [
+        147078123, 
+        "#Raúl Daniel Medina", 
+        1164
+    ], 
+    [
+        171990897, 
+        "#товарищ samsa", 
+        1155
+    ], 
+    [
+        178731620, 
+        "rodolfofast", 
+        1146
+    ], 
+    [
+        188525384, 
+        "  Claudio Williman  ", 
+        1121
+    ], 
+    [
+        219788847, 
+        "ҚariиoOlgoDesakatado", 
+        1111
+    ], 
+    [
+        562601076, 
+        "EmmaDLRS✌", 
+        1075
+    ], 
+    [
+        171110904, 
+        "Tano ", 
+        1047
+    ], 
+    [
+        214986628, 
+        "Brofe Laden ", 
+        975
+    ], 
+    [
+        263872477, 
+        "Mauro Osorio", 
+        953
+    ], 
+    [
+        36997365, 
+        "LoboSolitario", 
+        953
+    ]
+]
+
+TEST_USERS_4 = [
+    [
+        321389148, 
+        "Silvio ®", 
+        944
+    ], 
+    [
+        283762641, 
+        "Tuitero K", 
+        885
+    ], 
+    [
+        155304314, 
+        "Valeria Fgl", 
+        876
+    ], 
+    [
+        201413739, 
+        "Angeles Fernández R☆", 
+        862
+    ], 
+    [
+        334364707, 
+        "Santiago Bonifatti", 
+        860
+    ], 
+    [
+        117183228, 
+        "#LaKicillof✌", 
+        858
+    ], 
+    [
+        312686640, 
+        "Sil Mann", 
+        843
+    ], 
+    [
+        186584578, 
+        "El Perro Opina", 
+        836
+    ], 
+    [
+        208575740, 
+        "Jorge Rizzo GdD", 
+        828
+    ], 
+    [
+        34503618, 
+        "Manuco", 
+        806
+    ], 
+    [
+        158116807, 
+        "Carmen #LIBERTAD", 
+        803
+    ], 
+    [
+        152613501, 
+        "Rosana Tortosa", 
+        800
+    ],
+    [
+        213047203, 
+        "Anita", 
+        675
+    ], 
+    [
+        237994358, 
+        "Fabrizio ", 
+        651
+    ], 
+    [
+        147800890, 
+        "Mauricio Maronna", 
+        650
+    ], 
+    [
+        150783792, 
+        "Principio Esperanza", 
+        636
+    ],
+]
+
+tu_path = "/home/pablo/Proyectos/tesiscomp/experiments/_1_one_user_learn_neighbours/active_and_central_es.json"
+TEST_USERS_ALL = json.load(open(tu_path))
+
 USER_ID = 203030351
 # [
 #     203030351, 
@@ -143,6 +395,16 @@ def extract_features(tweets, neighbour_users, own_user):
     return X, y
 
 
+def get_neighbourhood(uid):
+    s = open_session()
+    user = s.query(User).get(uid)        
+    neighbours = get_level2_neighbours(user, s)
+    # remove central user from neighbours
+    neighbours = [u for u in neighbours if u.id != user.id]
+
+    return neighbours
+
+
 def load_or_create_dataset(uid=USER_ID):
     fname = join(DATASETS_FOLDER, "dataset_%d.pickle" % uid)
     if os.path.exists(fname):
@@ -158,7 +420,9 @@ def load_or_create_dataset(uid=USER_ID):
         tweets = set(user.timeline)
         for u in neighbours:
             tweets.update(u.timeline)
-        tweets = list(tweets)
+
+        # exclude tweets from central user or not in Spanish
+        tweets = [t for t in tweets if t.author_id != uid and t.lang == 'es']
 
         X, y = extract_features(tweets, neighbours, user)
         s.close()
@@ -247,11 +511,17 @@ def load_or_create_dataframe(uid=USER_ID):
     Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d.pickle" % uid)
     Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtest_%d.pickle" % uid)
     ys_fname = join(DATAFRAMES_FOLDER, "ys_%d.pickle" % uid)
+    exists = False
     if os.path.exists(Xtrain_fname):
-        X_train = pd.read_pickle(Xtrain_fname)
-        X_test = pd.read_pickle(Xtest_fname)        
-        y_train, y_test = pickle.load(open(ys_fname, 'rb'))
-    else:
+        try:
+            X_train = pd.read_pickle(Xtrain_fname)
+            X_test = pd.read_pickle(Xtest_fname)        
+            y_train, y_test = pickle.load(open(ys_fname, 'rb'))
+            exists = True
+        except Exception as e:
+            pass
+    
+    if not exists:
         s = open_session()
         user = s.query(User).get(uid)        
         neighbours = get_level2_neighbours(user, s)
@@ -262,7 +532,9 @@ def load_or_create_dataframe(uid=USER_ID):
         tweets = set(user.timeline)
         for u in neighbours:
             tweets.update(u.timeline)
-        tweets = list(tweets)
+
+        # exclude tweets from central user or not in Spanish
+        tweets = [t for t in tweets if t.author_id != uid and t.lang == 'es']
 
         tweet_ids = [t.id for t in tweets]
         neighbour_ids = [u.id for u in neighbours]

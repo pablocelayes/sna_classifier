@@ -1,0 +1,44 @@
+===========>>> RandomForest <<=============
+
+===== Evaluating with KC feature ========
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    473248
+        1.0       1.00      0.89      0.94      1142
+
+avg / total       1.00      1.00      1.00    474390
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    202823
+        1.0       1.00      0.91      0.95       487
+
+avg / total       1.00      1.00      1.00    203310
+
+===== Evaluating without KC feature ========
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    473248
+        1.0       1.00      0.89      0.94      1142
+
+avg / total       1.00      1.00      1.00    474390
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    202823
+        1.0       1.00      0.91      0.95       487
+
+avg / total       1.00      1.00      1.00    203310
+

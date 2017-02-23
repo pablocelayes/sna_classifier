@@ -1,0 +1,92 @@
+Standard bucketed model
+==================================
+Loading dataset for user Leandro Deyuanini (id 37226353)
+Dataset loaded.
+Size (#tweets): 121585
+Dimension (#neighbour buckets): 20
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     83742
+        1.0       1.00      0.60      0.75      1367
+
+avg / total       0.99      0.99      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     35876
+        1.0       1.00      0.58      0.73       600
+
+avg / total       0.99      0.99      0.99     36476
+
+====================
+Best backoff model
+(backoff: RandomForest)
+====================
+
+#Zeros : #RecallErrors =  5
+(+ backoff balancing)
+(+ extra_weight_ones = 2.0)
+
+
+Loading dataset for user Leandro Deyuanini (id 37226353)
+Training model <class '__main__.BackoffClassifier'>
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     83713
+        1.0       1.00      0.63      0.77      1396
+
+avg / total       0.99      0.99      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00     35905
+        1.0       0.96      0.61      0.75       571
+
+avg / total       0.99      0.99      0.99     36476
+
+
+====================
+Best randomized backoff model
+(backoff: RandomForest)
+====================
+==================================
+#Zeros : #RecallErrors =  5
+
+(zero) main_pred : backoff_pred = 2
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99     83713
+        1.0       0.52      0.74      0.61      1396
+
+avg / total       0.99      0.98      0.99     85109
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99     35905
+        1.0       0.53      0.75      0.62       571
+
+avg / total       0.99      0.99      0.99     36476
+
+
+-----
+Tesis:
+
+Trabajo Futuro: buscar buena combinación entre clasificador principal y backoff 
+para balancear mejor precision/recall.

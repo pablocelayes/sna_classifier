@@ -1,0 +1,126 @@
+Switching to API Credentials #4
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+==================================
+Transforming to 1 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.77      0.87       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       1.00      0.80      0.89       250
+
+avg / total       1.00      1.00      1.00     55755
+
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+==================================
+Transforming to 5 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.77      0.87       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       1.00      0.80      0.89       250
+
+avg / total       1.00      1.00      1.00     55755
+
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+==================================
+Transforming to 10 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.77      0.87       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       1.00      0.80      0.89       250
+
+avg / total       1.00      1.00      1.00     55755
+
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+==================================
+Transforming to 20 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.77      0.87       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       1.00      0.80      0.89       250
+
+avg / total       1.00      1.00      1.00     55755
+
+==================================
+Loading dataset for user Unión Cívica Radical (id 114582574)
+==================================
+Transforming to 30 buckets
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00    129536
+        1.0       1.00      0.78      0.88       556
+
+avg / total       1.00      1.00      1.00    130092
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00     55505
+        1.0       0.99      0.80      0.88       250
+
+avg / total       1.00      1.00      1.00     55755
+
