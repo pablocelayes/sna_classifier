@@ -8,7 +8,7 @@ from sklearn.metrics import recall_score
 import json
 
 
-def worker(uid, recalls_train_disamb, recalls_test_disamb, recalls_test_amb):
+def worker(uid, recalls_train_disamb, recalls_test_disamb, recalls_test_amb, lock):
     """worker function"""
     print "Largamos para %d" % uid
     s = open_session()
@@ -57,9 +57,12 @@ def worker(uid, recalls_train_disamb, recalls_test_disamb, recalls_test_amb):
     X_train_extended = pd.concat([X_train,X_train_new],axis=1)
 
     y_true, y_pred = y_test, clf.predict(X_test)
-    recalls_test_amb[uid] = recall_score(y_true, y_pred)
 
-    
+    rs = recall_score(y_true, y_pred)
+    lock.acquire()
+    recalls_test_amb[uid] = rs
+    lock.release()
+
     # weights for class balancing
     w1 = sum(y_train)/len(y_train)
     w0 = 1 - w1
@@ -69,7 +72,11 @@ def worker(uid, recalls_train_disamb, recalls_test_disamb, recalls_test_amb):
     clf.fit(X_train_extended, y_train, sample_weight=sample_weights)
 
     y_true, y_pred = y_train, clf.predict(X_train_extended)
-    recalls_train_disamb[uid] = recall_score(y_true, y_pred)
+
+    rs = recall_score(y_true, y_pred)
+    lock.acquire()
+    recalls_train_disamb[uid] = rs
+    lock.release()
 
     #     Extend X_test
     tweet_ids = X_test.index
@@ -78,7 +85,11 @@ def worker(uid, recalls_train_disamb, recalls_test_disamb, recalls_test_amb):
     X_test_new = pd.DataFrame(data=X_test_new, index=tweet_ids, columns=new_neighbour_ids)
     X_test_extended = pd.concat([X_test,X_test_new],axis=1)
     y_true, y_pred = y_test, clf.predict(X_test_extended)
-    recalls_test_disamb[uid] = recall_score(y_true, y_pred)
+
+    rs = recall_score(y_true, y_pred)
+    lock.acquire()
+    recalls_test_disamb[uid] = rs
+    lock.release()
 
 
 if __name__ == '__main__':
@@ -97,9 +108,10 @@ if __name__ == '__main__':
     recalls_test_disamb = manager.dict()
     recalls_train_disamb = manager.dict()
     recalls_test_amb = manager.dict()
+    lock = manager.Lock()
 
     for uid in uids:
-        pool.apply_async(worker, (uid, recalls_train_disamb, recalls_test_disamb, recalls_test_amb))
+        pool.apply_async(worker, (uid, recalls_train_disamb, recalls_test_disamb, recalls_test_amb, lock))
     pool.close()
     pool.join()
 

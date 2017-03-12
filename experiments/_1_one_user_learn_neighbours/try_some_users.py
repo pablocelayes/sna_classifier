@@ -2,13 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from experiments.datasets import (load_or_create_dataframe,
-    TEST_USERS, TEST_USERS_2, TEST_USERS_3, TEST_USERS_4, TEST_USERS_ALL    
-)
-
-# TEST_USERS = TEST_USERS + TEST_USERS_2 + TEST_USERS_3 + TEST_USERS_4
-
-TEST_USERS = TEST_USERS_ALL
+from experiments.datasets import (load_or_create_dataframe, TEST_USERS_ALL)
 
 MODELS_FOLDER = "/media/pablo/data/Tesis/models/"
 
@@ -92,5 +86,7 @@ if __name__ == '__main__':
     # pool.close()
     # pool.join()
 
-    for user_id in pending_user_ids:
-        worker(user_id)
+    # for user_id in pending_user_ids:
+    #     worker(user_id)
+
+    worker(117335842)        

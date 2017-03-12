@@ -379,29 +379,29 @@ class CLEsaFeatureExtractor(Extractor):
     def load_dictionaries(self):
         logger.info("Loading dictionaries")
         self.dictionaries = {
-            'en': corpora.Dictionary.load(self.prefix + 'en_wordids.dict'),
+            # 'en': corpora.Dictionary.load(self.prefix + 'en_wordids.dict'),
             'es': corpora.Dictionary.load(self.prefix + 'es_wordids.dict'),
-            'de': corpora.Dictionary.load(self.prefix + 'de_wordids.dict'),
-            'nl': corpora.Dictionary.load(self.prefix + 'nl_wordids.dict')
+            # 'de': corpora.Dictionary.load(self.prefix + 'de_wordids.dict'),
+            # 'nl': corpora.Dictionary.load(self.prefix + 'nl_wordids.dict')
         }
 
     def load_tf_idf_models(self):
         logger.info("Loading TF-IDF models")
         self.tf_idfs = {
-            'en': models.TfidfModel.load(self.prefix + "en_tfidf.model"),
+            # 'en': models.TfidfModel.load(self.prefix + "en_tfidf.model"),
             'es': models.TfidfModel.load(self.prefix + "es_tfidf.model"),
-            'de': models.TfidfModel.load(self.prefix + "de_tfidf.model"),
-            'nl': models.TfidfModel.load(self.prefix + "nl_tfidf.model")
+            # 'de': models.TfidfModel.load(self.prefix + "de_tfidf.model"),
+            # 'nl': models.TfidfModel.load(self.prefix + "nl_tfidf.model")
         }
 
     def load_esa_models(self):
         logger.info("Loading ESA models")
 
         self.esas = {
-            'en': EsaModel.load(self.prefix + self.target_prefix + "en_esa_on_tfidf.model"),
+            # 'en': EsaModel.load(self.prefix + self.target_prefix + "en_esa_on_tfidf.model"),
             'es': EsaModel.load(self.prefix + "es_esa_on_tfidf.model"),
-            'de': EsaModel.load(self.prefix + "de_esa_on_tfidf.model"),
-            'nl': EsaModel.load(self.prefix + "nl_esa_on_tfidf.model")
+            # 'de': EsaModel.load(self.prefix + "de_esa_on_tfidf.model"),
+            # 'nl': EsaModel.load(self.prefix + "nl_esa_on_tfidf.model")
         }
 
     def load_mappings(self):
@@ -418,19 +418,19 @@ class CLEsaFeatureExtractor(Extractor):
         logger.info("...ES to (small)EN")
         es_mapping = to_coo(np.load(mapping_paths["es"]))
         
-        logger.info("...DE to (small)EN")
-        de_mapping = to_coo(np.load(mapping_paths["de"]))
+        # logger.info("...DE to (small)EN")
+        # de_mapping = to_coo(np.load(mapping_paths["de"]))
         
-        logger.info("...NL to (small)EN")
-        nl_mapping = to_coo(np.load(mapping_paths["nl"]))
+        # logger.info("...NL to (small)EN")
+        # nl_mapping = to_coo(np.load(mapping_paths["nl"]))
         
         self.transformations = {
             'es': es_mapping,
-            'de': de_mapping,
-            'nl': nl_mapping,
+            # 'de': de_mapping,
+            # 'nl': nl_mapping,
         }
 
-    def get_features(self, article=None, text=None):
+    def get_features(self, article=None, text=None, lang=None):
         """Extract CL-ESA features for an article object or plain text
         Args:
             article: an article object, 
@@ -442,27 +442,29 @@ class CLEsaFeatureExtractor(Extractor):
         if text is None:
             text = article.clean_content
 
-        lang = langid.classify(text)[0]
-        if lang in CONFIG["supported_languages"]:
-            logger.debug("Tokenizing document")
-            tokenized_text = TOKENIZER.tokenize(text)
-            
-            logger.debug("Creating bag-of-words representation for article")
-            bow = self.dictionaries[lang].doc2bow(tokenized_text)
-            
-            logger.debug("Transforming to TF-IDF model")
-            tf_idf = self.tf_idfs[lang][bow]
-            
-            logger.debug("Transforming to ESA model")
-            esa = self.esas[lang][tf_idf]
-            if lang != 'en':
-                esa = matutils.unitvec(esa * self.transformations[lang])
-            esa = coo_vector_to_tuples(sparse.coo_matrix(esa))
+        if lang is None:
+            lang = langid.classify(text)[0]
+        
+        # if lang in CONFIG["supported_languages"]:
+        logger.debug("Tokenizing document")
+        tokenized_text = TOKENIZER.tokenize(text)
+        
+        logger.debug("Creating bag-of-words representation for article")
+        bow = self.dictionaries[lang].doc2bow(tokenized_text)
+        
+        logger.debug("Transforming to TF-IDF model")
+        tf_idf = self.tf_idfs[lang][bow]
+        
+        logger.debug("Transforming to ESA model")
+        esa = self.esas[lang][tf_idf]
+        if lang != 'en':
+            esa = matutils.unitvec(esa * self.transformations[lang])
+        # esa = coo_vector_to_tuples(sparse.coo_matrix(esa))
 
-            return esa
-        else:
-            logger.debug("Unknown language (%s) detected, articled ignored", lang)
-            return None
+        return esa
+        # else:
+        #     logger.debug("Unknown language (%s) detected, articled ignored", lang)
+        #     return None
 
     def get_feature_number(self):
         """Get the number of features"""

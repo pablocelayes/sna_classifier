@@ -34,7 +34,11 @@ def model_select_svc(dataset):
 
     # Set the parameters by cross-validation
     parameters = [
-        {'kernel': ['rbf'], 'gamma': [0.1, 1, 10, 100], 'C': [0.1, 1, 10]},
+        {
+         'kernel': ['rbf', 'poly', 'sigmoid'],
+         'gamma': [10, 100, 150],
+         'C': [0.05, 0.1, 1]
+        },
     ]
 
 
