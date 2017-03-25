@@ -29,7 +29,8 @@ import numpy as np
 from nyan.shared_modules.utils.helper import coo_vector_to_tuples
 
 logger = logging.getLogger("extractor")
-logger.setLevel(logging.DEBUG)
+# logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 
 
 def get_feature_extractor():
@@ -134,13 +135,13 @@ class TfidfFeatureExtractor(Extractor):
 class LdaFeatureExtractor(Extractor):
     """LDA transformation on a document, based on an existing tf-idf space and dictionary"""
 
-    def __init__(self, prefix):
+    def __init__(self, prefix, n_topics):
         Extractor.__init__(self)
         logger.info("Load dictionary and tfidf and lda model with prefix %s"
                     % prefix)
         self.dictionary = corpora.Dictionary.load(prefix + "_wordids.dict")
         self.tfidf_model = models.TfidfModel.load(prefix + "_tfidf.model")
-        self.lda_model = models.LdaModel.load(prefix + "_lda.model")
+        self.lda_model = models.LdaModel.load(prefix + "_lda%d.model" % n_topics)
         self.lda_model.iterations = 50
         self.lda_model.gamma_threshold = 0.001
 
@@ -248,7 +249,7 @@ class EsaFeatureExtractor(Extractor):
         self.dictionary = corpora.Dictionary.load(prefix + "_wordids.dict")
         self.tfidf_model = models.TfidfModel.load(prefix + "_tfidf.model")
         # self.lda_model = models.LdaModel.load(prefix + "_lda.model")
-        self.esa_model = EsaModel.load(prefix + "_esa_on_tfidf.model")
+        self.esa_model = EsaModel.load(prefix + "_esa1000_on_tfidf.model")
 
     def get_features(self, article=None, text=None):
         """Extract ESA features from a document, transforming an existing tf-idf model space

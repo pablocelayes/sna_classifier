@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from experiments.datasets import (load_or_create_dataframe, TEST_USERS_ALL)
+from experiments.datasets import (load_or_create_dataframe, load_small_validation_dataframe, TEST_USERS_ALL)
 
 MODELS_FOLDER = "/media/pablo/data/Tesis/models/"
 
@@ -16,11 +16,15 @@ import sys
 from os.path import join
 from multiprocessing import Pool
 
+from classifiers import model_select_rdf
 
 def train_and_evaluate(user_id, clf_class=RandomForestClassifier):
     print("==================================")
     print("Loading dataframe for user id %d" % user_id)
-    X_train, X_test, y_train, y_test = load_or_create_dataframe(user_id)
+    # X_train, X_test, y_train, y_test = load_or_create_dataframe(user_id)
+
+    X_train, X_valid, X_test, y_train, y_valid, y_test = load_small_validation_dataframe(user_id)
+
     ds_size = X_train.shape[0] + X_test.shape[0]
     ds_dimension = X_train.shape[1]
     print("dataframe loaded.")
@@ -36,7 +40,8 @@ def train_and_evaluate(user_id, clf_class=RandomForestClassifier):
     clf = clf_class()     
     clf.fit(X_train, y_train, sample_weight=sample_weights)
 
-    evaluate_model(clf, X_train, X_test, y_train, y_test)
+    # evaluate_model(clf, X_train, X_test, y_train, y_test)
+    evaluate_model(clf, X_train, X_valid, y_train, y_valid)
 
     return clf
 
@@ -52,6 +57,7 @@ def evaluate_model(clf, X_train, X_test, y_train, y_test):
     print(classification_report(y_true, y_pred))
 
 
+
 def save_model(clf, user_id):
     model_path = join(MODELS_FOLDER, "rdf_%d.pickle" % user_id)
     joblib.dump(clf, model_path)
@@ -61,10 +67,24 @@ def load_model(user_id):
     clf = joblib.load(model_path)
     return clf
 
+
+def save_model_small(clf, user_id):
+    model_path = join(MODELS_FOLDER, "rdf_%d_small.pickle" % user_id)
+    joblib.dump(clf, model_path)
+
+def load_model_small(user_id):
+    model_path = join(MODELS_FOLDER, "rdf_%d_small.pickle" % user_id)
+    clf = joblib.load(model_path)
+    return clf
+
+
 def worker(user_id):
     try:
-        clf = train_and_evaluate(user_id)
-        save_model(clf, user_id)
+        # clf = train_and_evaluate(user_id)
+        X_train, X_valid, X_test, y_train, y_valid, y_test = load_small_validation_dataframe(user_id)
+        dataset = X_train, X_valid, y_train, y_valid        
+        clf = model_select_rdf(dataset)
+        save_model_small(clf, user_id)
     except Exception as e:
         print(e)
 
@@ -75,18 +95,22 @@ if __name__ == '__main__':
     pending_user_ids = []
     for user_id, username, _ in TEST_USERS_ALL:
         try:
-            load_model(user_id)
+            load_model_small(user_id)
         except IOError:
             pending_user_ids.append(user_id)
 
 
-    # pool = Pool(processes=2)
+    # pool = Pool(processes=6)
     # for user_id in pending_user_ids:
     #     pool.apply_async(worker, (user_id,))
     # pool.close()
     # pool.join()
 
-    # for user_id in pending_user_ids:
-    #     worker(user_id)
+    for user_id in pending_user_ids:
+        worker(user_id)
 
-    worker(117335842)        
+    # worker(117335842)        
+
+
+
+# Modelos elegidos con RandomForestClassifier pelado

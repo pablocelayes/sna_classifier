@@ -175,6 +175,21 @@ def sample_dataset(X_train, X_test, y_train, y_test, train_size):
 
     return X_train, X_test, y_train, y_test
 
+def save_dataset(dataset, fname):
+    X_train, X_test, y_train, y_test = dataset
+    np.savez(open(fname,'wb'), X_train, X_test, y_train, y_test)
+
+def load_dataset(fname):
+    z = np.load(open(fname,'rb'))
+    X_train = z['arr_0']
+    X_test = z['arr_1']
+    y_train = z['arr_2']
+    y_test = z['arr_3']
+
+    X_train = csc.csc_matrix(X_train.tolist())
+    X_test = csc.csc_matrix(X_test.tolist())
+
+    return X_train, X_test, y_train, y_test
 
 if __name__ == '__main__':
 
@@ -253,6 +268,7 @@ if __name__ == '__main__':
             p.close()
             p.join()
 
+            import ipdb; ipdb.set_trace()
             X_train_clesa = vstack(list(rows_train))
             X_test_clesa = vstack(list(rows_test))
             

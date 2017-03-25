@@ -13,8 +13,11 @@ from tw_dataset.settings import DATASETS_FOLDER, DATAFRAMES_FOLDER
 from experiments.utils import *
 import pickle, os
 import pandas as pd
-from os.path import join
+from os.path import join, exists
+from os import remove
 import random
+from random import sample
+
 import sys
 import json
 
@@ -166,6 +169,98 @@ def load_or_create_combined_dataset_small(nbuckets, test_size=0.3):
     return dataset
 
 
+def load_dataframe(uid):
+    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d.pickle" % uid)
+    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtest_%d.pickle" % uid)
+    ys_fname = join(DATAFRAMES_FOLDER, "ys_%d.pickle" % uid)
+    try:
+        X_train = pd.read_pickle(Xtrain_fname)
+        X_test = pd.read_pickle(Xtest_fname)        
+        y_train, y_test = pickle.load(open(ys_fname, 'rb'))
+        return X_train, X_test, y_train, y_test
+    except Exception as e:
+        return None
+
+def repartition_dataframe(uid):
+    ds = load_dataframe(uid)
+
+    if ds:
+        X_train, X_test, y_train, y_test = ds
+        X_valid, X_test, y_valid, y_test = train_test_split(X_test, y_test,
+                                                test_size=0.6667, random_state=42)
+
+        Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d.pickle" % uid)
+        Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d.pickle" % uid)
+        ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d.pickle" % uid)
+
+        Xtest_fname_old = join(DATAFRAMES_FOLDER, "dfXtest_%d.pickle" % uid)
+
+        # X_train.to_pickle(Xtrain_fname)
+        X_valid.to_pickle(Xvalid_fname)
+        X_test.to_pickle(Xtest_fname)
+        pickle.dump((y_train, y_valid, y_test), open(ys_fname, 'wb'))
+
+        remove(Xtest_fname_old)
+
+
+def load_validation_dataframe(uid):
+    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d.pickle" % uid)
+    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d.pickle" % uid)
+    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d.pickle" % uid)
+    ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d.pickle" % uid)
+
+    X_train = pd.read_pickle(Xtrain_fname)
+    X_valid = pd.read_pickle(Xvalid_fname)
+    X_test = pd.read_pickle(Xtest_fname)        
+    y_train, y_valid, y_test = pickle.load(open(ys_fname, 'rb'))
+
+    return X_train, X_valid, X_test, y_train, y_valid, y_test
+
+def reduce_dataset(uid):
+    ds = load_validation_dataframe(uid)
+    X_train, X_valid, X_test, y_train, y_valid, y_test = ds
+
+    X=pd.concat((X_train,X_valid,X_test))
+    y=np.concatenate((y_train,y_valid,y_test))
+
+    if len(y) > 5000:
+        neg_inds = [i for i, v in enumerate(y) if v==0]
+        pos_inds = [i for i, v in enumerate(y) if v==1]
+
+        n_neg = 5000 - len(pos_inds)
+        neg_inds = sample(neg_inds, n_neg)
+        inds = sorted(neg_inds + pos_inds)
+        X = X.iloc[inds,:]
+        y = y[inds]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        X_valid, X_test, y_valid, y_test = train_test_split(X_test, y_test, test_size=0.66666, random_state=42)
+
+        Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
+        Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
+        Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
+        ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
+
+        X_train.to_pickle(Xtrain_fname)
+        X_valid.to_pickle(Xvalid_fname)
+        X_test.to_pickle(Xtest_fname)
+        pickle.dump((y_train, y_valid, y_test), open(ys_fname, 'wb'))
+
+    return X_train, X_valid, X_test, y_train, y_valid, y_test
+
+def load_small_validation_dataframe(uid):
+    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
+    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
+    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
+    ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
+
+    X_train = pd.read_pickle(Xtrain_fname)
+    X_valid = pd.read_pickle(Xvalid_fname)
+    X_test = pd.read_pickle(Xtest_fname)        
+    y_train, y_valid, y_test = pickle.load(open(ys_fname, 'rb'))
+
+    return X_train, X_valid, X_test, y_train, y_valid, y_test
+
+
 def load_or_create_dataframe(uid):
     Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d.pickle" % uid)
     Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtest_%d.pickle" % uid)
@@ -208,6 +303,10 @@ def load_or_create_dataframe(uid):
         pickle.dump((y_train, y_test), open(ys_fname, 'wb'))
 
     return X_train, X_test, y_train, y_test
+
+
+
+
 
 
 def build_full_graph_dataset():
@@ -282,7 +381,7 @@ def build_datapoints(sample_uids, njob):
         # least 10% of the sample
         max_followed_tweets = 9 * len(user_rts)
         if len(tweets_from_neighbours) > max_followed_tweets:
-            tweets_from_neighbours = random.sample(tweets_from_neighbours, max_followed_tweets)
+            tweets_from_neighbours = sample(tweets_from_neighbours, max_followed_tweets)
 
         tweets = set()
         tweets.update(user_rts)
@@ -290,7 +389,7 @@ def build_datapoints(sample_uids, njob):
 
         # Reduce sample to 300 per user
         if len(tweets) > 300:
-            tweets = random.sample(tweets, 300)
+            tweets = sample(tweets, 300)
 
         # train/test split
         upper_date_limit = DATE_LOWER_LIMIT + timedelta(days=20)

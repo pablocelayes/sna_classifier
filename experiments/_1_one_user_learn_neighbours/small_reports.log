@@ -1,0 +1,5007 @@
+Switching to API Credentials #1
+==================================
+Loading dataframe for user id 228252737
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 625
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.96      0.94      1902
+        1.0       0.95      0.91      0.93      1598
+
+avg / total       0.94      0.94      0.94      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.84      0.89      0.87       251
+        1.0       0.88      0.84      0.86       249
+
+avg / total       0.86      0.86      0.86       500
+
+==================================
+Loading dataframe for user id 142800528
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 634
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.98      0.97      2132
+        1.0       0.97      0.94      0.95      1368
+
+avg / total       0.96      0.96      0.96      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.94      0.94       316
+        1.0       0.90      0.89      0.90       184
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 18623370
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 410
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98      2264
+        1.0       0.97      0.94      0.95      1236
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.95      0.95       306
+        1.0       0.93      0.92      0.93       194
+
+avg / total       0.94      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 37226353
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 401
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.97      0.97      2245
+        1.0       0.95      0.96      0.95      1255
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.92      0.94       320
+        1.0       0.86      0.93      0.89       180
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 195412602
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 993
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.98      0.96      2368
+        1.0       0.96      0.86      0.91      1132
+
+avg / total       0.94      0.94      0.94      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.91      0.90      0.91       349
+        1.0       0.78      0.79      0.78       151
+
+avg / total       0.87      0.87      0.87       500
+
+==================================
+Loading dataframe for user id 54943340
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 868
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      2226
+        1.0       0.99      1.00      0.99      1274
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.93      0.96       337
+        1.0       0.87      1.00      0.93       163
+
+avg / total       0.96      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 1311735576
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 565
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.92      1.00      0.96      2420
+        1.0       0.99      0.82      0.89      1080
+
+avg / total       0.94      0.94      0.94      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.91      0.93      0.92       328
+        1.0       0.86      0.81      0.84       172
+
+avg / total       0.89      0.89      0.89       500
+
+==================================
+Loading dataframe for user id 80462161
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 553
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.99      0.97      2483
+        1.0       0.97      0.88      0.92      1017
+
+avg / total       0.96      0.96      0.96      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.97      0.95       350
+        1.0       0.91      0.83      0.87       150
+
+avg / total       0.93      0.93      0.92       500
+
+==================================
+Loading dataframe for user id 110325813
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 444
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98      2507
+        1.0       0.98      0.91      0.95       993
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.98      0.97       374
+        1.0       0.93      0.89      0.91       126
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 254316467
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 691
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.99      0.96      2483
+        1.0       0.97      0.82      0.89      1017
+
+avg / total       0.94      0.94      0.94      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.88      0.95      0.91       350
+        1.0       0.85      0.70      0.77       150
+
+avg / total       0.87      0.87      0.87       500
+
+==================================
+Loading dataframe for user id 263780425
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 326
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      2503
+        1.0       0.99      0.97      0.98       997
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       370
+        1.0       0.94      0.96      0.95       130
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 778653451
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 735
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      2577
+        1.0       0.98      0.99      0.98       923
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.94      0.96       359
+        1.0       0.86      0.98      0.92       141
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 146431317
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 383
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.99      0.96      2516
+        1.0       0.98      0.82      0.90       984
+
+avg / total       0.95      0.95      0.94      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.92      0.98      0.95       374
+        1.0       0.93      0.75      0.83       126
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 90453671
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 571
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      2595
+        1.0       0.99      0.99      0.99       905
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.97       366
+        1.0       0.88      1.00      0.94       134
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 60239907
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 467
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.99      0.96      2622
+        1.0       0.98      0.78      0.87       878
+
+avg / total       0.94      0.94      0.94      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.88      0.96      0.92       368
+        1.0       0.87      0.64      0.74       132
+
+avg / total       0.88      0.88      0.87       500
+
+==================================
+Loading dataframe for user id 226011872
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 535
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.99      0.96      2641
+        1.0       0.97      0.79      0.87       859
+
+avg / total       0.94      0.94      0.94      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.89      0.95      0.92       368
+        1.0       0.83      0.66      0.73       132
+
+avg / total       0.87      0.87      0.87       500
+
+==================================
+Loading dataframe for user id 214777467
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 453
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      2749
+        1.0       0.98      0.91      0.95       751
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.98      0.97       396
+        1.0       0.92      0.88      0.90       104
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 147078123
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 560
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      1.00      0.98      2760
+        1.0       0.98      0.84      0.91       740
+
+avg / total       0.96      0.96      0.96      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.94      0.94       387
+        1.0       0.79      0.79      0.79       113
+
+avg / total       0.91      0.91      0.91       500
+
+==================================
+Loading dataframe for user id 171990897
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 516
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.92      1.00      0.96      2747
+        1.0       0.98      0.69      0.81       753
+
+avg / total       0.93      0.93      0.92      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.91      0.96      0.93       391
+        1.0       0.82      0.65      0.72       109
+
+avg / total       0.89      0.89      0.89       500
+
+==================================
+Loading dataframe for user id 178731620
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 564
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      2834
+        1.0       0.99      0.94      0.96       666
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.95      0.97       417
+        1.0       0.81      0.95      0.87        83
+
+avg / total       0.96      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 188525384
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 364
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      1.00      0.98      2791
+        1.0       1.00      0.87      0.93       709
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.97      0.96       386
+        1.0       0.88      0.84      0.86       114
+
+avg / total       0.94      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 219788847
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 387
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      1.00      0.98      2837
+        1.0       0.99      0.84      0.91       663
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.98      0.96       387
+        1.0       0.93      0.76      0.84       113
+
+avg / total       0.93      0.93      0.93       500
+
+==================================
+Loading dataframe for user id 562601076
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 488
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.99      0.97      2795
+        1.0       0.97      0.78      0.87       705
+
+avg / total       0.95      0.95      0.95      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.96      0.94       400
+        1.0       0.82      0.69      0.75       100
+
+avg / total       0.90      0.91      0.90       500
+
+==================================
+Loading dataframe for user id 171110904
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 386
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      1.00      0.97      2779
+        1.0       0.99      0.77      0.86       721
+
+avg / total       0.95      0.95      0.95      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.96      0.95       404
+        1.0       0.81      0.76      0.78        96
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 203030351
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 572
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      2784
+        1.0       0.98      0.94      0.96       716
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.98       418
+        1.0       0.81      0.99      0.89        82
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 214986628
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 565
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      2887
+        1.0       0.98      0.91      0.94       613
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.97      0.97       410
+        1.0       0.87      0.84      0.86        90
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 263872477
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 236
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      2886
+        1.0       0.99      0.93      0.96       614
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       402
+        1.0       0.96      0.94      0.95        98
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 36997365
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 564
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      2909
+        1.0       0.99      0.96      0.97       591
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       414
+        1.0       0.88      0.93      0.90        86
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 321389148
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 522
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      1.00      0.98      2922
+        1.0       0.98      0.79      0.88       578
+
+avg / total       0.96      0.96      0.96      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.98      0.95       409
+        1.0       0.87      0.68      0.77        91
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 283762641
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 677
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.99      0.97      2934
+        1.0       0.97      0.74      0.84       566
+
+avg / total       0.95      0.95      0.95      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.95      0.94       428
+        1.0       0.65      0.54      0.59        72
+
+avg / total       0.89      0.89      0.89       500
+
+==================================
+Loading dataframe for user id 155304314
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 367
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      2916
+        1.0       0.99      0.90      0.94       584
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       413
+        1.0       0.88      0.94      0.91        87
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 201413739
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 576
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3067
+        1.0       0.97      0.94      0.95       433
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       433
+        1.0       0.82      0.93      0.87        67
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 334364707
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 668
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      2892
+        1.0       0.94      0.96      0.95       608
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.95      0.97       415
+        1.0       0.79      0.96      0.87        85
+
+avg / total       0.96      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 117183228
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 619
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      2912
+        1.0       0.98      0.97      0.97       588
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.97      0.97       418
+        1.0       0.84      0.90      0.87        82
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 312686640
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 665
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      2977
+        1.0       0.97      0.86      0.91       523
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.97       443
+        1.0       0.71      0.86      0.78        57
+
+avg / total       0.95      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 186584578
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 532
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3063
+        1.0       0.99      0.94      0.96       437
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       432
+        1.0       0.79      0.87      0.83        68
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 208575740
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 311
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      2949
+        1.0       1.00      0.94      0.97       551
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       419
+        1.0       0.91      0.95      0.93        81
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 158116807
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 717
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      2969
+        1.0       0.96      0.92      0.94       531
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.95      0.96       414
+        1.0       0.77      0.87      0.82        86
+
+avg / total       0.94      0.93      0.94       500
+
+==================================
+Loading dataframe for user id 152613501
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 358
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.92      1.00      0.96      2969
+        1.0       0.98      0.54      0.70       531
+
+avg / total       0.93      0.93      0.92      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.98      0.95       433
+        1.0       0.79      0.49      0.61        67
+
+avg / total       0.91      0.91      0.91       500
+
+==================================
+Loading dataframe for user id 101047126
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 521
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      2980
+        1.0       0.98      0.94      0.96       520
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       429
+        1.0       0.84      0.93      0.88        71
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 126527644
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 814
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3126
+        1.0       0.94      0.98      0.96       374
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.92      0.96       438
+        1.0       0.64      1.00      0.78        62
+
+avg / total       0.96      0.93      0.94       500
+
+==================================
+Loading dataframe for user id 114582574
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 618
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3014
+        1.0       0.97      0.89      0.92       486
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.96       440
+        1.0       0.70      0.85      0.77        60
+
+avg / total       0.95      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 144310601
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 462
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3033
+        1.0       0.99      0.99      0.99       467
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       433
+        1.0       0.82      0.99      0.90        67
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 20611326
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 703
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3135
+        1.0       0.95      0.95      0.95       365
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.95      0.97       442
+        1.0       0.70      0.93      0.80        58
+
+avg / total       0.96      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 213047203
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 915
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3076
+        1.0       0.97      0.86      0.91       424
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.95      0.95       441
+        1.0       0.63      0.69      0.66        59
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 173222615
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 690
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      1.00      0.98      3060
+        1.0       0.97      0.80      0.88       440
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.96      0.95       442
+        1.0       0.66      0.64      0.65        58
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 237994358
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 942
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      3166
+        1.0       0.94      0.80      0.86       334
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.96      0.96       457
+        1.0       0.59      0.67      0.63        43
+
+avg / total       0.94      0.93      0.93       500
+
+==================================
+Loading dataframe for user id 147800890
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 674
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3107
+        1.0       0.95      0.90      0.92       393
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.96       444
+        1.0       0.67      0.86      0.75        56
+
+avg / total       0.95      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 150783792
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 637
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3100
+        1.0       0.96      0.93      0.94       400
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       443
+        1.0       0.78      0.93      0.85        57
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 241991145
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 712
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3086
+        1.0       0.95      1.00      0.98       414
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.98       427
+        1.0       0.78      1.00      0.88        73
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 935088068
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 698
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3113
+        1.0       0.97      0.98      0.97       387
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.94      0.97       435
+        1.0       0.70      0.98      0.82        65
+
+avg / total       0.96      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 188895783
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 709
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      3110
+        1.0       0.95      0.85      0.90       390
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.94      0.96       450
+        1.0       0.61      0.80      0.69        50
+
+avg / total       0.94      0.93      0.93       500
+
+==================================
+Loading dataframe for user id 623334075
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 548
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3143
+        1.0       0.98      0.95      0.96       357
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       453
+        1.0       0.79      0.94      0.85        47
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 5033321
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 894
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3168
+        1.0       0.98      0.92      0.95       332
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.97       456
+        1.0       0.67      0.91      0.77        44
+
+avg / total       0.96      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 138835591
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 564
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      3103
+        1.0       0.93      0.86      0.89       397
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.97      0.98       445
+        1.0       0.80      0.85      0.82        55
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 20292293
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 732
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3173
+        1.0       0.98      0.98      0.98       327
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       455
+        1.0       0.80      0.96      0.87        45
+
+avg / total       0.98      0.97      0.98       500
+
+==================================
+Loading dataframe for user id 187453746
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 828
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3128
+        1.0       0.96      0.89      0.92       372
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.97       442
+        1.0       0.74      0.93      0.82        58
+
+avg / total       0.96      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 188617212
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 806
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3144
+        1.0       0.96      0.84      0.90       356
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.96       440
+        1.0       0.70      0.83      0.76        60
+
+avg / total       0.94      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 160768274
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 577
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3141
+        1.0       0.96      0.91      0.93       359
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       447
+        1.0       0.79      0.94      0.86        53
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 118500492
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 631
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3214
+        1.0       0.94      0.77      0.85       286
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.97      0.96       443
+        1.0       0.75      0.67      0.70        57
+
+avg / total       0.93      0.94      0.93       500
+
+==================================
+Loading dataframe for user id 143685841
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 527
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3161
+        1.0       0.96      0.81      0.88       339
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.97      0.95       438
+        1.0       0.73      0.53      0.62        62
+
+avg / total       0.91      0.92      0.91       500
+
+==================================
+Loading dataframe for user id 199982337
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 397
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3172
+        1.0       0.98      0.93      0.96       328
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.98       457
+        1.0       0.89      0.74      0.81        43
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 157523545
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 512
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      1.00      0.98      3148
+        1.0       0.96      0.72      0.82       352
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.99      0.97       454
+        1.0       0.80      0.52      0.63        46
+
+avg / total       0.94      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 156351223
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 953
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3178
+        1.0       0.92      0.89      0.90       322
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.93      0.96       458
+        1.0       0.56      0.95      0.70        42
+
+avg / total       0.96      0.93      0.94       500
+
+==================================
+Loading dataframe for user id 176669543
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 616
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3192
+        1.0       0.96      0.85      0.90       308
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.98      0.98       455
+        1.0       0.77      0.76      0.76        45
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 146209361
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 520
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3199
+        1.0       0.98      0.82      0.89       301
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.98      0.97       455
+        1.0       0.74      0.71      0.73        45
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 133945128
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 126
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3162
+        1.0       0.99      0.99      0.99       338
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00       457
+        1.0       0.93      1.00      0.97        43
+
+avg / total       0.99      0.99      0.99       500
+
+==================================
+Loading dataframe for user id 132704571
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 585
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3191
+        1.0       0.96      0.94      0.95       309
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.97       459
+        1.0       0.67      0.88      0.76        41
+
+avg / total       0.96      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 119748967
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 1047
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.99      0.98      3181
+        1.0       0.88      0.58      0.70       319
+
+avg / total       0.95      0.95      0.95      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.93      0.95       456
+        1.0       0.46      0.59      0.51        44
+
+avg / total       0.92      0.90      0.91       500
+
+==================================
+Loading dataframe for user id 118547936
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 509
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3190
+        1.0       0.97      0.93      0.95       310
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.98      0.98       445
+        1.0       0.82      0.85      0.84        55
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 130959700
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 217
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3207
+        1.0       0.99      0.84      0.91       293
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       452
+        1.0       0.93      0.88      0.90        48
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 79063686
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 764
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      3239
+        1.0       0.93      0.81      0.86       261
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       458
+        1.0       0.62      0.74      0.67        42
+
+avg / total       0.95      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 178432723
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 690
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3243
+        1.0       0.94      0.82      0.88       257
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.95      0.96       454
+        1.0       0.59      0.72      0.65        46
+
+avg / total       0.94      0.93      0.93       500
+
+==================================
+Loading dataframe for user id 146715656
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 494
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3243
+        1.0       0.95      0.77      0.85       257
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.98      0.98       463
+        1.0       0.71      0.73      0.72        37
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 74660411
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 794
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3269
+        1.0       0.95      0.96      0.95       231
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.98       477
+        1.0       0.50      0.87      0.63        23
+
+avg / total       0.97      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 166576483
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 320
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3238
+        1.0       0.98      0.82      0.89       262
+
+avg / total       0.99      0.99      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.98       466
+        1.0       0.82      0.68      0.74        34
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 163481473
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 472
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3222
+        1.0       0.97      0.89      0.93       278
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       463
+        1.0       0.79      0.89      0.84        37
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 50361675
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 561
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3245
+        1.0       0.95      0.73      0.82       255
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       467
+        1.0       0.55      0.73      0.62        33
+
+avg / total       0.95      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 173550390
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 722
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98      3226
+        1.0       0.88      0.61      0.72       274
+
+avg / total       0.96      0.96      0.96      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.97      0.97       471
+        1.0       0.48      0.45      0.46        29
+
+avg / total       0.94      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 45220870
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 544
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3283
+        1.0       0.95      0.79      0.86       217
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       469
+        1.0       0.64      0.81      0.71        31
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 173348160
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 361
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3246
+        1.0       0.97      0.76      0.85       254
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.99      0.97       462
+        1.0       0.82      0.47      0.60        38
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 136487930
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 694
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3258
+        1.0       0.95      0.87      0.91       242
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.97       463
+        1.0       0.56      0.76      0.64        37
+
+avg / total       0.95      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 186595337
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 443
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3266
+        1.0       0.95      0.72      0.82       234
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.98      0.97       459
+        1.0       0.73      0.54      0.62        41
+
+avg / total       0.94      0.95      0.94       500
+
+==================================
+Loading dataframe for user id 601015661
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 474
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3276
+        1.0       0.94      0.90      0.92       224
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       466
+        1.0       0.77      0.97      0.86        34
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 20489477
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 1140
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3298
+        1.0       0.90      0.99      0.94       202
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.92      0.96       472
+        1.0       0.42      1.00      0.60        28
+
+avg / total       0.97      0.92      0.94       500
+
+==================================
+Loading dataframe for user id 35710956
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 530
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3272
+        1.0       0.96      0.77      0.85       228
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       464
+        1.0       0.61      0.78      0.68        36
+
+avg / total       0.96      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 53738889
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 353
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3275
+        1.0       0.96      0.74      0.84       225
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.98       462
+        1.0       0.84      0.71      0.77        38
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 147249049
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 452
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3259
+        1.0       0.96      0.90      0.93       241
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       474
+        1.0       0.77      0.88      0.82        26
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 62255061
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 796
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3291
+        1.0       0.92      0.78      0.85       209
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.97      0.97       462
+        1.0       0.64      0.74      0.68        38
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 23486396
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 495
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3326
+        1.0       0.95      0.94      0.94       174
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       473
+        1.0       0.62      0.78      0.69        27
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 200302248
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 378
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3273
+        1.0       0.95      0.78      0.85       227
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.98      0.98       478
+        1.0       0.48      0.45      0.47        22
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 146655020
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 631
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3300
+        1.0       0.93      0.69      0.79       200
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.97       468
+        1.0       0.50      0.72      0.59        32
+
+avg / total       0.95      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 139914117
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 659
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3302
+        1.0       0.95      0.97      0.96       198
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.97       472
+        1.0       0.54      0.96      0.69        28
+
+avg / total       0.97      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 9527062
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 1062
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99      3382
+        1.0       0.82      0.90      0.86       118
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.97       482
+        1.0       0.41      1.00      0.58        18
+
+avg / total       0.98      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 107176039
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 575
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3335
+        1.0       0.89      0.63      0.74       165
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.96      0.96       469
+        1.0       0.46      0.55      0.50        31
+
+avg / total       0.94      0.93      0.93       500
+
+==================================
+Loading dataframe for user id 28784256
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 784
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3280
+        1.0       0.94      0.87      0.90       220
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       478
+        1.0       0.52      1.00      0.69        22
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 148193563
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 438
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3298
+        1.0       0.97      0.96      0.97       202
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       471
+        1.0       0.78      0.97      0.86        29
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 152821325
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 636
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3307
+        1.0       0.94      0.80      0.87       193
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       473
+        1.0       0.43      0.59      0.50        27
+
+avg / total       0.95      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 138098855
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 639
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3287
+        1.0       0.92      0.82      0.87       213
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       474
+        1.0       0.58      0.85      0.69        26
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 270144571
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 602
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3292
+        1.0       0.95      0.83      0.89       208
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       470
+        1.0       0.67      0.87      0.75        30
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 57686497
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 770
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3299
+        1.0       0.90      0.75      0.82       201
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.96       469
+        1.0       0.47      0.68      0.55        31
+
+avg / total       0.95      0.93      0.94       500
+
+==================================
+Loading dataframe for user id 155919261
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 254
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3308
+        1.0       0.99      0.81      0.89       192
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       464
+        1.0       0.94      0.81      0.87        36
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 7888482
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 1078
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3317
+        1.0       0.93      0.89      0.91       183
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       471
+        1.0       0.64      0.86      0.74        29
+
+avg / total       0.97      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 66145322
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 614
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3311
+        1.0       0.96      0.85      0.90       189
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.98      0.98       473
+        1.0       0.64      0.67      0.65        27
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 124222509
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 365
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3299
+        1.0       0.96      0.93      0.94       201
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       481
+        1.0       0.68      1.00      0.81        19
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 258968955
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 611
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3316
+        1.0       0.93      0.81      0.86       184
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       474
+        1.0       0.62      0.81      0.70        26
+
+avg / total       0.97      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 152769475
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 582
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      3319
+        1.0       0.95      0.71      0.81       181
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.96       474
+        1.0       0.41      0.58      0.48        26
+
+avg / total       0.95      0.93      0.94       500
+
+==================================
+Loading dataframe for user id 121039771
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 435
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3315
+        1.0       0.95      0.88      0.91       185
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       476
+        1.0       0.67      0.83      0.74        24
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 716152460
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 675
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3313
+        1.0       0.91      0.89      0.90       187
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       477
+        1.0       0.54      0.96      0.69        23
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 16469876
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 794
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3315
+        1.0       0.90      0.82      0.86       185
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.93      0.96       475
+        1.0       0.42      0.88      0.56        25
+
+avg / total       0.96      0.93      0.94       500
+
+==================================
+Loading dataframe for user id 323417560
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 387
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3311
+        1.0       0.98      0.87      0.92       189
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       480
+        1.0       0.67      0.80      0.73        20
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 186693730
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 434
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3331
+        1.0       0.94      0.86      0.90       169
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       465
+        1.0       0.85      0.80      0.82        35
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 212650503
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 692
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3316
+        1.0       0.91      0.92      0.92       184
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       475
+        1.0       0.63      0.88      0.73        25
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 8366982
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 587
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3431
+        1.0       0.83      0.91      0.87        69
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       485
+        1.0       0.47      0.93      0.62        15
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 43564780
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 438
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3309
+        1.0       0.98      0.83      0.90       191
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.98      0.98       467
+        1.0       0.67      0.67      0.67        33
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 628409060
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 497
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3342
+        1.0       0.91      0.87      0.89       158
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       480
+        1.0       0.54      0.75      0.63        20
+
+avg / total       0.97      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 17620434
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 465
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3370
+        1.0       0.95      0.79      0.87       130
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       481
+        1.0       0.62      0.79      0.70        19
+
+avg / total       0.98      0.97      0.98       500
+
+==================================
+Loading dataframe for user id 28668781
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 480
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3341
+        1.0       0.95      0.87      0.91       159
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       476
+        1.0       0.64      0.88      0.74        24
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 154738110
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 615
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3341
+        1.0       0.92      0.83      0.87       159
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       477
+        1.0       0.58      0.91      0.71        23
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 186998381
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 758
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3358
+        1.0       0.87      0.96      0.91       142
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       485
+        1.0       0.48      0.93      0.64        15
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 83119297
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 879
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3345
+        1.0       0.91      0.95      0.93       155
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.94      0.97       480
+        1.0       0.40      0.95      0.56        20
+
+avg / total       0.97      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 229480408
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 572
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3350
+        1.0       0.91      0.89      0.90       150
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.94      0.96       475
+        1.0       0.40      0.80      0.53        25
+
+avg / total       0.96      0.93      0.94       500
+
+==================================
+Loading dataframe for user id 130234556
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 752
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3330
+        1.0       0.90      0.99      0.94       170
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       483
+        1.0       0.46      1.00      0.63        17
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 166670881
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 619
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3336
+        1.0       0.93      0.83      0.87       164
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.95      0.97       483
+        1.0       0.36      0.76      0.49        17
+
+avg / total       0.97      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 111866614
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 436
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3367
+        1.0       0.92      0.92      0.92       133
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       487
+        1.0       0.55      0.85      0.67        13
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 818229818
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 641
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3356
+        1.0       0.91      0.81      0.86       144
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       479
+        1.0       0.57      0.76      0.65        21
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 145709292
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 659
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3358
+        1.0       0.90      0.89      0.89       142
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       482
+        1.0       0.47      0.78      0.58        18
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 18145859
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 722
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3379
+        1.0       0.87      0.80      0.84       121
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.98       480
+        1.0       0.48      0.80      0.60        20
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 96022814
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 643
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3415
+        1.0       0.89      0.86      0.87        85
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       480
+        1.0       0.54      1.00      0.70        20
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 49651047
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 762
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3366
+        1.0       0.88      0.79      0.83       134
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.98       482
+        1.0       0.47      0.83      0.60        18
+
+avg / total       0.97      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 151540361
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 547
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3359
+        1.0       0.87      0.78      0.82       141
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.97      0.97       473
+        1.0       0.53      0.59      0.56        27
+
+avg / total       0.95      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 188376648
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 504
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3359
+        1.0       0.92      0.84      0.88       141
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       482
+        1.0       0.47      0.94      0.63        18
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 2722181
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 419
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3420
+        1.0       0.91      0.94      0.93        80
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99       490
+        1.0       0.60      0.90      0.72        10
+
+avg / total       0.99      0.99      0.99       500
+
+==================================
+Loading dataframe for user id 47781723
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 659
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3345
+        1.0       0.91      0.90      0.91       155
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       477
+        1.0       0.61      0.83      0.70        23
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 25066392
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 689
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3365
+        1.0       0.88      0.97      0.92       135
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.94      0.97       482
+        1.0       0.40      1.00      0.57        18
+
+avg / total       0.98      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 164824570
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 565
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3379
+        1.0       0.93      0.95      0.94       121
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.97       485
+        1.0       0.34      0.67      0.45        15
+
+avg / total       0.97      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 356464236
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 555
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3377
+        1.0       0.83      0.69      0.75       123
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       482
+        1.0       0.30      0.50      0.37        18
+
+avg / total       0.96      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 329410435
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 599
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3364
+        1.0       0.82      0.74      0.78       136
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       487
+        1.0       0.38      0.85      0.52        13
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 58209067
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 327
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3406
+        1.0       0.97      0.93      0.95        94
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99       488
+        1.0       0.69      0.92      0.79        12
+
+avg / total       0.99      0.99      0.99       500
+
+==================================
+Loading dataframe for user id 153127426
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 546
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3363
+        1.0       0.95      0.84      0.89       137
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99       485
+        1.0       0.68      0.87      0.76        15
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 179673885
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 348
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3385
+        1.0       0.97      0.85      0.91       115
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       482
+        1.0       0.68      0.94      0.79        18
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 125363239
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 753
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      3370
+        1.0       0.78      0.55      0.64       130
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       481
+        1.0       0.33      0.53      0.41        19
+
+avg / total       0.96      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 367853828
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 515
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3388
+        1.0       0.86      0.67      0.75       112
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       487
+        1.0       0.45      0.69      0.55        13
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 309812848
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 510
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3374
+        1.0       0.94      0.98      0.96       126
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99       481
+        1.0       0.76      1.00      0.86        19
+
+avg / total       0.99      0.99      0.99       500
+
+==================================
+Loading dataframe for user id 91919237
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 251
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3390
+        1.0       0.97      0.55      0.71       110
+
+avg / total       0.99      0.99      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.98      0.98       475
+        1.0       0.64      0.56      0.60        25
+
+avg / total       0.96      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 49041045
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 920
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3398
+        1.0       0.87      0.83      0.85       102
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       476
+        1.0       0.56      0.83      0.67        24
+
+avg / total       0.97      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 42976687
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 804
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00      3150
+        1.0       0.95      0.98      0.97       350
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.94      0.97       448
+        1.0       0.66      1.00      0.79        52
+
+avg / total       0.96      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 1625949817
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 918
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3385
+        1.0       0.88      0.93      0.90       115
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.94      0.97       480
+        1.0       0.42      1.00      0.59        20
+
+avg / total       0.98      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 146453553
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 445
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3383
+        1.0       0.95      0.90      0.92       117
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00       486
+        1.0       0.78      1.00      0.88        14
+
+avg / total       0.99      0.99      0.99       500
+
+==================================
+Loading dataframe for user id 127163121
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 607
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3385
+        1.0       0.86      0.84      0.85       115
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.95      0.97       481
+        1.0       0.35      0.63      0.45        19
+
+avg / total       0.96      0.94      0.95       500
+
+==================================
+Loading dataframe for user id 67699758
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 378
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3395
+        1.0       0.93      0.84      0.88       105
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       489
+        1.0       0.31      0.45      0.37        11
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 183463551
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 823
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3397
+        1.0       0.83      0.80      0.81       103
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.95      0.97       486
+        1.0       0.32      0.79      0.46        14
+
+avg / total       0.97      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 263741712
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 682
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3415
+        1.0       0.92      0.93      0.92        85
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       492
+        1.0       0.19      0.38      0.25         8
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 75397992
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 497
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3398
+        1.0       0.91      0.88      0.90       102
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99       486
+        1.0       0.67      1.00      0.80        14
+
+avg / total       0.99      0.99      0.99       500
+
+==================================
+Loading dataframe for user id 118085767
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 805
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3396
+        1.0       0.91      0.97      0.94       104
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       484
+        1.0       0.44      0.94      0.60        16
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 169806496
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 711
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3399
+        1.0       0.87      0.84      0.85       101
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       488
+        1.0       0.55      1.00      0.71        12
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 171971212
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 572
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3388
+        1.0       0.89      0.84      0.86       112
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       489
+        1.0       0.42      0.73      0.53        11
+
+avg / total       0.98      0.97      0.98       500
+
+==================================
+Loading dataframe for user id 87599044
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 598
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3396
+        1.0       0.89      0.86      0.87       104
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       485
+        1.0       0.50      0.67      0.57        15
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 130941579
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 564
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3391
+        1.0       0.89      0.78      0.83       109
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.96      0.98       485
+        1.0       0.39      0.87      0.54        15
+
+avg / total       0.98      0.96      0.96       500
+
+==================================
+Loading dataframe for user id 74153376
+[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_74153376_small.pickle'
+==================================
+Loading dataframe for user id 7261072
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 375
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3401
+        1.0       0.93      0.88      0.90        99
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       487
+        1.0       0.48      0.77      0.59        13
+
+avg / total       0.98      0.97      0.98       500
+
+==================================
+Loading dataframe for user id 164236576
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 550
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3401
+        1.0       0.93      0.94      0.93        99
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       478
+        1.0       0.66      0.95      0.78        22
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 154225689
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 486
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3393
+        1.0       0.92      0.88      0.90       107
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       493
+        1.0       0.39      1.00      0.56         7
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 87606356
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 581
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3422
+        1.0       0.90      0.99      0.94        78
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       487
+        1.0       0.46      0.92      0.62        13
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 221934374
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 481
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3398
+        1.0       0.92      0.96      0.94       102
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       492
+        1.0       0.26      0.75      0.39         8
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 256674213
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 654
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3392
+        1.0       0.86      0.75      0.80       108
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.95      0.97       491
+        1.0       0.16      0.56      0.25         9
+
+avg / total       0.98      0.94      0.96       500
+
+==================================
+Loading dataframe for user id 223811224
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 425
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3400
+        1.0       0.90      0.95      0.92       100
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       490
+        1.0       0.36      0.80      0.50        10
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 157589057
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 356
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3394
+        1.0       0.93      0.97      0.95       106
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       484
+        1.0       0.65      0.94      0.77        16
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 1622441
+[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_1622441_small.pickle'
+==================================
+Loading dataframe for user id 213462875
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 602
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3406
+        1.0       0.85      0.84      0.84        94
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.96      0.97       483
+        1.0       0.31      0.47      0.37        17
+
+avg / total       0.96      0.95      0.95       500
+
+==================================
+Loading dataframe for user id 151317587
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 545
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3399
+        1.0       0.91      0.81      0.86       101
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       487
+        1.0       0.39      0.69      0.50        13
+
+avg / total       0.98      0.96      0.97       500
+
+==================================
+Loading dataframe for user id 166394396
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 423
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3404
+        1.0       0.91      0.71      0.80        96
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       485
+        1.0       0.45      0.60      0.51        15
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 295873172
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 443
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99      3410
+        1.0       0.79      0.82      0.80        90
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       488
+        1.0       0.33      0.42      0.37        12
+
+avg / total       0.97      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 186570446
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 382
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3407
+        1.0       0.95      0.83      0.89        93
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       489
+        1.0       0.47      0.82      0.60        11
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 143524017
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 429
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3403
+        1.0       0.96      0.94      0.95        97
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       485
+        1.0       0.65      1.00      0.79        15
+
+avg / total       0.99      0.98      0.99       500
+
+==================================
+Loading dataframe for user id 148125585
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 389
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3403
+        1.0       0.90      0.81      0.85        97
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99       488
+        1.0       0.61      0.92      0.73        12
+
+avg / total       0.99      0.98      0.99       500
+
+==================================
+Loading dataframe for user id 42097354
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 448
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3404
+        1.0       0.89      0.89      0.89        96
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       491
+        1.0       0.50      0.89      0.64         9
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 210630945
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 373
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3412
+        1.0       0.96      0.74      0.83        88
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       484
+        1.0       0.69      0.69      0.69        16
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 50661819
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 438
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3432
+        1.0       0.89      0.87      0.88        68
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       489
+        1.0       0.47      0.64      0.54        11
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 822112
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 355
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3401
+        1.0       0.94      0.99      0.97        99
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       484
+        1.0       0.61      0.88      0.72        16
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 151058509
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 195
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3401
+        1.0       0.99      0.77      0.86        99
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       483
+        1.0       0.71      0.59      0.65        17
+
+avg / total       0.98      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 125734567
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 434
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3402
+        1.0       0.92      0.99      0.96        98
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       496
+        1.0       0.25      1.00      0.40         4
+
+avg / total       0.99      0.98      0.98       500
+
+==================================
+Loading dataframe for user id 1383498264
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 893
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3419
+        1.0       0.82      0.85      0.84        81
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.94      0.97       492
+        1.0       0.19      0.88      0.32         8
+
+avg / total       0.98      0.94      0.96       500
+
+==================================
+Loading dataframe for user id 13438282
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 982
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99      3412
+        1.0       0.78      0.75      0.76        88
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       488
+        1.0       0.40      0.67      0.50        12
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 197176019
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 483
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3407
+        1.0       0.91      0.98      0.94        93
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       486
+        1.0       0.52      0.93      0.67        14
+
+avg / total       0.98      0.97      0.98       500
+
+==================================
+Loading dataframe for user id 37857874
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 984
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3421
+        1.0       0.86      0.95      0.90        79
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.97       489
+        1.0       0.31      1.00      0.47        11
+
+avg / total       0.98      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 128386349
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 513
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3420
+        1.0       0.91      0.76      0.83        80
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       490
+        1.0       0.33      0.60      0.43        10
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 71303860
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 45
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3409
+        1.0       1.00      1.00      1.00        91
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       486
+        1.0       1.00      1.00      1.00        14
+
+avg / total       1.00      1.00      1.00       500
+
+==================================
+Loading dataframe for user id 196478764
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 635
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3427
+        1.0       0.82      0.70      0.76        73
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.96      0.97       487
+        1.0       0.27      0.54      0.36        13
+
+avg / total       0.97      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 1566310694
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 744
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3409
+        1.0       0.93      1.00      0.96        91
+
+avg / total       1.00      1.00      1.00      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.98       492
+        1.0       0.35      1.00      0.52         8
+
+avg / total       0.99      0.97      0.98       500
+
+==================================
+Switching to API Credentials #0
+==================================
+Loading dataframe for user id 74153376
+[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_74153376_small.pickle'
+==================================
+Loading dataframe for user id 1622441
+[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_1622441_small.pickle'
+==================================
+Loading dataframe for user id 59857143
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 843
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3402
+        1.0       0.86      0.95      0.90        98
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.97       488
+        1.0       0.29      0.83      0.43        12
+
+avg / total       0.98      0.95      0.96       500
+
+==================================
+Loading dataframe for user id 76684633
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 474
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3418
+        1.0       0.94      0.80      0.87        82
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       493
+        1.0       0.31      0.71      0.43         7
+
+avg / total       0.99      0.97      0.98       500
+
+==================================
+Loading dataframe for user id 85123028
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 561
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3434
+        1.0       0.85      0.76      0.80        66
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       485
+        1.0       0.52      0.73      0.61        15
+
+avg / total       0.98      0.97      0.97       500
+
+==================================
+Loading dataframe for user id 54987976
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 559
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      3407
+        1.0       0.90      0.81      0.85        93
+
+avg / total       0.99      0.99      0.99      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.99       490
+        1.0       0.47      0.70      0.56        10
+
+avg / total       0.98      0.98      0.98       500
+

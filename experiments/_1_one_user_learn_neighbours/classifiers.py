@@ -11,10 +11,6 @@ from sklearn.metrics import classification_report
 from os.path import join
 import numpy as np
 from random import sample
-from create_clesa_datasets import *
-
-mpl = log_to_stderr()
-mpl.setLevel(logging.ERROR)
 
 def evaluate_model(clf, X_train, X_test, y_train, y_test):
     y_true, y_pred = y_train, clf.predict(X_train)
@@ -39,7 +35,7 @@ def sub_sample_negs_arr(X, y):
 
     return Xs, ys
 
-def model_select_rdf(dataset, cv=3):
+def model_select_rdf(dataset, cv=3, n_jobs=6):
     X_train, X_test, y_train, y_test = dataset
 
     w1 = sum(y_train)/len(y_train)
@@ -49,15 +45,15 @@ def model_select_rdf(dataset, cv=3):
     # Set the parameters by cross-validation
     params = dict(
         max_depth=[5, 15, None],
-        n_estimators=[30, 100],
+        n_estimators=[10, 50],
         class_weight=['balanced_subsample', 'balanced'],
         # sample_weight=[sample_weight]
-        max_features=[50, 300, None],
-        min_samples_leaf=[5, 20]
+        max_features=[50, 100, None],
+        min_samples_leaf=[1, 3]
     )
 
     scores = [
-        'recall',
+        # 'recall',
         'f1',
         # 'precision',
     ]
@@ -70,7 +66,7 @@ def model_select_rdf(dataset, cv=3):
             RandomForestClassifier(),  
             param_grid=params,  # parameters to tune via cross validation
             refit=True,  # fit using all data, on the best detected classifier
-            n_jobs=-1,  # number of cores to use for parallelization; -1 for "all cores"
+            n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
             scoring=score,  # what score are we optimizing?
             cv=cv,  # what type of cross validation to use
         )
@@ -95,9 +91,9 @@ def model_select_rdf(dataset, cv=3):
         print(classification_report(y_true, y_pred))
         print()
 
-    # return clf
+    return clf
 
-def model_select_svc(dataset, cv=3):
+def model_select_svc(dataset, cv=3, n_jobs=6):
     X_train, X_test, y_train, y_test = dataset
 
     # Set the parameters by cross-validation
@@ -123,7 +119,7 @@ def model_select_svc(dataset, cv=3):
             SVC(),  
             param_grid=parameters,  # parameters to tune via cross validation
             refit=True,  # fit using all data, on the best detected classifier
-            n_jobs=-1,  # number of cores to use for parallelization; -1 for "all cores"
+            n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
             scoring=score,  # what score are we optimizing?
             cv=cv,  # what type of cross validation to use
         )
@@ -148,7 +144,7 @@ def model_select_svc(dataset, cv=3):
         print(classification_report(y_true, y_pred))
         print()
 
-def model_select_sgd(dataset, cv=5):
+def model_select_sgd(dataset, cv=3, n_jobs=6):
     X_train, X_test, y_train, y_test = dataset
 
     # Set the parameters by cross-validation
@@ -175,7 +171,7 @@ def model_select_sgd(dataset, cv=5):
             SGDClassifier(),  
             param_grid=parameters,  # parameters to tune via cross validation
             refit=True,  # fit using all data, on the best detected classifier
-            n_jobs=-1,  # number of cores to use for parallelization; -1 for "all cores"
+            n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
             scoring=score,  # what score are we optimizing?
             cv=cv,  # what type of cross validation to use
         )

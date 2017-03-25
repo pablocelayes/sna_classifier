@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+# from __future__ import print_function
 
 from sklearn.metrics import classification_report
 from sklearn.tree import DecisionTreeClassifier
@@ -13,6 +13,7 @@ from collections import Counter
 import pandas as pd
 import matplotlib.pyplot as plt
 import json
+from math import ceil
 from os.path import join
 
 from experiments._65_linkedarticles.extractors import EsaFeatureExtractor
@@ -22,13 +23,27 @@ from multiprocessing import Pool, Manager, Process, log_to_stderr
 import logging
 mpl = log_to_stderr()
 mpl.setLevel(logging.INFO)
+from scipy.sparse import csc
+
+from time import time
 
 tu_path = "/home/pablo/Proyectos/tesiscomp/experiments/_1_one_user_learn_neighbours/active_and_central.json"
 TEST_USERS_ALL = json.load(open(tu_path))
 
 USER_ID = 37226353
 
+def load_low_recall_users():
+    with open('../_1_one_user_learn_neighbours/recalls_test_amb.json') as f:
+        # Estas recalls están calculadas sólo para usuarios con <90% recall en el training set
+        # en el caso de features sociales
+        recalls = json.load(f)
+    
+    ur = sorted(recalls.items(), key=lambda (u,r):r)
 
+    # Nos quedamos con los de test recall < 70% ( es un proceso pesado )
+    ur = [(u,r) for (u,r) in ur if r < 0.7]
+
+    return ur
 
 def _calculate_mean_and_std_deviation(X):
     """
@@ -102,64 +117,75 @@ def load_esa_dataset(uid):
     y_train = z['arr_2']
     y_test = z['arr_3']
 
+    X_train_esa = csc.csc_matrix(X_train_esa.tolist())
+    X_test_esa = csc.csc_matrix(X_test_esa.tolist())
+
     return X_train_esa, X_test_esa, y_train, y_test
 
 
 if __name__ == '__main__':
-    def worker(its, rows_array):
+    def worker(its, rows_array, lock):
+        extractor = EsaFeatureExtractor(PREFIX)
         for i, t in its:
-            rows_array[i] = extractor.get_features(text=t.text)
-            # if i % 10 == 0:
+            feats = extractor.get_features(text=t.text)
+            lock.acquire()
+            rows_array[i] = feats
+            # if i % 20 == 0:
             #     sofar = len(x for x in rows_array if x)
             #     perc = sofar * 100.0 / len(rows_array)
             #     print ("%.2f %% so far" % perc )
+            lock.release()
 
-    for uid, _, _ in TEST_USERS_ALL:
-        # create_esa_dataset(uid)
 
-    # uid = USER_ID
-    
-        fname = 'esads_%d.npz' % uid
+    recalls = load_low_recall_users()
 
-        extractor = EsaFeatureExtractor(PREFIX)
+    # for uid, r in recalls:
+    for uid, r in recalls[:1]:
+
+        uid = int(uid)
+        fname = fname = join(DATASETS_FOLDER, 'es_esads_%d.npz' % uid)
+        print "Processing %d ( recall %.2f)" % (uid, 100 * r)
+
         s = open_session()
         X_train, X_test, y_train, y_test = load_dataframe(uid)
         
-        X_train['y'] = y_train
-        X_test['y'] = y_test
+        X_train = X_train[:200]
+        X_test = X_test[:100]
 
-        train_size = 700
-        if len(X_train) > train_size: 
-            X_train = X_train.sample(train_size)
-            test_size = (3 * train_size) / 7
-            X_test = X_test.sample(test_size)
-
-        y_train = X_train['y']
-        y_test = X_test['y']
-
+        print "Loading %d train and %d test tweets" % (len(X_train), len(X_test))
         train_tweets = [s.query(Tweet).get(twid) for twid in X_train.index]
         test_tweets = [s.query(Tweet).get(twid) for twid in X_test.index]
 
         manager = Manager()
         rows_train = manager.list([None] * len(train_tweets))
         rows_test = manager.list([None] * len(test_tweets))
+        lock = manager.Lock()
 
+        print "Extracting features"
         NWORKERS = 7
         p = Pool(NWORKERS)
         enumtweets = list(enumerate(train_tweets))
-        batch_size = len(train_tweets) / (NWORKERS - 1)
+        batch_size = int(ceil(len(train_tweets) * 1.0 / NWORKERS))
+
+        start = time()
         for i in range(NWORKERS):
             its = enumtweets[i * batch_size: (i+1) * batch_size]
-            p.apply_async(worker, (its, rows_train))
+            p.apply_async(worker, (its, rows_train, lock))
 
         enumtweets = list(enumerate(test_tweets))
-        batch_size = len(test_tweets) / (NWORKERS - 1)
+        batch_size = int(ceil(len(test_tweets) * 1.0 / NWORKERS))
         for i in range(NWORKERS):
             its = enumtweets[i * batch_size: (i+1) * batch_size]
-            p.apply_async(worker, (its, rows_test))
+            p.apply_async(worker, (its, rows_test, lock))
 
         p.close()
         p.join()
+
+        t = time() - start
+        n = len(rows_train) + len(rows_test)
+        print "Took %.2f secs to process %d tweets" % (t, n)
+        print "%.3f sec per tweet" % (t/n)
+
 
         X_train_esa = vstack(list(rows_train))
         X_test_esa = vstack(list(rows_test))
