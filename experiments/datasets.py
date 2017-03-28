@@ -235,15 +235,15 @@ def reduce_dataset(uid):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
         X_valid, X_test, y_valid, y_test = train_test_split(X_test, y_test, test_size=0.66666, random_state=42)
 
-        Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
-        Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
-        Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
-        ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
+    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
+    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
+    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
+    ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
 
-        X_train.to_pickle(Xtrain_fname)
-        X_valid.to_pickle(Xvalid_fname)
-        X_test.to_pickle(Xtest_fname)
-        pickle.dump((y_train, y_valid, y_test), open(ys_fname, 'wb'))
+    X_train.to_pickle(Xtrain_fname)
+    X_valid.to_pickle(Xvalid_fname)
+    X_test.to_pickle(Xtest_fname)
+    pickle.dump((y_train, y_valid, y_test), open(ys_fname, 'wb'))
 
     return X_train, X_valid, X_test, y_train, y_valid, y_test
 

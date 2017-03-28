@@ -11,13 +11,13 @@ import json
 def worker(uid, f1s_valid, f1s_testv, lock):
     """worker function"""
     print "Largamos para %d" % uid
-    s = open_session()
     
-    user = s.query(User).get(uid)
-    clf = load_model_small(uid)
+    try:
+        clf = load_model_small(uid, 'svc')
+        X_train, X_valid, X_testv, y_train, y_valid, y_testv = load_small_validation_dataframe(uid)
+    except Exception as e:
+        return
 
-    X_train, X_valid, X_testv, y_train, y_valid, y_testv = load_small_validation_dataframe(uid)
-    
     y_true, y_pred = y_valid, clf.predict(X_valid)
     rs = f1_score(y_true, y_pred)
     lock.acquire()
@@ -47,8 +47,8 @@ if __name__ == '__main__':
     pool.close()
     pool.join()
 
-    with open('f1s_valid.json', 'w') as f:
+    with open('f1s_valid_svc.json', 'w') as f:
         json.dump(dict(f1s_valid), f)
 
-    with open('f1s_testv.json', 'w') as f:
+    with open('f1s_testv_svc.json', 'w') as f:
         json.dump(dict(f1s_testv), f)

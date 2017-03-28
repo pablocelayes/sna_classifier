@@ -1,3 +1,7 @@
+# WARNING: no usar!
+# usar este /home/pablo/Proyectos/tesiscomp/experiments/_1_one_user_learn_neighbours/classifiers.py
+
+
 # from experiments._1_one_user_learn_neighbours.try_some_users import *
 from __future__ import print_function
 from tw_dataset.settings import DATASETS_FOLDER
@@ -48,7 +52,7 @@ def model_select_rdf(dataset, cv=3, n_jobs=6):
 
     # Set the parameters by cross-validation
     params = dict(
-        max_depth=[5, 15, None],
+        max_depth=[5, 20, None],
         n_estimators=[10, 30, 100],
         class_weight=['balanced_subsample', 'balanced'],
         # sample_weight=[sample_weight]

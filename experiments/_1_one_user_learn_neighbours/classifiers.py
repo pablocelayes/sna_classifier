@@ -44,11 +44,11 @@ def model_select_rdf(dataset, cv=3, n_jobs=6):
 
     # Set the parameters by cross-validation
     params = dict(
-        max_depth=[5, 15, None],
-        n_estimators=[10, 50],
+        max_depth=[5, 20, None],
+        n_estimators=[10, 30, 100],
         class_weight=['balanced_subsample', 'balanced'],
         # sample_weight=[sample_weight]
-        max_features=[50, 100, None],
+        max_features=[50, 300, None, 'auto'],
         min_samples_leaf=[1, 3]
     )
 
@@ -100,15 +100,16 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
     parameters = [
         {
          'kernel': ['rbf', 'poly'],
-         'gamma': [10, 100, 150, 200],
-         'C': [0.01, 0.05, 0.1, 1]
+         'gamma': [0.1, 1, 10, 100],
+         'C': [0.01, 0.1, 1],
+         'class_weight': ['balanced', None]
         }
     ]
 
     scores = [
         # 'precision',
-        'recall',
-        # 'f1'
+        # 'recall',
+        'f1'
     ]
 
     for score in scores:
@@ -143,6 +144,8 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
         y_true, y_pred = y_test, clf.predict(X_test)
         print(classification_report(y_true, y_pred))
         print()
+
+    return clf
 
 def model_select_sgd(dataset, cv=3, n_jobs=6):
     X_train, X_test, y_train, y_test = dataset
@@ -195,6 +198,8 @@ def model_select_sgd(dataset, cv=3, n_jobs=6):
         y_true, y_pred = y_test, clf.predict(X_test)
         print(classification_report(y_true, y_pred))
         print()
+
+    return clf
 
 if __name__ == '__main__':
     # from create_clesa_datasets import *

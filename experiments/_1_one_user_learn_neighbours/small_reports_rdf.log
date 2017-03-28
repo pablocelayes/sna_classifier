@@ -1,4 +1,137 @@
 Switching to API Credentials #1
+
+
+==================================
+Loading dataframe for user id 188525384
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 364
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      1.00      0.98      2791
+        1.0       1.00      0.87      0.93       709
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.97      0.96       386
+        1.0       0.88      0.84      0.86       114
+
+avg / total       0.94      0.94      0.94       500
+
+==================================
+Loading dataframe for user id 219788847
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 387
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      1.00      0.98      2837
+        1.0       0.99      0.84      0.91       663
+
+avg / total       0.97      0.97      0.97      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.98      0.96       387
+        1.0       0.93      0.76      0.84       113
+
+avg / total       0.93      0.93      0.93       500
+
+==================================
+Loading dataframe for user id 562601076
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 488
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.99      0.97      2795
+        1.0       0.97      0.78      0.87       705
+
+avg / total       0.95      0.95      0.95      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.96      0.94       400
+        1.0       0.82      0.69      0.75       100
+
+avg / total       0.90      0.91      0.90       500
+
+==================================
+Loading dataframe for user id 171110904
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 386
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      1.00      0.97      2779
+        1.0       0.99      0.77      0.86       721
+
+avg / total       0.95      0.95      0.95      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.96      0.95       404
+        1.0       0.81      0.76      0.78        96
+
+avg / total       0.92      0.92      0.92       500
+
+==================================
+Loading dataframe for user id 203030351
+dataframe loaded.
+Size (#tweets): 4500
+Dimension (#neighbours): 572
+Training RandomForestClassifier
+Detailed classification report:
+
+Scores on training set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.99      2784
+        1.0       0.98      0.94      0.96       716
+
+avg / total       0.98      0.98      0.98      3500
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.95      0.98       418
+        1.0       0.81      0.99      0.89        82
+
+avg / total       0.97      0.96      0.96       500
+
+
 ==================================
 Loading dataframe for user id 228252737
 dataframe loaded.
@@ -24,6 +157,7 @@ Scores on test set.
         1.0       0.88      0.84      0.86       249
 
 avg / total       0.86      0.86      0.86       500
+
 
 ==================================
 Loading dataframe for user id 142800528
@@ -518,136 +652,6 @@ Scores on test set.
         1.0       0.81      0.95      0.87        83
 
 avg / total       0.96      0.95      0.96       500
-
-==================================
-Loading dataframe for user id 188525384
-dataframe loaded.
-Size (#tweets): 4500
-Dimension (#neighbours): 364
-Training RandomForestClassifier
-Detailed classification report:
-
-Scores on training set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.97      1.00      0.98      2791
-        1.0       1.00      0.87      0.93       709
-
-avg / total       0.97      0.97      0.97      3500
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.95      0.97      0.96       386
-        1.0       0.88      0.84      0.86       114
-
-avg / total       0.94      0.94      0.94       500
-
-==================================
-Loading dataframe for user id 219788847
-dataframe loaded.
-Size (#tweets): 4500
-Dimension (#neighbours): 387
-Training RandomForestClassifier
-Detailed classification report:
-
-Scores on training set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.96      1.00      0.98      2837
-        1.0       0.99      0.84      0.91       663
-
-avg / total       0.97      0.97      0.97      3500
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.93      0.98      0.96       387
-        1.0       0.93      0.76      0.84       113
-
-avg / total       0.93      0.93      0.93       500
-
-==================================
-Loading dataframe for user id 562601076
-dataframe loaded.
-Size (#tweets): 4500
-Dimension (#neighbours): 488
-Training RandomForestClassifier
-Detailed classification report:
-
-Scores on training set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.95      0.99      0.97      2795
-        1.0       0.97      0.78      0.87       705
-
-avg / total       0.95      0.95      0.95      3500
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.93      0.96      0.94       400
-        1.0       0.82      0.69      0.75       100
-
-avg / total       0.90      0.91      0.90       500
-
-==================================
-Loading dataframe for user id 171110904
-dataframe loaded.
-Size (#tweets): 4500
-Dimension (#neighbours): 386
-Training RandomForestClassifier
-Detailed classification report:
-
-Scores on training set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.94      1.00      0.97      2779
-        1.0       0.99      0.77      0.86       721
-
-avg / total       0.95      0.95      0.95      3500
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.94      0.96      0.95       404
-        1.0       0.81      0.76      0.78        96
-
-avg / total       0.92      0.92      0.92       500
-
-==================================
-Loading dataframe for user id 203030351
-dataframe loaded.
-Size (#tweets): 4500
-Dimension (#neighbours): 572
-Training RandomForestClassifier
-Detailed classification report:
-
-Scores on training set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.98      0.99      0.99      2784
-        1.0       0.98      0.94      0.96       716
-
-avg / total       0.98      0.98      0.98      3500
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      0.95      0.98       418
-        1.0       0.81      0.99      0.89        82
-
-avg / total       0.97      0.96      0.96       500
 
 ==================================
 Loading dataframe for user id 214986628
@@ -4896,12 +4900,7 @@ avg / total       0.99      0.97      0.98       500
 ==================================
 Switching to API Credentials #0
 ==================================
-Loading dataframe for user id 74153376
-[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_74153376_small.pickle'
-==================================
-Loading dataframe for user id 1622441
-[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_1622441_small.pickle'
-==================================
+
 Loading dataframe for user id 59857143
 dataframe loaded.
 Size (#tweets): 4500
@@ -5004,4 +5003,12 @@ Scores on test set.
         1.0       0.47      0.70      0.56        10
 
 avg / total       0.98      0.98      0.98       500
+
+
+Loading dataframe for user id 74153376
+[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_74153376_small.pickle'
+==================================
+Loading dataframe for user id 1622441
+[Errno 2] No such file or directory: '/media/pablo/data/Tesis/dataframes/dfXtrain_1622441_small.pickle'
+==================================
 

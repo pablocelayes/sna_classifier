@@ -245,8 +245,8 @@ def save_dataset(dataset, fname):
     np.savez(open(fname,'wb'), X_train, X_test, y_train, y_test)
 
 
-def load_lda_dataset(uid, ntopics=None):
-    fname = join(DATASETS_FOLDER, 'es_lda%dds_%d.npz' % (ntopics or '', uid))
+def load_lda_dataset(uid):
+    fname = join(DATASETS_FOLDER, 'es_ldads_%d.npz' % uid)
     z = np.load(open(fname,'rb'))
     X_train = z['arr_0'].item()
     X_valid = z['arr_1'].item()
@@ -295,7 +295,7 @@ def load_small_validation_dataframe(uid):
 
 if __name__ == '__main__':
     def worker(its, rows_array, lock, counter, n):
-        extractor = LdaFeatureExtractor(PREFIX, n_topics=500)
+        extractor = LdaFeatureExtractor(PREFIX, n_topics=100)
         for i, t in its:
             feats = extractor.get_features(text=t.text)
             
@@ -308,20 +308,22 @@ if __name__ == '__main__':
                 print ("%.2f %% so far" % perc )
             lock.release()
 
-    # f1s = load_nlp_selected_users()
+    f1s = load_nlp_selected_users()
     # f1s = load_all_f1s()
 
-    # for uid, r in f1s:
+    start = False
+
+    for uid, r in f1s:
     # for uid, r in f1s[:10]:
-    for uid in [74153376, 1622441]:
+    # for uid in [74153376, 1622441]:
         uid = int(uid)
-        fname = join(DATASETS_FOLDER, 'es_ldads_%d.npz' % uid)
+        fname = join(DATASETS_FOLDER, 'es_lda100ds_%d.npz' % uid)
         if exists(fname):
             print "%s already exists" % fname
             continue
 
-        # print "Processing %d ( f1 %.2f %%)" % (uid, 100 * r)
-        print "Processing %d " % uid
+        print "Processing %d ( f1 %.2f %%)" % (uid, 100 * r)
+        # print "Processing %d " % uid
 
         s = open_session()
         X_train, X_valid, X_test, y_train, y_valid, y_test = load_small_validation_dataframe(uid)

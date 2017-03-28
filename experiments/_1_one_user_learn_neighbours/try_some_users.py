@@ -16,7 +16,7 @@ import sys
 from os.path import join
 from multiprocessing import Pool
 
-from classifiers import model_select_rdf
+from classifiers import model_select_rdf, model_select_svc
 
 def train_and_evaluate(user_id, clf_class=RandomForestClassifier):
     print("==================================")
@@ -68,12 +68,15 @@ def load_model(user_id):
     return clf
 
 
-def save_model_small(clf, user_id):
-    model_path = join(MODELS_FOLDER, "rdf_%d_small.pickle" % user_id)
+def save_model_small(clf, user_id, model_type, feat_space='', n_topics=None):
+    n_topics_str = 't%d' % n_topics if n_topics else ''
+    model_path = join(MODELS_FOLDER, "%s_%d_small_%s%s.pickle" % (model_type, user_id, feat_space, n_topics_str))
     joblib.dump(clf, model_path)
 
-def load_model_small(user_id):
-    model_path = join(MODELS_FOLDER, "rdf_%d_small.pickle" % user_id)
+def load_model_small(user_id, model_type, feat_space='', n_topics=None):
+    n_topics_str = 't%d' % n_topics if n_topics else ''
+    model_path = join(MODELS_FOLDER, "%s_%d_small_%s%s.pickle" % (model_type, user_id, feat_space, n_topics_str))
+
     clf = joblib.load(model_path)
     return clf
 
@@ -83,8 +86,8 @@ def worker(user_id):
         # clf = train_and_evaluate(user_id)
         X_train, X_valid, X_test, y_train, y_valid, y_test = load_small_validation_dataframe(user_id)
         dataset = X_train, X_valid, y_train, y_valid        
-        clf = model_select_rdf(dataset)
-        save_model_small(clf, user_id)
+        clf = model_select_svc(dataset)
+        save_model_small(clf, user_id, 'svc')
     except Exception as e:
         print(e)
 
@@ -95,7 +98,7 @@ if __name__ == '__main__':
     pending_user_ids = []
     for user_id, username, _ in TEST_USERS_ALL:
         try:
-            load_model_small(user_id)
+            load_model_small(user_id, 'svc')
         except IOError:
             pending_user_ids.append(user_id)
 
@@ -106,7 +109,11 @@ if __name__ == '__main__':
     # pool.close()
     # pool.join()
 
-    for user_id in pending_user_ids:
+    # pending_user_ids = [uid for uid,_,_ in TEST_USERS_ALL]
+
+    # for user_id in pending_user_ids:
+    for user_id in [74153376, 1622441]:
+        print(user_id)
         worker(user_id)
 
     # worker(117335842)        
