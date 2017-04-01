@@ -16,3 +16,4 @@ accesoserver.txt
 *.pickle
 *.json
 *.out
+.ipynb_checkpoints

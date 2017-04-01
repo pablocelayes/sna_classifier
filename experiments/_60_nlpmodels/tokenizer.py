@@ -33,7 +33,7 @@ def stem_tokens(tokens, stemmer):
     return stemmed
 
 
-def tokenize(text, stem=True):
+def tokenize(text, stem=True, remove_stopwords=False):
     text = text.lower()
 
     result = []
@@ -42,6 +42,7 @@ def tokenize(text, stem=True):
         text = ''.join([c for c in sentence if c not in non_words])
         # tokenize
         tokens = word_tokenize(text)
+
         # stem
         if stem:
             try:
