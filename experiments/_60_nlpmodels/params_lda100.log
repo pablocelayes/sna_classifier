@@ -1,11 +1,6 @@
 Switching to API Credentials #7
 ======================
-Processing 186998381 ( f1 5.83 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+186998381: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -49,12 +44,7 @@ Scores on test set.
 avg / total       0.00      0.03      0.00       500
 
 ======================
-Processing 263741712 ( f1 54.55 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+263741712: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -98,12 +88,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 213462875 ( f1 58.33 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 0.1, 'class_weight': 'balanced'}
+213462875: {'kernel': 'rbf', 'C': 0.01, 'gamma': 0.1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
@@ -147,12 +132,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 295873172 ( f1 58.82 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+295873172: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -196,12 +176,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.98       500
 
 ======================
-Processing 173348160 ( f1 61.82 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+173348160: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -245,12 +220,7 @@ Scores on test set.
 avg / total       0.96      0.96      0.95       500
 
 ======================
-Processing 67699758 ( f1 62.50 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+67699758: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -294,12 +264,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 200302248 ( f1 62.50 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+200302248: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -343,12 +308,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.97       500
 
 ======================
-Processing 356464236 ( f1 66.67 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 0.1, 'class_weight': 'balanced'}
+356464236: {'kernel': 'rbf', 'C': 0.01, 'gamma': 0.1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
@@ -392,12 +352,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 283762641 ( f1 66.67 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+283762641: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -441,12 +396,7 @@ Scores on test set.
 avg / total       0.93      0.93      0.92       500
 
 ======================
-Processing 1383498264 ( f1 66.67 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+1383498264: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -490,12 +440,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 143685841 ( f1 66.67 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 0.1, 'class_weight': 'balanced'}
+143685841: {'kernel': 'rbf', 'C': 0.1, 'gamma': 0.1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
@@ -539,12 +484,7 @@ Scores on test set.
 avg / total       0.94      0.94      0.93       500
 
 ======================
-Processing 157523545 ( f1 66.67 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+157523545: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -588,12 +528,7 @@ Scores on test set.
 avg / total       0.96      0.95      0.95       500
 
 ======================
-Processing 151540361 ( f1 68.29 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+151540361: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -637,12 +572,7 @@ Scores on test set.
 avg / total       0.97      0.97      0.97       500
 
 ======================
-Processing 166394396 ( f1 69.57 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+166394396: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -686,12 +616,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.98       500
 
 ======================
-Processing 186595337 ( f1 69.84 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+186595337: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -735,12 +660,7 @@ Scores on test set.
 avg / total       0.96      0.96      0.96       500
 
 ======================
-Processing 196478764 ( f1 70.00 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+196478764: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -784,12 +704,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 152769475 ( f1 70.00 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+152769475: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -833,12 +748,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.97       500
 
 ======================
-Processing 125363239 ( f1 70.59 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 0.1, 'class_weight': 'balanced'}
+125363239: {'kernel': 'rbf', 'C': 0.1, 'gamma': 0.1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
@@ -882,12 +792,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 173550390 ( f1 70.83 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+173550390: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -931,12 +836,7 @@ Scores on test set.
 avg / total       0.97      0.97      0.97       500
 
 ======================
-Processing 107176039 ( f1 70.83 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+107176039: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -980,12 +880,7 @@ Scores on test set.
 avg / total       0.97      0.97      0.97       500
 
 ======================
-Processing 256674213 ( f1 71.43 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+256674213: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1029,12 +924,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 91919237 ( f1 71.79 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+91919237: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1078,12 +968,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 127163121 ( f1 73.33 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+127163121: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1127,12 +1012,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 199982337 ( f1 73.97 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+199982337: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1176,12 +1056,7 @@ Scores on test set.
 avg / total       0.96      0.96      0.96       500
 
 ======================
-Processing 151058509 ( f1 74.07 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+151058509: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1225,12 +1100,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.98       500
 
 ======================
-Processing 152821325 ( f1 74.42 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+152821325: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1274,12 +1144,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 128386349 ( f1 75.00 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+128386349: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1323,12 +1188,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 18145859 ( f1 80.00 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+18145859: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1372,22 +1232,22 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 1311735576 ( f1 81.56 %)
+1311735576 
 # Tuning hyper-parameters for f1
 
 Switching to API Credentials #1
 ======================
-Processing 1311735576 ( f1 81.56 %)
+1311735576 
 # Tuning hyper-parameters for f1
 
 Switching to API Credentials #6
 ======================
-Processing 1311735576 ( f1 81.56 %)
+1311735576 
 # Tuning hyper-parameters for f1
 
 Switching to API Credentials #7
 ======================
-Processing 1311735576 ( f1 81.56 %)
+1311735576 
 # Tuning hyper-parameters for f1
 
 grid search estaba tardando horas en este caso.
@@ -1425,12 +1285,7 @@ avg / total       0.87      0.87      0.87       500
 Switching to API Credentials #2
 Switching to API Credentials #6
 ======================
-Processing 17620434 ( f1 88.24 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+17620434: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1476,12 +1331,7 @@ avg / total       0.99      0.99      0.99       500
 
 Switching to API Credentials #1
 ======================
-Processing 229480408 ( f1 88.89 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+229480408: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1525,12 +1375,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 214986628 ( f1 90.24 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 0.1, 'class_weight': 'balanced'}
+214986628: {'kernel': 'rbf', 'C': 0.1, 'gamma': 0.1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
@@ -1574,12 +1419,7 @@ Scores on test set.
 avg / total       0.97      0.97      0.97       500
 
 ======================
-Processing 59857143 ( f1 90.91 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+59857143: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1623,12 +1463,7 @@ Scores on test set.
 avg / total       1.00      1.00      1.00       500
 
 ======================
-Processing 118547936 ( f1 92.16 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+118547936: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1672,12 +1507,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 158116807 ( f1 93.17 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+158116807: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1721,12 +1551,7 @@ Scores on test set.
 avg / total       0.98      0.98      0.98       500
 
 ======================
-Processing 263872477 ( f1 96.84 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+263872477: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
@@ -1770,12 +1595,7 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       500
 
 ======================
-Processing 208575740 ( f1 97.47 %)
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+208575740: {'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.

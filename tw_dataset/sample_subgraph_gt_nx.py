@@ -86,4 +86,5 @@ if __name__ == '__main__':
     print "Computing subgraph..."
     subgraph = sample_subgraph(ug, seeds, K=50)
     # subgraph.save('subgraph.gt')
-    nx.write_gpickle(subgraph, 'subgraph.gpickle')
+    # nx.write_gpickle(subgraph, 'subgraph.gpickle')
+    nx.write_gpickle(subgraph, 'subgraph_gt_nx.gpickle')

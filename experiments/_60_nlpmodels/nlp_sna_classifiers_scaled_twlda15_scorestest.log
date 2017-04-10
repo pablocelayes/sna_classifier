@@ -1,0 +1,259 @@
+Switching to API Credentials #2
+==============================
+Processing 186998381 ( f1 5.83 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.97      0.99       967
+        1.0       0.55      0.94      0.70        33
+
+avg / total       0.98      0.97      0.98      1000
+
+==============================
+Processing 263741712 ( f1 54.55 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       978
+        1.0       0.64      0.64      0.64        22
+
+avg / total       0.98      0.98      0.98      1000
+
+==============================
+Processing 213462875 ( f1 58.33 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       973
+        1.0       0.81      0.63      0.71        27
+
+avg / total       0.98      0.99      0.99      1000
+
+==============================
+Processing 295873172 ( f1 58.82 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       970
+        1.0       0.74      0.67      0.70        30
+
+avg / total       0.98      0.98      0.98      1000
+
+==============================
+Processing 173348160 ( f1 61.82 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      0.99      0.98       950
+        1.0       0.74      0.58      0.65        50
+
+avg / total       0.97      0.97      0.97      1000
+
+==============================
+Processing 67699758 ( f1 62.50 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       968
+        1.0       0.83      0.75      0.79        32
+
+avg / total       0.99      0.99      0.99      1000
+
+==============================
+Processing 200302248 ( f1 62.50 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98       935
+        1.0       0.88      0.57      0.69        65
+
+avg / total       0.96      0.97      0.96      1000
+
+==============================
+Processing 356464236 ( f1 66.67 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.98      0.98       952
+        1.0       0.61      0.48      0.53        48
+
+avg / total       0.96      0.96      0.96      1000
+
+==============================
+Processing 283762641 ( f1 66.67 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.92      0.96      0.94       853
+        1.0       0.70      0.51      0.59       147
+
+avg / total       0.89      0.90      0.89      1000
+
+==============================
+Processing 1383498264 ( f1 66.67 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       968
+        1.0       0.43      0.59      0.50        32
+
+avg / total       0.97      0.96      0.96      1000
+
+==============================
+Processing 143685841 ( f1 66.67 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.99      0.97       896
+        1.0       0.86      0.62      0.72       104
+
+avg / total       0.95      0.95      0.95      1000
+
+==============================
+Processing 157523545 ( f1 66.67 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.98      0.97       911
+        1.0       0.75      0.47      0.58        89
+
+avg / total       0.93      0.94      0.93      1000
+
+==============================
+Processing 151540361 ( f1 68.29 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.98      0.98       963
+        1.0       0.57      0.76      0.65        37
+
+avg / total       0.98      0.97      0.97      1000
+
+==============================
+Processing 166394396 ( f1 69.57 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       971
+        1.0       0.53      0.55      0.54        29
+
+avg / total       0.97      0.97      0.97      1000
+
+==============================
+Processing 186595337 ( f1 69.84 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.98      0.98       931
+        1.0       0.74      0.57      0.64        69
+
+avg / total       0.95      0.96      0.95      1000
+
+==============================
+Processing 196478764 ( f1 70.00 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.99      0.99       979
+        1.0       0.56      0.43      0.49        21
+
+avg / total       0.98      0.98      0.98      1000
+
+==============================
+Processing 152769475 ( f1 70.00 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98       949
+        1.0       0.61      0.43      0.51        51
+
+avg / total       0.95      0.96      0.95      1000
+
+==============================
+Processing 125363239 ( f1 70.59 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       974
+        1.0       0.38      0.65      0.48        26
+
+avg / total       0.97      0.96      0.97      1000
+
+==============================
+Processing 173550390 ( f1 70.83 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.98      0.97       945
+        1.0       0.53      0.47      0.50        55
+
+avg / total       0.95      0.95      0.95      1000
+
+==============================
+Processing 107176039 ( f1 70.83 %)
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.96      0.98      0.97       937
+        1.0       0.64      0.46      0.54        63
+
+avg / total       0.94      0.95      0.95      1000
+
+==============================
+Processing 256674213 ( f1 71.43 %)
+classifier not trained yet
+==============================
+Processing 91919237 ( f1 71.79 %)
+classifier not trained yet
+==============================
+Processing 127163121 ( f1 73.33 %)
+classifier not trained yet
+==============================
+Processing 199982337 ( f1 73.97 %)
+classifier not trained yet
+==============================
+Processing 151058509 ( f1 74.07 %)
+classifier not trained yet
+==============================
+Processing 152821325 ( f1 74.42 %)
+classifier not trained yet
+==============================
+Processing 128386349 ( f1 75.00 %)
+classifier not trained yet
+==============================
+Processing 18145859 ( f1 80.00 %)
+classifier not trained yet
+==============================
+Processing 1311735576 ( f1 81.56 %)
+classifier not trained yet
+==============================
+Processing 17620434 ( f1 88.24 %)
+classifier not trained yet
+==============================
+Processing 229480408 ( f1 88.89 %)
+classifier not trained yet
+==============================
+Processing 214986628 ( f1 90.24 %)
+classifier not trained yet
+==============================
+Processing 59857143 ( f1 90.91 %)

@@ -16,7 +16,9 @@ FAV_DAYS = 30
 
 FAV_DATE_LIMIT = datetime.now() - timedelta(days=FAV_DAYS)
 
-GRAPH = nx.read_gpickle('big_graph.gpickle')
+# GRAPH = nx.read_gpickle('big_graph.gpickle')
+
+GRAPH = nx.read_graphml('big_graph.graphml')
 
 RELEVANT_FNAME = "relevantdict.json"
 
@@ -317,7 +319,7 @@ def filter_relevant_ids(graph):
     my_followed = list(set([x[0] for x in graph.edges()]))
     graph = nx.subgraph(graph, my_followed)
 
-    def get_followed(nid):
+    def get_nfollowed(nid):
         return len(graph.successors(nid))
 
     def get_nfollowers(nid):

@@ -17,3 +17,5 @@ accesoserver.txt
 *.json
 *.out
 .ipynb_checkpoints
+*.lda
+*.lda.state

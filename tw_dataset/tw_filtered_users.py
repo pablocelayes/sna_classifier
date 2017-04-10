@@ -56,6 +56,7 @@ def extend_followed_graph(outer_layer_ids, level):
 
 
 def compute_extended_graphs():
+    # NOTA: esto contiene lo mismo que layer0.pickle
     with open('filtered_layer0.pickle','rb') as f:
         outer_layer_ids = pickle.load(f)
 
