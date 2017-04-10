@@ -13,12 +13,13 @@ import time
 from datetime import timedelta, datetime, date
 import pickle
 
-from tw_dataset.settings import PROJECT_PATH, SQLITE_CONNECTION, SQLITE_CONNECTION1, SQLITE_CONNECTION2
+from tw_dataset.settings import PROJECT_PATH, SQLITE_CONNECTION
+import networkx as nx
 
 
-DATE_LOWER_LIMIT = datetime(year=2015, month=8, day=24)
+DATE_LOWER_LIMIT = datetime(year=2015, month=3, day=11)
 
-DATE_UPPER_LIMIT = datetime(year=2015, month=9, day=24)
+DATE_UPPER_LIMIT = datetime(year=2017, month=4, day=11)
 
 
 Base = declarative_base()
@@ -235,7 +236,6 @@ class User(Base):
 if __name__ == '__main__':
     initialize_db()
     
-    import networkx as nx
     graph = nx.read_gpickle('subgraph.gpickle')
     user_ids = graph.nodes()
     users = [User(id=int(uid)) for uid in user_ids]
@@ -248,9 +248,11 @@ if __name__ == '__main__':
 
     session = open_session()
     session.add_all(users)
-    session.close()
+    session.commit()
 
     for user in users:
         user.fetch_timeline(session)
         user.fetch_favorites(session)
     
+
+    session.close()
