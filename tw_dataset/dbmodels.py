@@ -17,7 +17,7 @@ from tw_dataset.settings import PROJECT_PATH, SQLITE_CONNECTION
 import networkx as nx
 
 
-DATE_LOWER_LIMIT = datetime(year=2015, month=3, day=11)
+DATE_LOWER_LIMIT = datetime(year=2017, month=3, day=11)
 
 DATE_UPPER_LIMIT = datetime(year=2017, month=4, day=11)
 
@@ -236,7 +236,7 @@ class User(Base):
 if __name__ == '__main__':
     initialize_db()
     
-    graph = nx.read_gpickle('subgraph.gpickle')
+    graph = nx.read_gpickle('graph.gpickle')
     user_ids = graph.nodes()
     users = [User(id=int(uid)) for uid in user_ids]
 

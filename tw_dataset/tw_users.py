@@ -21,29 +21,28 @@ if os.path.exists(RELEVANT_FNAME):
 else:
     RELEVANT = {}
 
-def get_follower_counts(user_id):
-    TW = API_HANDLER.get_connection()
-    u = TW.get_user(user_id)
-    return u.followers_count
-
-NOTAUTHORIZED_FNAME = "notauthorizedids.pickle"
+NOTAUTHORIZED_FNAME = "notauthorizedids.json"
 
 if os.path.exists(NOTAUTHORIZED_FNAME):
-    with open(NOTAUTHORIZED_FNAME, 'rb') as f:
-        NOTAUTHORIZED = pickle.load(f)
+    with open(NOTAUTHORIZED_FNAME, 'r') as f:
+        NOTAUTHORIZED = set(json.load(f))
 else:
     NOTAUTHORIZED = set()
 
+try:
+    AUX_GRAPH = nx.read_gpickle('aux_graph.gpickle')
+except IOError:
+    AUX_GRAPH = nx.DiGraph() 
 
-def get_neighbour_ids(user_id, graph):
+
+def get_followed_ids(user_id):
     """
         If user_id is already in graph returns his followed from there.
         Otherwise, it fetches from the API and stores in the graph
     """
-    if user_id in graph.nodes() and graph.successors(user_id): # means it was added to graph with its neighbours
-        followed = graph.successors(user_id)
-        followers = graph.predecessors(user_id)
-        return followed, followers
+    if user_id in AUX_GRAPH.nodes() and AUX_GRAPH.successors(user_id): # means it was added to graph with its followed ( visited )
+        followed = AUX_GRAPH.successors(user_id)
+        return followed
     else:
         retries = 0
         while True:
@@ -51,34 +50,36 @@ def get_neighbour_ids(user_id, graph):
             try:
                 TW = API_HANDLER.get_connection()
                 followed = TW.friends_ids(user_id=user_id)
-                followers = TW.followers_ids(user_id=user_id)
 
-                graph.add_node(user_id)
-                graph.add_edges_from([(user_id, f_id) for f_id in followed])
-                graph.add_edges_from([(f_id, user_id) for f_id in followers])
+                AUX_GRAPH.add_node(user_id)
+                AUX_GRAPH.add_edges_from([(user_id, f_id) for f_id in followed])
 
-                return followed, followers
+                # nx.write_gpickle(AUX_GRAPH, 'aux_graph.gpickle')
+
+                return followed
             except Exception, e:
                 # print e
                 if e.message == u'Not authorized.':
                     NOTAUTHORIZED.add(user_id)
-                    with open(NOTAUTHORIZED_FNAME, 'wb') as f:
-                        pickle.dump(NOTAUTHORIZED, f)
-                    return []
+                    with open(NOTAUTHORIZED_FNAME, 'w') as f:
+                        json.dump(list(NOTAUTHORIZED), f)
+                    return None
                 else:
                     print "Error for user %d: %s" % (user_id, e.message)
                     retries += 1
                     if retries == 5:
                         print "Gave up retrying for user %d" % user_id
-                        return [] 
+                        return None
                     else:
                         print "waiting..."
                         time.sleep(10)
 
-def is_relevant(uid, graph):
+def is_relevant(uid):
+    uid = str(uid)
     if uid not in RELEVANT:
-        followed, followers = get_neighbour_ids(user_id=uid, graph=graph)
-        RELEVANT[uid] = len(followed) > 40 and len(followers) > 40    
+        TW = API_HANDLER.get_connection()        
+        u = TW.get_user(uid)
+        RELEVANT[uid] = u.friends_count > 40 and u.followers_count > 40    
         with open(RELEVANT_FNAME, 'w') as f:
             json.dump(RELEVANT, f)
 
@@ -94,11 +95,6 @@ def create_graphs(K=50):
         (útil para calcular relevancias y similaridades)
     """
     try:
-        aux_graph = nx.read_gpickle('aux_graph.gpickle')
-    except IOError:
-        aux_graph = nx.DiGraph() 
-
-    try:
         graph = nx.read_gpickle('graph.gpickle')
     except IOError:
         graph = nx.DiGraph()
@@ -110,14 +106,28 @@ def create_graphs(K=50):
     else:
         unvisited = [USER_DATA['id']]
     
+    try:
+        failed = set(json.load(open('failed.json')))
+    except IOError:
+        failed = set()
+
     while unvisited:
         new_unvisited = set()
         for uid in unvisited:
-            followed, _ = get_neighbour_ids(user_id=uid, graph=aux_graph)
-            r_followed = [f for f in followed if is_relevant(f, aux_graph)]
+            followed = get_followed_ids(user_id=uid)
+
+            if followed is None:
+                failed.add(uid)
+                continue
+
+            r_followed = [f for f in followed if is_relevant(f)]
             scored = []
             for f in r_followed:
-                f_followed, _ = get_neighbour_ids(user_id=f, graph=aux_graph)
+                f_followed = get_followed_ids(user_id=f)
+                if f_followed is None:
+                    failed.add(f)
+                    continue
+
                 common = len(set(f_followed).intersection(set(followed)))
                 total = len(followed) + len(f_followed) - common
                 score = common * 1.0 / total
@@ -127,6 +137,9 @@ def create_graphs(K=50):
             most_similar = [u for (u, s) in most_similar]
 
             graph.add_edges_from([(uid, f_id) for f_id in most_similar])
+            nx.write_gpickle(graph, 'graph.gpickle')
+            nx.write_gpickle(AUX_GRAPH, 'aux_graph.gpickle')
+
             new_unvisited.update(most_similar)
 
             visited.add(uid)
@@ -140,11 +153,13 @@ def create_graphs(K=50):
         
         # save progress
         nx.write_gpickle(graph, 'graph.gpickle')
-        nx.write_gpickle(graph, 'aux_graph.gpickle')
+        nx.write_gpickle(AUX_GRAPH, 'aux_graph.gpickle')
+        with open('failed.json', 'w') as f:
+            json.dump(list(failed), f)
 
 
-    return graph, aux_graph
+    return graph, AUX_GRAPH
 
 if __name__ == '__main__':
     print "Computing graph..."
-    graph, aux_graph = create_graphs(K=50)
+    graph, AUX_GRAPH = create_graphs(K=50)
