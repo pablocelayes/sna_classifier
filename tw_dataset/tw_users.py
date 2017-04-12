@@ -6,6 +6,7 @@ import os
 import time
 
 import networkx as nx
+import graph_tool.all as gt
 import pickle, json
 from datetime import timedelta, datetime
 from twitter_api import API_HANDLER
@@ -30,33 +31,61 @@ else:
     NOTAUTHORIZED = set()
 
 try:
-    AUX_GRAPH = nx.read_gpickle('aux_graph.gpickle')
+    AUX_GRAPH = gt.load_graph('aux_graph.gt')
+    V_TO_UID = AUX_GRAPH.vp['_graphml_vertex_id']
+    UID_TO_V = {V_TO_UID[v]: v for v in AUX_GRAPH.vertices()}
 except IOError:
-    AUX_GRAPH = nx.DiGraph() 
+    AUX_GRAPH = gt.Graph(directed=True)
 
+def aux_add_node(user_id):
+    user_id = str(user_id)
+    if user_id not in UID_TO_V:
+        print "Adding %s" % user_id
+        new_v = AUX_GRAPH.add_vertex()
+        V_TO_UID[new_v] = user_id
+        UID_TO_V[user_id] = new_v
+
+def aux_add_edges_from(edges_list):
+    v_edges_list = []
+    for (aid, bid) in edges_list:
+        aux_add_node(aid)
+        aux_add_node(bid)
+
+        va = UID_TO_V[str(aid)]
+        vb = UID_TO_V[str(bid)]
+
+        v_edges_list.append((va, vb))
+
+    AUX_GRAPH.add_edge_list(v_edges_list)
+    print "AUX: Added %d edges" % len(edges_list)
+    print "AUX: Now we have %d vertices and %d edges" % (AUX_GRAPH.num_vertices(), AUX_GRAPH.num_edges())
+
+def aux_save():
+    AUX_GRAPH.save('aux_graph.gt')
 
 def get_followed_ids(user_id):
     """
         If user_id is already in graph returns his followed from there.
         Otherwise, it fetches from the API and stores in the graph
     """
-    if user_id in AUX_GRAPH.nodes() and AUX_GRAPH.successors(user_id): # means it was added to graph with its followed ( visited )
-        followed = AUX_GRAPH.successors(user_id)
-        return followed
+    user_id = str(user_id)
+    if user_id in UID_TO_V and UID_TO_V[user_id].out_degree(): # means it was added to graph with its followed ( visited )
+        followed_ids = [V_TO_UID[v] for v in UID_TO_V[user_id].out_neighbours()]
+        return followed_ids
     else:
         retries = 0
         while True:
      
             try:
                 TW = API_HANDLER.get_connection()
-                followed = TW.friends_ids(user_id=user_id)
+                followed_ids = [str(f_id) for f_id in TW.friends_ids(user_id=user_id)]
 
-                AUX_GRAPH.add_node(user_id)
-                AUX_GRAPH.add_edges_from([(user_id, f_id) for f_id in followed])
+                aux_add_node(user_id)
+                aux_add_edges_from([(user_id, f_id) for f_id in followed_ids])
 
-                # nx.write_gpickle(AUX_GRAPH, 'aux_graph.gpickle')
+                aux_save()
 
-                return followed
+                return followed_ids
             except Exception, e:
                 # print e
                 if e.message == u'Not authorized.':
@@ -65,10 +94,10 @@ def get_followed_ids(user_id):
                         json.dump(list(NOTAUTHORIZED), f)
                     return None
                 else:
-                    print "Error for user %d: %s" % (user_id, e.message)
+                    print "Error for user %s: %s" % (user_id, e.message)
                     retries += 1
                     if retries == 5:
-                        print "Gave up retrying for user %d" % user_id
+                        print "Gave up retrying for user %s" % user_id
                         return None
                     else:
                         print "waiting..."
@@ -117,7 +146,7 @@ def create_graphs(K=50):
             followed = get_followed_ids(user_id=uid)
 
             if followed is None:
-                failed.add(uid)
+                failed.add(int(uid))
                 continue
 
             r_followed = [f for f in followed if is_relevant(f)]
@@ -125,7 +154,7 @@ def create_graphs(K=50):
             for f in r_followed:
                 f_followed = get_followed_ids(user_id=f)
                 if f_followed is None:
-                    failed.add(f)
+                    failed.add(int(f))
                     continue
 
                 common = len(set(f_followed).intersection(set(followed)))
@@ -138,7 +167,7 @@ def create_graphs(K=50):
 
             graph.add_edges_from([(uid, f_id) for f_id in most_similar])
             nx.write_gpickle(graph, 'graph.gpickle')
-            nx.write_gpickle(AUX_GRAPH, 'aux_graph.gpickle')
+            aux_save()
 
             new_unvisited.update(most_similar)
 
@@ -153,7 +182,8 @@ def create_graphs(K=50):
         
         # save progress
         nx.write_gpickle(graph, 'graph.gpickle')
-        nx.write_gpickle(AUX_GRAPH, 'aux_graph.gpickle')
+        aux_save()
+        
         with open('failed.json', 'w') as f:
             json.dump(list(failed), f)
 
