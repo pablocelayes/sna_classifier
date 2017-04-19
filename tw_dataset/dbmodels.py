@@ -17,9 +17,9 @@ from tw_dataset.settings import PROJECT_PATH, SQLITE_CONNECTION
 import networkx as nx
 
 
-DATE_LOWER_LIMIT = datetime(year=2017, month=3, day=11)
+DATE_LOWER_LIMIT = datetime(year=2017, month=3, day=17)
 
-DATE_UPPER_LIMIT = datetime(year=2017, month=4, day=11)
+DATE_UPPER_LIMIT = datetime(year=2017, month=4, day=17)
 
 
 Base = declarative_base()
@@ -135,7 +135,7 @@ class User(Base):
         page = 1
         done = False
         while not done:
-            TW_API = API_HANDLER.get_fresh_connection()
+            TW_API = API_HANDLER.switch_connection()
             try:
                 tweets = TW_API.user_timeline(user_id=self.id, page=page)
             except Exception, e:                
@@ -193,7 +193,7 @@ class User(Base):
         page = 1
         done = False
         while not done:
-            TW_API = API_HANDLER.get_fresh_connection()
+            TW_API = API_HANDLER.switch_connection()
             try:
                 tweets = TW_API.favorites(user_id=self.id, page=page)
             except Exception, e:                
@@ -236,15 +236,13 @@ class User(Base):
 if __name__ == '__main__':
     initialize_db()
     
-    graph = nx.read_gpickle('graph.gpickle')
+    graph = nx.read_graphml('graph_myfollowed.graphml')
     user_ids = graph.nodes()
     users = [User(id=int(uid)) for uid in user_ids]
 
-    TW = API_HANDLER.get_fresh_connection()
+    TW = API_HANDLER
     for i, u in enumerate(users):
-        u.username = TW.get_user(u.id).name
-        if (i + 1) % 20 == 0:
-            TW = API_HANDLER.get_fresh_connection()
+        u.username = TW.fetch('get_user', {'user_id': u.id}).name
 
     session = open_session()
     session.add_all(users)
@@ -252,7 +250,6 @@ if __name__ == '__main__':
 
     for user in users:
         user.fetch_timeline(session)
-        user.fetch_favorites(session)
+        # user.fetch_favorites(session)
     
-
     session.close()

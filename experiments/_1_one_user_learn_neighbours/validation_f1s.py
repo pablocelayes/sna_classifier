@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from multiprocessing import Process, Manager, Pool
-from experiments._1_one_user_learn_neighbours.try_some_users import *
+from experiments._1_one_user_learn_neighbours.fit_social_models import *
 from experiments.utils import *
 from experiments.datasets import *
 from sklearn.metrics import f1_score
@@ -13,8 +13,8 @@ def worker(uid, f1s_valid, f1s_testv, lock):
     print "Largamos para %d" % uid
     
     try:
-        clf = load_model_small(uid, 'svc')
-        X_train, X_valid, X_testv, y_train, y_valid, y_testv = load_small_validation_dataframe(uid)
+        clf = load_model(uid, 'svc')
+        X_train, X_valid, X_testv, y_train, y_valid, y_testv = load_dataframe(uid)
     except Exception as e:
         return
 
@@ -33,9 +33,9 @@ def worker(uid, f1s_valid, f1s_testv, lock):
 
 if __name__ == '__main__':
 
-    uids = [u for u, _, _ in TEST_USERS_ALL]
+    uids = [u for u in TEST_USERS_ALL]
 
-    pool = Pool(processes=3)
+    pool = Pool(processes=7)
 
     manager = Manager()
     f1s_valid = manager.dict()

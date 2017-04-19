@@ -110,92 +110,32 @@ def is_relevant(uid):
 
     return RELEVANT[uid]
 
-def create_graphs(K=20, N=50):
+def create_graph():
     """
-        Partiendo de mi usuario,
-        voy agregando para cada usuario sus 50 seguidos más similares,
-        incluyendo sólo usuarios relevantes ( >40 followers, >40 followed )
-
-        Creamos además un grafo auxiliar con los nodos ya visitados
-        (útil para calcular relevancias y similaridades)
-
-        N: max number of followed to pick the most similar from.
-            If more followed are found, we pick a random sample.
-
-        K: number of most similar followed to pick
+        Los que yo sigo y sus conexiones
     """
-    graph_fname = 'graphN%dK%d.gpickle' % (N, K)
-    try:
-        graph = nx.read_gpickle(graph_fname)
-    except IOError:
-        graph = nx.DiGraph()
-
-    visited = set([x for x in graph.nodes() if graph.out_degree(x)])
-
-    if graph.number_of_nodes():
-        unvisited = set([x for x in graph.nodes() if graph.out_degree(x) == 0])
-    else:
-        unvisited = [USER_DATA['id']]
+    graph_fname = 'graph_myfollowed.graphml'
+    graph = nx.DiGraph()
     
     try:
         failed = set(json.load(open('failed.json')))
     except IOError:
         failed = set()
 
-    while unvisited:
-        new_unvisited = set()
-        for i, uid in enumerate(unvisited):
-            followed = get_followed_ids(user_id=uid)
 
-            if followed is None:
-                failed.add(int(uid))
-                continue
+    my_uid = USER_DATA['id']
 
-            # r_followed = [f for f in followed if is_relevant(f)]
-            r_followed = followed
-            if len(followed) > N:
-                followed = sample(followed, N)
-            
-            scored = []
-            for f in r_followed:
-                f_followed = get_followed_ids(user_id=f)
-                if f_followed is None:
-                    failed.add(int(f))
-                    continue
+    my_followed = get_followed_ids(my_uid)
+    graph.add_edges_from([(my_uid, f_id) for f_id in my_followed])
 
-                common = len(set(f_followed).intersection(set(followed)))
-                total = len(followed) + len(f_followed) - common
-                score = common * 1.0 / total
-                scored.append((f, score))
-            
-            most_similar = sorted(scored, key=lambda (u, s): -s)[:K]
-            most_similar = [u for (u, s) in most_similar]
-
-            graph.add_edges_from([(uid, f_id) for f_id in most_similar])
-            nx.write_gpickle(graph, graph_fname)
-            aux_save()
-
-            new_unvisited.update(most_similar)
-
-            visited.add(uid)
-
-        new_unvisited = new_unvisited - visited
-        unvisited = new_unvisited
-
-        n_nodes = graph.number_of_nodes()
-        n_edges = graph.number_of_edges()
-        print "%d nodes, %d edges" % (n_nodes, n_edges)
-        
-        # save progress
-        nx.write_gpickle(graph, graph_fname)
-        aux_save()
-        
-        with open('failed.json', 'w') as f:
-            json.dump(list(failed), f)
+    for uid in my_followed:
+        sg_followed = [f for f in get_followed_ids(uid) if f in my_followed]
+        graph.add_edges_from([(uid, f_id) for f_id in sg_followed])
 
 
-    return graph, AUX_GRAPH
+    nx.write_graphml(graph, graph_fname)
+    aux_save()
 
 if __name__ == '__main__':
     print "Computing graph..."
-    graph, AUX_GRAPH = create_graphs(N=40, K=20)
+    create_graph()

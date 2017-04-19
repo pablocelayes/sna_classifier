@@ -2,17 +2,13 @@ import graph_tool.all as gt
 import networkx as nx
 from tw_dataset.dbmodels import *
 from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH
-from experiments.relatedness import finite_katz_measures
 from collections import defaultdict
 
 from os.path import join
 import numpy as np
 
 def load_nx_graph():
-    return nx.read_gpickle(NX_GRAPH_PATH)
-
-def load_gt_graph():
-    return gt.load_graph(GT_GRAPH_PATH)
+    return nx.read_graphml(NX_GRAPH_PATH)
 
 def get_twitter_id(g, v):
     return g.vertex_properties['_graphml_vertex_id'][v]
@@ -98,55 +94,6 @@ def get_level2_neighbours(user, session):
     neighbour_users = [u for u in neighbour_users if u and u.id != user.id]
     
     return neighbour_users
-
-# Feature transformations
-def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats, nmostsimilar=30, nbuckets=20):
-    '''
-        We transform neighbour retweet features into a bucketed
-        fixed-length format as follows:
-           * neighbours are sorted by katz similarity
-           * the 30 most similar stay with individual columns
-           * the remaining are grouped in 20 buckets of similarity level
-    '''
-    # Calculate katz similarities
-    g = load_nx_graph()
-    fkatz_sims = finite_katz_measures(g, str(uid), K=10, alpha=0.2)
-    ngs_fkatz = {i: fkatz_sims[str(i)] for i in ngids}
-    sorted_ngs_fkatz = sorted(ngs_fkatz.items(), key=lambda (i, s): s)
-    twid_to_colind = { twid: colind for colind, twid in enumerate(ngids)}
-
-    # Create first buckets with most similar users
-    if nmostsimilar:
-        most_similar = sorted_ngs_fkatz[-nmostsimilar:]
-        most_similar_colinds = [[twid_to_colind[twid]] for twid, s in most_similar]
-        sorted_ngs_fkatz = sorted_ngs_fkatz[:-nmostsimilar]
-    else:
-        most_similar_colinds = []
-
-    # Group the remaining ones in nbuckets
-    ngs_logfkatz = [(x, np.log(k)) for (x,k) in sorted_ngs_fkatz]
-    lfk_range = [ngs_logfkatz[i][1] for i in [0,-1]]
-    
-    minfk, maxfk = lfk_range
-    dfk = maxfk - minfk
-    
-    step = dfk / nbuckets
-    endpoints = [minfk + i * step for i in range(1, nbuckets)]
-
-    groups_colinds = [[] for i in range(nbuckets)]
-    group_i = 0
-    for (twid, logfkatz) in ngs_logfkatz:
-        if group_i < nbuckets - 1 and logfkatz > endpoints[group_i]:
-            group_i += 1
-        colind = twid_to_colind[twid]
-        groups_colinds[group_i].append(colind)
-
-    # Filter data frame and sum
-    bucket_colinds = most_similar_colinds + groups_colinds
-    bucket_columns = [Xfeats[:, colinds].sum(axis=1) for colinds in bucket_colinds]
-    grXfeats = np.column_stack(bucket_columns)
-
-    return grXfeats
 
 def get_unique_rows(a):
     """

@@ -43,6 +43,9 @@ def tokenize(text, stem=True, remove_stopwords=False):
         # tokenize
         tokens = word_tokenize(text)
 
+        if remove_stopwords:
+            tokens = [t for t in tokens if t not in spanish_stopwords]
+
         # stem
         if stem:
             try:

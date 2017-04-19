@@ -1,8 +1,4 @@
-# WARNING: no usar!
-# usar este /home/pablo/Proyectos/tesiscomp/experiments/_1_one_user_learn_neighbours/classifiers.py
-
-
-# from experiments._1_one_user_learn_neighbours.try_some_users import *
+# from experiments._1_one_user_learn_neighbours.fit_social_models import *
 from __future__ import print_function
 from tw_dataset.settings import DATASETS_FOLDER
 from sklearn.ensemble import RandomForestClassifier
@@ -15,10 +11,6 @@ from sklearn.metrics import classification_report
 from os.path import join
 import numpy as np
 from random import sample
-from create_clesa_datasets import *
-
-mpl = log_to_stderr()
-mpl.setLevel(logging.ERROR)
 
 def evaluate_model(clf, X_train, X_test, y_train, y_test):
     y_true, y_pred = y_train, clf.predict(X_train)
@@ -99,7 +91,7 @@ def model_select_rdf(dataset, cv=3, n_jobs=6):
         print(classification_report(y_true, y_pred))
         print()
 
-    # return clf
+    return clf
 
 def model_select_svc(dataset, cv=3, n_jobs=6):
     X_train, X_test, y_train, y_test = dataset
@@ -108,8 +100,9 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
     parameters = [
         {
          'kernel': ['rbf', 'poly'],
-         'gamma': [10, 100, 150, 200],
-         'C': [0.01, 0.05, 0.1, 1]
+         'gamma': [0.1, 1, 10],
+         'C': [0.01, 0.1, 1],
+         'class_weight': ['balanced', None]
         }
     ]
 
@@ -152,6 +145,8 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
         print(classification_report(y_true, y_pred))
         print()
 
+    return clf
+
 def model_select_sgd(dataset, cv=3, n_jobs=6):
     X_train, X_test, y_train, y_test = dataset
 
@@ -167,8 +162,8 @@ def model_select_sgd(dataset, cv=3, n_jobs=6):
 
     scores = [
         # 'precision',
-        # 'recall',
-        'f1'
+        'recall',
+        # 'f1'
     ]
 
     for score in scores:
@@ -203,6 +198,8 @@ def model_select_sgd(dataset, cv=3, n_jobs=6):
         y_true, y_pred = y_test, clf.predict(X_test)
         print(classification_report(y_true, y_pred))
         print()
+
+    return clf
 
 if __name__ == '__main__':
     # from create_clesa_datasets import *

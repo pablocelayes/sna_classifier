@@ -1,0 +1,191 @@
+user_id = 701529633813086208
+
+SVC
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6924
+        1.0       1.00      1.00      1.00        76
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       990
+        1.0       1.00      1.00      1.00         9
+
+avg / total       1.00      1.00      1.00       999
+
+
+
+RDF
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'max_features': 50, 'n_estimators': 100, 'min_samples_leaf': 1, 'max_depth': None, 'class_weight': 'balanced_subsample'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6924
+        1.0       1.00      1.00      1.00        76
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       990
+        1.0       0.82      1.00      0.90         9
+
+avg / total       1.00      1.00      1.00       999
+
+
+===============================================================
+
+In [14]: user_id = 1895737279
+
+    ...:         clf = model_select_svc(dataset)
+    ...: 
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6886
+        1.0       0.98      0.85      0.91       114
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       985
+        1.0       1.00      0.71      0.83        14
+
+avg / total       1.00      1.00      1.00       999
+
+
+
+In [13]:         clf2 = model_select_rdf(dataset)
+    ...:         
+    ...: 
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'max_features': None, 'n_estimators': 100, 'min_samples_leaf': 1, 'max_depth': None, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99      6886
+        1.0       0.59      0.99      0.74       114
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       985
+        1.0       0.45      0.93      0.60        14
+
+avg / total       0.99      0.98      0.99       999
+
+
+====================================
+
+user_id = 393285785
+
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6907
+        1.0       1.00      0.61      0.76        93
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       989
+        1.0       1.00      0.10      0.18        10
+
+avg / total       0.99      0.99      0.99       999
+
+
+
+In [18]: 
+    ...:         clf2 = model_select_rdf(dataset)
+    ...:         
+    ...: 
+  File "<ipython-input-18-246b882f4781>", line 2
+    clf2 = model_select_rdf(dataset)
+    ^
+IndentationError: unexpected indent
+
+
+In [19]:         clf2 = model_select_rdf(dataset)
+    ...:         
+    ...:         
+    ...: 
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'max_features': 'auto', 'n_estimators': 100, 'min_samples_leaf': 3, 'max_depth': 5, 'class_weight': 'balanced_subsample'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98      6907
+        1.0       0.15      0.44      0.23        93
+
+avg / total       0.98      0.96      0.97      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      0.97      0.98       989
+        1.0       0.14      0.50      0.22        10
+
+avg / total       0.99      0.96      0.97       999
+
+
+

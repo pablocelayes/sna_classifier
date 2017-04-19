@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from experiments.datasets import (load_or_create_dataframe, load_small_validation_dataframe, TEST_USERS_ALL)
+from experiments.datasets import (load_dataframe, TEST_USERS_ALL)
 
 MODELS_FOLDER = "/media/pablo/data/Tesis/models/"
 
@@ -23,7 +23,7 @@ def train_and_evaluate(user_id, clf_class=RandomForestClassifier):
     print("Loading dataframe for user id %d" % user_id)
     # X_train, X_test, y_train, y_test = load_or_create_dataframe(user_id)
 
-    X_train, X_valid, X_test, y_train, y_valid, y_test = load_small_validation_dataframe(user_id)
+    X_train, X_valid, X_test, y_train, y_valid, y_test = load_dataframe(user_id)
 
     ds_size = X_train.shape[0] + X_test.shape[0]
     ds_dimension = X_train.shape[1]
@@ -57,67 +57,35 @@ def evaluate_model(clf, X_train, X_test, y_train, y_test):
     print(classification_report(y_true, y_pred))
 
 
-
-def save_model(clf, user_id):
-    model_path = join(MODELS_FOLDER, "rdf_%d.pickle" % user_id)
+def save_model(clf, user_id, feat_space='', n_topics=None):
+    n_topics_str = 't%d' % n_topics if n_topics else ''
+    model_path = join(MODELS_FOLDER, "svc_%d%s%s.pickle" % (user_id, feat_space, n_topics_str))
     joblib.dump(clf, model_path)
 
-def load_model(user_id):
-    model_path = join(MODELS_FOLDER, "rdf_%d.pickle" % user_id)
-    clf = joblib.load(model_path)
-    return clf
-
-
-def save_model_small(clf, user_id, model_type, feat_space='', n_topics=None):
+def load_model(user_id, feat_space='', n_topics=None):
     n_topics_str = 't%d' % n_topics if n_topics else ''
-    model_path = join(MODELS_FOLDER, "%s_%d_small_%s%s.pickle" % (model_type, user_id, feat_space, n_topics_str))
-    joblib.dump(clf, model_path)
-
-def load_model_small(user_id, model_type, feat_space='', n_topics=None):
-    n_topics_str = 't%d' % n_topics if n_topics else ''
-    model_path = join(MODELS_FOLDER, "%s_%d_small_%s%s.pickle" % (model_type, user_id, feat_space, n_topics_str))
+    model_path = join(MODELS_FOLDER, "svc_%d%s%s.pickle" % (user_id, feat_space, n_topics_str))
 
     clf = joblib.load(model_path)
     return clf
-
-
-def worker(user_id):
-    try:
-        # clf = train_and_evaluate(user_id)
-        X_train, X_valid, X_test, y_train, y_valid, y_test = load_small_validation_dataframe(user_id)
-        dataset = X_train, X_valid, y_train, y_valid        
-        clf = model_select_svc(dataset)
-        save_model_small(clf, user_id, 'svc')
-    except Exception as e:
-        print(e)
-
 
 if __name__ == '__main__':
-
     # See which users are pending
     pending_user_ids = []
-    for user_id, username, _ in TEST_USERS_ALL:
+    for user_id in TEST_USERS_ALL:
         try:
-            load_model_small(user_id, 'svc')
+            load_model(user_id, 'svc')
         except IOError:
             pending_user_ids.append(user_id)
 
 
-    # pool = Pool(processes=6)
-    # for user_id in pending_user_ids:
-    #     pool.apply_async(worker, (user_id,))
-    # pool.close()
-    # pool.join()
-
-    # pending_user_ids = [uid for uid,_,_ in TEST_USERS_ALL]
-
-    # for user_id in pending_user_ids:
-    for user_id in [74153376, 1622441]:
+    for user_id in pending_user_ids:
         print(user_id)
-        worker(user_id)
-
-    # worker(117335842)        
-
-
-
-# Modelos elegidos con RandomForestClassifier pelado
+        try:
+            # clf = train_and_evaluate(user_id)
+            X_train, X_valid, X_test, y_train, y_valid, y_test = load_dataframe(user_id)
+            dataset = X_train, X_valid, y_train, y_valid        
+            clf = model_select_svc(dataset, n_jobs=4)
+            save_model(clf, user_id, 'svc')
+        except Exception as e:
+            print(e)

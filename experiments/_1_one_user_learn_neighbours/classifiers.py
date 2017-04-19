@@ -1,4 +1,4 @@
-# from experiments._1_one_user_learn_neighbours.try_some_users import *
+# from experiments._1_one_user_learn_neighbours.fit_social_models import *
 from __future__ import print_function
 from tw_dataset.settings import DATASETS_FOLDER
 from sklearn.ensemble import RandomForestClassifier
@@ -100,64 +100,7 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
     parameters = [
         {
          'kernel': ['rbf', 'poly'],
-         'gamma': [0.1, 1, 10, 100],
-         'C': [0.01, 0.1, 1],
-         'class_weight': ['balanced', None]
-        }
-    ]
-
-    scores = [
-        # 'precision',
-        # 'recall',
-        'f1'
-    ]
-
-    for score in scores:
-        print("# Tuning hyper-parameters for %s" % score)
-        print()
-
-        clf = GridSearchCV(
-            SVC(),  
-            param_grid=parameters,  # parameters to tune via cross validation
-            refit=True,  # fit using all data, on the best detected classifier
-            n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
-            scoring=score,  # what score are we optimizing?
-            cv=cv,  # what type of cross validation to use
-        )
-
-        clf.fit(X_train, y_train)
-
-        print("Best parameters set found on training set:")
-        print()
-        print(clf.best_params_)
-
-        print("Detailed classification report:")
-        print()
-        print("Scores on training set.")
-        y_true, y_pred = y_train, clf.predict(X_train)
-        print(classification_report(y_true, y_pred))
-        print()
-
-
-        print("Scores on test set.")
-        print()
-        y_true, y_pred = y_test, clf.predict(X_test)
-        print(classification_report(y_true, y_pred))
-        print()
-
-    return clf
-
-def model_select_svc2(dataset, cv=3, n_jobs=6):
-    # Parameter grid es subconjunto de la de
-    # model_select_svc, con kernel y gamma limitados
-    # a los valores que siempre funcionaban mejor
-    X_train, X_test, y_train, y_test = dataset
-
-    # Set the parameters by cross-validation
-    parameters = [
-        {
-         'kernel': ['rbf'],
-         'gamma': [0.1],
+         'gamma': [0.1, 1, 10],
          'C': [0.01, 0.1, 1],
          'class_weight': ['balanced', None]
         }
