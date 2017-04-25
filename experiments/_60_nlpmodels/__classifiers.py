@@ -69,6 +69,7 @@ def model_select_rdf(dataset, cv=3, n_jobs=6):
             n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
             scoring=score,  # what score are we optimizing?
             cv=cv,  # what type of cross validation to use
+            verbose=10,
         )
 
         clf.fit(X_train, y_train)
@@ -99,10 +100,10 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
     # Set the parameters by cross-validation
     parameters = [
         {
-         'kernel': ['rbf', 'poly'],
-         'gamma': [0.1, 1, 10],
-         'C': [0.01, 0.1, 1],
-         'class_weight': ['balanced', None]
+            'kernel': ['rbf', 'poly'],
+            'gamma': [0.1, 1, 10],
+            'C': [0.01, 0.1, 1],
+            'class_weight': ['balanced', None]
         }
     ]
 
@@ -123,6 +124,7 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
             n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
             scoring=score,  # what score are we optimizing?
             cv=cv,  # what type of cross validation to use
+            verbose=10
         )
 
         clf.fit(X_train, y_train)
@@ -162,8 +164,8 @@ def model_select_sgd(dataset, cv=3, n_jobs=6):
 
     scores = [
         # 'precision',
-        'recall',
-        # 'f1'
+        # 'recall',
+        'f1'
     ]
 
     for score in scores:
@@ -177,6 +179,7 @@ def model_select_sgd(dataset, cv=3, n_jobs=6):
             n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
             scoring=score,  # what score are we optimizing?
             cv=cv,  # what type of cross validation to use
+            verbose=10,
         )
 
         clf.fit(X_train, y_train)
@@ -200,10 +203,3 @@ def model_select_sgd(dataset, cv=3, n_jobs=6):
         print()
 
     return clf
-
-if __name__ == '__main__':
-    # from create_clesa_datasets import *
-    # uid=37226353
-    uid = 42976687
-    dataset = load_clesa_dataset(uid)
-    clf = model_select_rdf(dataset)

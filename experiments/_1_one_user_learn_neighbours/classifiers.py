@@ -102,7 +102,8 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
          'kernel': ['rbf', 'poly'],
          'gamma': [0.1, 1, 10],
          'C': [0.01, 0.1, 1],
-         'class_weight': ['balanced', None]
+         'class_weight': ['balanced', None],
+         'verbose': [True]
         }
     ]
 

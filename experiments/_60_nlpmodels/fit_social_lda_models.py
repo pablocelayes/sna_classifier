@@ -30,8 +30,10 @@ from gensim.models import LdaModel
 from gensim import corpora
 from tokenizer import tokenize, spanish_stopwords
 from sklearn.preprocessing import StandardScaler
-from __classifiers import model_select_svc
+from __classifiers import model_select_svc, model_select_sgd, model_select_rdf
 from sklearn.externals import joblib
+import sys
+import time
 
 mpl = log_to_stderr()
 mpl.setLevel(logging.ERROR)
@@ -39,6 +41,8 @@ mpl.setLevel(logging.ERROR)
 PREFIX = '/home/pablo/Proyectos/cogfor/repo/data/es'
 
 tu_path = "/home/pablo/Proyectos/tesiscomp/tw_dataset/active_with_neighbours.json"
+
+MODELS_FOLDER = "/media/pablo/data/Tesis/models/"
 
 TEST_USERS_ALL = json.load(open(tu_path))
 
@@ -137,31 +141,46 @@ def load_model(user_id, feat_space='', n_topics=None):
 if __name__ == '__main__':
     f1s = load_nlp_selected_users()
 
-    lda_feats = pd.read_pickle('alltweets_es_lda30.pickle')
+    n_topics = int(sys.argv[1])
 
-    # Train classifiers
+    lda_feats = pd.read_pickle('alltweets_es_ldabool%d.pickle' % n_topics)
+
+    pending_user_ids = []
     for uid, f1 in f1s:
         uid = int(uid)
+        # if uid in [393285785, 1592178128, 244175447]:
+        #     continue    
+        try:
+            # load_model(uid, 'svclda', n_topics=n_topics)
+            raise IOError
+        except IOError:
+            # Train classifiers only if not created already
+            print "==============================" 
+            print "Processing %d ( f1 %.2f %%)" % (uid, 100 * f1)
 
-        print "==============================" 
-        print "Processing %d ( f1 %.2f %%)" % (uid, 100 * f1)
+            X_train, X_valid, X_test, y_train, y_valid, y_test = load_dataframe(uid)
+            
+            X_train_lda = lda_feats.loc[X_train.index]
+            X_valid_lda = lda_feats.loc[X_valid.index]
+            X_test_lda = lda_feats.loc[X_test.index]
 
-        X_train, X_valid, X_test, y_train, y_valid, y_test = load_dataframe(uid)
-        
-        X_train_lda = lda_feats.loc[X_train.index]
-        X_valid_lda = lda_feats.loc[X_valid.index]
-        X_test_lda = lda_feats.loc[X_test.index]
+            X_train_combined = np.hstack((X_train, X_train_lda))
+            X_valid_combined = np.hstack((X_valid, X_valid_lda))
+            X_test_combined = np.hstack((X_test, X_test_lda))
 
+            # X_train_combined, X_valid_combined = scale(X_train_combined, X_valid_combined)
 
-        X_train_combined = np.hstack((X_train, X_train_lda))
-        X_valid_combined = np.hstack((X_valid, X_valid_lda))
-        X_test_combined = np.hstack((X_test, X_test_lda))
+            ds_comb = (X_train_combined, X_valid_combined, y_train, y_valid)
+            
+            comb_clf = model_select_svc(ds_comb, n_jobs=7)
+            save_model(comb_clf, uid, 'svclda', n_topics=n_topics)
 
-        X_train_combined, X_valid_combined = scale(X_train_combined, X_valid_combined)
-        ds_comb = (X_train_combined, X_valid_combined, y_train, y_valid)
-        comb_clf = model_select_svc(ds_comb, n_jobs=6)
-        save_model(comb_clf, uid, 'svclda', n_topics=30)
+            # comb_clf = model_select_sgd(ds_comb, n_jobs=7)
+            # save_model(comb_clf, uid, 'sgdlda', n_topics=n_topics)
 
-        print "Results on social model"
-        sna_clf = load_model(uid, 'svc')
-        evaluate_model(sna_clf, X_train, X_valid, y_train, y_valid)
+            # comb_clf = model_select_rdf(ds_comb, n_jobs=7)
+            # save_model(comb_clf, uid, 'rdflda', n_topics=n_topics)
+
+            print "Results on social model"
+            sna_clf = load_model(uid, 'svc')
+            evaluate_model(sna_clf, X_train, X_valid, y_train, y_valid)
