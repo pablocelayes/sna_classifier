@@ -1,2 +1,2 @@
-jupyter nbconvert slides.ipynb --to slides --post serve
+jupyter nbconvert slides3.ipynb --to slides --post serve
 
