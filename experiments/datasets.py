@@ -88,9 +88,10 @@ def create_dataframe(uid, max_tweets=10000):
     neighbours = [u for u in neighbours if u.id != user.id]
     
     print("Fetching tweets...")
-    # Fetch tweet universe (timelines of ownuser and neighbours)
+    # Fetch tweet universe (timelines of ownuser and followed)
+    followed = get_followed(user, s)
     tweets = set(user.timeline)
-    for u in neighbours:
+    for u in followed:
         tweets.update(u.timeline)
 
     # exclude tweets from central user or not in Spanish
@@ -133,7 +134,10 @@ def create_dataframe_job():
     test_users = test_users[batch_size * njob: batch_size * (njob + 1)]
     for uid in test_users:
         print("Creating dataframe for %d" % uid)
-        create_dataframe(uid)
+        try:
+            load_dataframe(uid)
+        except Exception:
+            create_dataframe(uid)
     
 if __name__ == '__main__':
     create_dataframe_job()

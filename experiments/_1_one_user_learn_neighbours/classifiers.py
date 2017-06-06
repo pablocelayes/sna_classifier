@@ -8,6 +8,7 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 # from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
+from experiments.grid_params import GRID_PARAMS
 from os.path import join
 import numpy as np
 from random import sample
@@ -43,14 +44,7 @@ def model_select_rdf(dataset, cv=3, n_jobs=6):
     sample_weight = np.array([w0 if x==0 else w1 for x in y_train])
 
     # Set the parameters by cross-validation
-    params = dict(
-        max_depth=[5, 20, None],
-        n_estimators=[10, 30, 100],
-        class_weight=['balanced_subsample', 'balanced'],
-        # sample_weight=[sample_weight]
-        max_features=[50, 300, None, 'auto'],
-        min_samples_leaf=[1, 3]
-    )
+    params = GRID_PARAMS['rdf']
 
     scores = [
         # 'recall',
@@ -93,19 +87,13 @@ def model_select_rdf(dataset, cv=3, n_jobs=6):
 
     return clf
 
-def model_select_svc(dataset, cv=3, n_jobs=6):
+def model_select_svc(dataset, cv=3, n_jobs=6, verbose=False):
     X_train, X_test, y_train, y_test = dataset
 
     # Set the parameters by cross-validation
-    parameters = [
-        {
-         'kernel': ['rbf', 'poly'],
-         'gamma': [0.1, 1, 10],
-         'C': [0.01, 0.1, 1],
-         'class_weight': ['balanced', None],
-         'verbose': [True]
-        }
-    ]
+    parameters = GRID_PARAMS['svc']
+
+    parameters[0]['verbose'] = [verbose]
 
     scores = [
         # 'precision',
@@ -119,60 +107,6 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
 
         clf = GridSearchCV(
             SVC(),  
-            param_grid=parameters,  # parameters to tune via cross validation
-            refit=True,  # fit using all data, on the best detected classifier
-            n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
-            scoring=score,  # what score are we optimizing?
-            cv=cv,  # what type of cross validation to use
-        )
-
-        clf.fit(X_train, y_train)
-
-        print("Best parameters set found on training set:")
-        print()
-        print(clf.best_params_)
-
-        print("Detailed classification report:")
-        print()
-        print("Scores on training set.")
-        y_true, y_pred = y_train, clf.predict(X_train)
-        print(classification_report(y_true, y_pred))
-        print()
-
-
-        print("Scores on test set.")
-        print()
-        y_true, y_pred = y_test, clf.predict(X_test)
-        print(classification_report(y_true, y_pred))
-        print()
-
-    return clf
-
-def model_select_sgd(dataset, cv=3, n_jobs=6):
-    X_train, X_test, y_train, y_test = dataset
-
-    # Set the parameters by cross-validation
-    parameters = [
-        {
-            'alpha': (0.01, 0.001, 0.00001),
-            'penalty': ('l1', 'l2', 'elasticnet'),
-            'loss': ('hinge', 'log'),
-            'n_iter': (10, 50, 80),
-        }
-    ]
-
-    scores = [
-        # 'precision',
-        'recall',
-        # 'f1'
-    ]
-
-    for score in scores:
-        print("# Tuning hyper-parameters for %s" % score)
-        print()
-
-        clf = GridSearchCV(
-            SGDClassifier(),  
             param_grid=parameters,  # parameters to tune via cross validation
             refit=True,  # fit using all data, on the best detected classifier
             n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"

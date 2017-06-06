@@ -18,32 +18,6 @@ from multiprocessing import Pool
 
 from classifiers import model_select_rdf, model_select_svc
 
-def train_and_evaluate(user_id, clf_class=RandomForestClassifier):
-    print("==================================")
-    print("Loading dataframe for user id %d" % user_id)
-    # X_train, X_test, y_train, y_test = load_or_create_dataframe(user_id)
-
-    X_train, X_valid, X_test, y_train, y_valid, y_test = load_dataframe(user_id)
-
-    ds_size = X_train.shape[0] + X_test.shape[0]
-    ds_dimension = X_train.shape[1]
-    print("dataframe loaded.")
-    print("Size (#tweets): %d" % ds_size)
-    print("Dimension (#neighbours): %d" % ds_dimension)
-
-    # weights for class balancing
-    w1 = sum(y_train)/len(y_train)
-    w0 = 1 - w1
-    sample_weights = np.array([w0 if x==0 else w1 for x in y_train])
-
-    print("Training %s" % clf_class.__name__)
-    clf = clf_class()     
-    clf.fit(X_train, y_train, sample_weight=sample_weights)
-
-    # evaluate_model(clf, X_train, X_test, y_train, y_test)
-    evaluate_model(clf, X_train, X_valid, y_train, y_valid)
-
-    return clf
 
 def evaluate_model(clf, X_train, X_test, y_train, y_test):
     y_true, y_pred = y_train, clf.predict(X_train)
@@ -82,7 +56,6 @@ if __name__ == '__main__':
     for user_id in pending_user_ids:
         print(user_id)
         try:
-            # clf = train_and_evaluate(user_id)
             X_train, X_valid, X_test, y_train, y_valid, y_test = load_dataframe(user_id)
             dataset = X_train, X_valid, y_train, y_valid        
             clf = model_select_svc(dataset, n_jobs=4)

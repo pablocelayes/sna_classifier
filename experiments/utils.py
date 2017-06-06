@@ -49,7 +49,9 @@ def get_retweets(user_ids):
 
     return retweets
 
-def get_followed(user, session, g):
+def get_followed(user, session):
+    g = load_nx_graph()
+
     uid = str(user.id)
     followed = set(g.successors(uid))
     followed_users = [session.query(User).get(twid) for twid in followed]

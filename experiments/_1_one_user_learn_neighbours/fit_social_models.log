@@ -4,14 +4,41 @@ Switching to API Credentials #1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6924
-        1.0       1.00      1.00      1.00        76
+        0.0       1.00      1.00      1.00      1552
+        1.0       1.00      0.99      0.99        74
+
+avg / total       1.00      1.00      1.00      1626
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       217
+        1.0       1.00      1.00      1.00        15
+
+avg / total       1.00      1.00      1.00       232
+
+
+204873741
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6858
+        1.0       0.99      0.86      0.92       142
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -20,35 +47,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       990
-        1.0       1.00      1.00      1.00         9
-
-avg / total       1.00      1.00      1.00       999
-
-
-204873741
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99      6845
-        1.0       0.99      0.55      0.71       155
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       981
-        1.0       1.00      0.50      0.67        18
+        0.0       0.99      1.00      1.00       980
+        1.0       0.93      0.68      0.79        19
 
 avg / total       0.99      0.99      0.99       999
 
@@ -58,14 +58,41 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6901
-        1.0       1.00      0.95      0.97        99
+        0.0       1.00      1.00      1.00      6701
+        1.0       1.00      1.00      1.00       113
+
+avg / total       1.00      1.00      1.00      6814
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       964
+        1.0       1.00      1.00      1.00         9
+
+avg / total       1.00      1.00      1.00       973
+
+
+1343285257
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6641
+        1.0       1.00      0.94      0.97       359
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -74,35 +101,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       976
-        1.0       1.00      0.96      0.98        23
-
-avg / total       1.00      1.00      1.00       999
-
-
-1343285257
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6647
-        1.0       1.00      0.84      0.91       353
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       947
-        1.0       1.00      0.90      0.95        52
+        0.0       0.99      1.00      1.00       953
+        1.0       1.00      0.89      0.94        46
 
 avg / total       1.00      0.99      0.99       999
 
@@ -112,14 +112,41 @@ avg / total       1.00      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99      6738
-        1.0       1.00      0.68      0.81       262
+        0.0       0.99      1.00      0.99      3392
+        1.0       1.00      0.86      0.93       262
+
+avg / total       0.99      0.99      0.99      3654
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       486
+        1.0       1.00      0.89      0.94        36
+
+avg / total       0.99      0.99      0.99       522
+
+
+153169998
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6352
+        1.0       0.98      0.94      0.96       648
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -128,35 +155,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99       963
-        1.0       1.00      0.47      0.64        36
-
-avg / total       0.98      0.98      0.98       999
-
-
-153169998
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.98      0.99      0.99      6354
-        1.0       0.91      0.80      0.85       646
-
-avg / total       0.97      0.97      0.97      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      0.99      0.99       897
-        1.0       0.95      0.87      0.91       102
+        0.0       0.99      0.99      0.99       904
+        1.0       0.91      0.86      0.89        95
 
 avg / total       0.98      0.98      0.98       999
 
@@ -166,14 +166,14 @@ avg / total       0.98      0.98      0.98       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6871
-        1.0       1.00      0.52      0.68       129
+        0.0       0.99      1.00      1.00      6859
+        1.0       1.00      0.72      0.83       141
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -182,10 +182,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99       967
-        1.0       1.00      0.59      0.75        32
+        0.0       1.00      0.99      1.00       985
+        1.0       0.74      1.00      0.85        14
 
-avg / total       0.99      0.99      0.99       999
+avg / total       1.00      0.99      1.00       999
 
 
 216960357
@@ -193,41 +193,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 10, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99      6583
-        1.0       0.99      0.66      0.79       417
-
-avg / total       0.98      0.98      0.98      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.98      1.00      0.99       925
-        1.0       1.00      0.69      0.82        74
-
-avg / total       0.98      0.98      0.98       999
-
-
-3209001100
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      0.99      1.00      6814
-        1.0       0.79      0.88      0.83       186
+        0.0       0.99      1.00      1.00      6588
+        1.0       1.00      0.91      0.95       412
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -236,8 +209,35 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      0.99      1.00       971
-        1.0       0.84      0.93      0.88        28
+        0.0       0.99      1.00      0.99       938
+        1.0       1.00      0.84      0.91        61
+
+avg / total       0.99      0.99      0.99       999
+
+
+3209001100
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6825
+        1.0       0.99      0.79      0.88       175
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       972
+        1.0       1.00      0.78      0.88        27
 
 avg / total       0.99      0.99      0.99       999
 
@@ -247,14 +247,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6899
-        1.0       1.00      0.76      0.87       101
+        0.0       1.00      1.00      1.00      6904
+        1.0       1.00      0.91      0.95        96
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -263,37 +263,43 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       984
-        1.0       1.00      0.93      0.97        15
+        0.0       0.99      1.00      1.00       979
+        1.0       0.94      0.75      0.83        20
 
-avg / total       1.00      1.00      1.00       999
+avg / total       0.99      0.99      0.99       999
 
+==========================================================
+
+Mi usuario: ¿excluir?
 
 393285785
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 0.1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6907
-        1.0       1.00      0.61      0.76        93
+        0.0       0.99      0.99      0.99      6905
+        1.0       0.36      0.31      0.33        95
 
-avg / total       0.99      0.99      0.99      7000
+avg / total       0.98      0.98      0.98      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       989
-        1.0       1.00      0.10      0.18        10
+        0.0       0.99      1.00      0.99       989
+        1.0       0.40      0.20      0.27        10
 
 avg / total       0.99      0.99      0.99       999
+
+
+==========================================================
 
 
 85692592
@@ -301,14 +307,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6916
-        1.0       1.00      0.76      0.86        84
+        0.0       1.00      1.00      1.00      6927
+        1.0       0.97      0.84      0.90        73
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -317,8 +323,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       991
-        1.0       1.00      0.75      0.86         8
+        0.0       1.00      1.00      1.00       989
+        1.0       1.00      0.90      0.95        10
 
 avg / total       1.00      1.00      1.00       999
 
@@ -328,14 +334,14 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6924
-        1.0       0.98      0.75      0.85        76
+        0.0       1.00      1.00      1.00      6921
+        1.0       1.00      0.90      0.95        79
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -344,10 +350,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       988
-        1.0       1.00      0.55      0.71        11
+        0.0       1.00      1.00      1.00       988
+        1.0       0.89      0.73      0.80        11
 
-avg / total       1.00      0.99      0.99       999
+avg / total       1.00      1.00      1.00       999
 
 
 143685841
@@ -355,26 +361,26 @@ avg / total       1.00      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.97      1.00      0.98      6341
-        1.0       1.00      0.69      0.82       659
+        0.0       0.99      1.00      0.99      6339
+        1.0       1.00      0.86      0.93       661
 
-avg / total       0.97      0.97      0.97      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.96      1.00      0.98       890
-        1.0       1.00      0.66      0.80       109
+        0.0       0.99      1.00      0.99       894
+        1.0       1.00      0.90      0.95       105
 
-avg / total       0.96      0.96      0.96       999
+avg / total       0.99      0.99      0.99       999
 
 
 182831320
@@ -382,24 +388,24 @@ avg / total       0.96      0.96      0.96       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99      6591
-        1.0       1.00      0.70      0.83       409
+        0.0       0.99      1.00      1.00      6586
+        1.0       1.00      0.86      0.93       414
 
-avg / total       0.98      0.98      0.98      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99       930
-        1.0       1.00      0.70      0.82        69
+        0.0       0.98      1.00      0.99       947
+        1.0       0.92      0.67      0.78        52
 
 avg / total       0.98      0.98      0.98       999
 
@@ -409,26 +415,26 @@ avg / total       0.98      0.98      0.98       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6871
-        1.0       1.00      0.71      0.83       129
+        0.0       1.00      1.00      1.00      6853
+        1.0       1.00      0.88      0.93       147
 
-avg / total       0.99      0.99      0.99      7000
+avg / total       1.00      1.00      1.00      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       978
-        1.0       1.00      0.76      0.86        21
+        0.0       0.99      1.00      1.00       986
+        1.0       1.00      0.54      0.70        13
 
-avg / total       1.00      0.99      0.99       999
+avg / total       0.99      0.99      0.99       999
 
 
 17105128
@@ -436,26 +442,26 @@ avg / total       1.00      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6908
-        1.0       1.00      0.75      0.86        92
+        0.0       0.99      1.00      1.00      4186
+        1.0       1.00      0.75      0.86        93
 
-avg / total       1.00      1.00      1.00      7000
+avg / total       0.99      0.99      0.99      4279
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       982
-        1.0       1.00      0.71      0.83        17
+        0.0       0.99      1.00      0.99       596
+        1.0       0.85      0.73      0.79        15
 
-avg / total       1.00      0.99      0.99       999
+avg / total       0.99      0.99      0.99       611
 
 
 211093750
@@ -463,14 +469,68 @@ avg / total       1.00      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6921
-        1.0       1.00      1.00      1.00        79
+        0.0       1.00      1.00      1.00      2346
+        1.0       1.00      1.00      1.00        83
+
+avg / total       1.00      1.00      1.00      2429
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       339
+        1.0       1.00      1.00      1.00         7
+
+avg / total       1.00      1.00      1.00       346
+
+
+2699084844
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      2450
+        1.0       0.99      0.76      0.86       215
+
+avg / total       0.98      0.98      0.98      2665
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98       351
+        1.0       0.86      0.66      0.75        29
+
+avg / total       0.96      0.97      0.96       380
+
+
+173222615
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6729
+        1.0       1.00      0.93      0.96       271
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -479,62 +539,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       983
-        1.0       1.00      1.00      1.00        16
-
-avg / total       1.00      1.00      1.00       999
-
-
-2699084844
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99      6781
-        1.0       0.95      0.63      0.76       219
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99       965
-        1.0       0.92      0.71      0.80        34
-
-avg / total       0.99      0.99      0.99       999
-
-
-173222615
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99      6735
-        1.0       1.00      0.72      0.84       265
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       968
-        1.0       1.00      0.71      0.83        31
+        0.0       0.99      1.00      1.00       959
+        1.0       1.00      0.82      0.90        40
 
 avg / total       0.99      0.99      0.99       999
 
@@ -544,14 +550,41 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6867
-        1.0       1.00      0.97      0.98       133
+        0.0       1.00      1.00      1.00       779
+        1.0       1.00      1.00      1.00       142
+
+avg / total       1.00      1.00      1.00       921
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       117
+        1.0       1.00      1.00      1.00        14
+
+avg / total       1.00      1.00      1.00       131
+
+
+148752676
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.1, 'verbose': False, 'gamma': 1, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6861
+        1.0       1.00      0.77      0.87       139
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -560,35 +593,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       977
-        1.0       1.00      1.00      1.00        22
-
-avg / total       1.00      1.00      1.00       999
-
-
-148752676
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6861
-        1.0       1.00      0.74      0.85       139
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       978
-        1.0       1.00      0.71      0.83        21
+        0.0       0.99      1.00      1.00       981
+        1.0       1.00      0.67      0.80        18
 
 avg / total       0.99      0.99      0.99       999
 
@@ -598,14 +604,41 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      5968
-        1.0       1.00      0.99      1.00      1032
+        0.0       1.00      1.00      1.00      2038
+        1.0       1.00      1.00      1.00      1044
+
+avg / total       1.00      1.00      1.00      3082
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       297
+        1.0       1.00      1.00      1.00       143
+
+avg / total       1.00      1.00      1.00       440
+
+
+132704571
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6579
+        1.0       1.00      0.95      0.97       421
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -614,37 +647,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       843
-        1.0       1.00      0.99      0.99       156
+        0.0       0.99      1.00      1.00       938
+        1.0       0.96      0.90      0.93        61
 
-avg / total       1.00      1.00      1.00       999
-
-
-132704571
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      0.98      0.99      6572
-        1.0       0.78      0.80      0.79       428
-
-avg / total       0.97      0.97      0.97      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.98      0.98      0.98       937
-        1.0       0.72      0.77      0.74        62
-
-avg / total       0.97      0.97      0.97       999
+avg / total       0.99      0.99      0.99       999
 
 
 67334466
@@ -652,14 +658,14 @@ avg / total       0.97      0.97      0.97       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'rbf', 'C': 0.1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6887
-        1.0       1.00      0.96      0.98       113
+        0.0       1.00      1.00      1.00      6872
+        1.0       1.00      0.92      0.96       128
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -669,7 +675,7 @@ Scores on test set.
              precision    recall  f1-score   support
 
         0.0       1.00      1.00      1.00       982
-        1.0       1.00      0.94      0.97        17
+        1.0       1.00      1.00      1.00        17
 
 avg / total       1.00      1.00      1.00       999
 
@@ -679,14 +685,14 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 10, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.1, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6916
-        1.0       0.94      0.52      0.67        84
+        0.0       0.99      1.00      1.00      6912
+        1.0       1.00      0.45      0.62        88
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -695,10 +701,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       989
-        1.0       1.00      0.50      0.67        10
+        0.0       1.00      1.00      1.00       992
+        1.0       1.00      0.57      0.73         7
 
-avg / total       1.00      0.99      0.99       999
+avg / total       1.00      1.00      1.00       999
 
 
 42598744
@@ -706,26 +712,26 @@ avg / total       1.00      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.97      1.00      0.99      6577
-        1.0       1.00      0.56      0.72       423
+        0.0       0.99      1.00      1.00      6582
+        1.0       1.00      0.85      0.92       418
 
-avg / total       0.97      0.97      0.97      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.97      1.00      0.99       941
-        1.0       1.00      0.52      0.68        58
+        0.0       0.98      1.00      0.99       944
+        1.0       0.98      0.73      0.83        55
 
-avg / total       0.97      0.97      0.97       999
+avg / total       0.98      0.98      0.98       999
 
 
 2714771804
@@ -733,14 +739,14 @@ avg / total       0.97      0.97      0.97       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6926
-        1.0       1.00      0.55      0.71        74
+        0.0       1.00      1.00      1.00      6919
+        1.0       1.00      0.58      0.73        81
 
 avg / total       1.00      1.00      0.99      7000
 
@@ -749,10 +755,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       980
-        1.0       1.00      0.63      0.77        19
+        0.0       1.00      1.00      1.00       985
+        1.0       1.00      0.71      0.83        14
 
-avg / total       0.99      0.99      0.99       999
+avg / total       1.00      1.00      1.00       999
 
 
 630003282
@@ -760,14 +766,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6840
-        1.0       1.00      0.99      1.00       160
+        0.0       1.00      1.00      1.00      6839
+        1.0       1.00      0.99      1.00       161
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -776,8 +782,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       967
-        1.0       1.00      1.00      1.00        32
+        0.0       1.00      1.00      1.00       975
+        1.0       1.00      1.00      1.00        24
 
 avg / total       1.00      1.00      1.00       999
 
@@ -787,24 +793,24 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      0.99      0.99      6801
-        1.0       0.77      0.65      0.71       199
+        0.0       0.99      1.00      1.00      6808
+        1.0       0.99      0.78      0.87       192
 
-avg / total       0.98      0.98      0.98      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      0.99      0.99       983
-        1.0       0.67      0.75      0.71        16
+        0.0       0.99      0.99      0.99       974
+        1.0       0.76      0.64      0.70        25
 
 avg / total       0.99      0.99      0.99       999
 
@@ -814,14 +820,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      0.99      0.99      6637
-        1.0       0.82      0.71      0.76       363
+        0.0       0.99      0.99      0.99      6665
+        1.0       0.79      0.89      0.84       335
 
 avg / total       0.98      0.98      0.98      7000
 
@@ -830,10 +836,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.98      0.99      0.99       951
-        1.0       0.77      0.69      0.73        48
+        0.0       0.99      0.98      0.99       952
+        1.0       0.70      0.83      0.76        47
 
-avg / total       0.97      0.97      0.97       999
+avg / total       0.98      0.97      0.98       999
 
 
 2450324088
@@ -841,26 +847,26 @@ avg / total       0.97      0.97      0.97       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.94      1.00      0.97      5201
-        1.0       0.98      0.81      0.89      1799
+        0.0       0.95      1.00      0.97      5165
+        1.0       1.00      0.84      0.91      1835
 
-avg / total       0.95      0.95      0.95      7000
+avg / total       0.96      0.96      0.96      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.90      1.00      0.95       714
-        1.0       0.99      0.73      0.84       285
+        0.0       0.92      0.99      0.95       728
+        1.0       0.97      0.76      0.85       271
 
-avg / total       0.93      0.92      0.91       999
+avg / total       0.93      0.93      0.93       999
 
 
 148984299
@@ -868,446 +874,14 @@ avg / total       0.93      0.92      0.91       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      0.99      1.00      6926
-        1.0       0.65      0.91      0.76        74
-
-avg / total       1.00      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      0.99      1.00       991
-        1.0       0.50      0.75      0.60         8
-
-avg / total       0.99      0.99      0.99       999
-
-
-146686491
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6722
-        1.0       1.00      0.85      0.92       278
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       958
-        1.0       1.00      0.83      0.91        41
-
-avg / total       0.99      0.99      0.99       999
-
-
-166394396
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6840
-        1.0       1.00      0.60      0.75       160
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       987
-        1.0       1.00      0.50      0.67        12
-
-avg / total       0.99      0.99      0.99       999
-
-
-329699082
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6884
-        1.0       1.00      0.60      0.75       116
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       983
-        1.0       1.00      0.69      0.81        16
-
-avg / total       1.00      0.99      0.99       999
-
-
-166799115
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6875
-        1.0       1.00      0.66      0.79       125
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       979
-        1.0       1.00      0.75      0.86        20
-
-avg / total       1.00      0.99      0.99       999
-
-
-123937349
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99      6813
-        1.0       0.91      0.63      0.75       187
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99       970
-        1.0       0.83      0.69      0.75        29
-
-avg / total       0.99      0.99      0.99       999
-
-
-244175447
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'poly', 'C': 0.01, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99      6725
-        1.0       0.92      0.71      0.80       275
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.98      0.99      0.98       956
-        1.0       0.76      0.44      0.56        43
-
-avg / total       0.97      0.97      0.97       999
-
-
-598671995
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.98      1.00      0.99      6364
-        1.0       1.00      0.78      0.87       636
-
-avg / total       0.98      0.98      0.98      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.96      1.00      0.98       905
-        1.0       0.94      0.62      0.74        94
-
-avg / total       0.96      0.96      0.96       999
-
-
-7379612
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6877
-        1.0       1.00      0.62      0.76       123
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       979
-        1.0       1.00      0.65      0.79        20
-
-avg / total       0.99      0.99      0.99       999
-
-
-373642650
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6890
-        1.0       1.00      0.92      0.96       110
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       987
-        1.0       1.00      0.83      0.91        12
-
-avg / total       1.00      1.00      1.00       999
-
-
-176442061
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99      6771
-        1.0       0.98      0.71      0.83       229
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.98      1.00      0.99       962
-        1.0       1.00      0.54      0.70        37
-
-avg / total       0.98      0.98      0.98       999
-
-
-40733398
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.98      1.00      0.99      6826
-        1.0       1.00      0.37      0.54       174
-
-avg / total       0.98      0.98      0.98      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99       974
-        1.0       1.00      0.44      0.61        25
-
-avg / total       0.99      0.99      0.98       999
-
-
-317020900
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.98      1.00      0.99      6460
-        1.0       1.00      0.71      0.83       540
-
-avg / total       0.98      0.98      0.98      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.97      1.00      0.99       905
-        1.0       1.00      0.74      0.85        94
-
-avg / total       0.98      0.98      0.97       999
-
-
-703984267945254912
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6912
-        1.0       0.71      0.97      0.82        88
-
-avg / total       1.00      0.99      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      0.99      1.00       986
-        1.0       0.67      0.92      0.77        13
-
-avg / total       0.99      0.99      0.99       999
-
-
-184171256
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.97      1.00      0.98      5984
-        1.0       1.00      0.79      0.88      1016
-
-avg / total       0.97      0.97      0.97      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.94      1.00      0.97       842
-        1.0       1.00      0.68      0.81       157
-
-avg / total       0.95      0.95      0.95       999
-
-
-38488855
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.98      1.00      0.99      6542
-        1.0       0.96      0.75      0.84       458
-
-avg / total       0.98      0.98      0.98      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.98      0.99      0.99       948
-        1.0       0.87      0.65      0.74        51
-
-avg / total       0.98      0.98      0.98       999
-
-
-69800760
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6815
-        1.0       0.99      0.80      0.89       185
+        0.0       0.99      1.00      1.00      6926
+        1.0       0.90      0.35      0.50        74
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -1317,51 +891,51 @@ Scores on test set.
              precision    recall  f1-score   support
 
         0.0       0.99      1.00      0.99       980
-        1.0       1.00      0.47      0.64        19
+        1.0       0.83      0.26      0.40        19
 
-avg / total       0.99      0.99      0.99       999
+avg / total       0.98      0.98      0.98       999
 
 
-156703614
+146686491
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6886
-        1.0       1.00      0.65      0.79       114
+        0.0       1.00      1.00      1.00      6052
+        1.0       1.00      0.94      0.97       264
 
-avg / total       0.99      0.99      0.99      7000
+avg / total       1.00      1.00      1.00      6316
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99       974
-        1.0       1.00      0.60      0.75        25
+        0.0       1.00      1.00      1.00       863
+        1.0       0.97      1.00      0.99        39
 
-avg / total       0.99      0.99      0.99       999
+avg / total       1.00      1.00      1.00       902
 
 
-127785900
+166394396
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6913
-        1.0       1.00      1.00      1.00        87
+        0.0       1.00      1.00      1.00      6844
+        1.0       1.00      0.86      0.92       156
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -1370,25 +944,52 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       984
-        1.0       1.00      0.93      0.97        15
+        0.0       1.00      1.00      1.00       985
+        1.0       0.85      0.79      0.81        14
 
-avg / total       1.00      1.00      1.00       999
+avg / total       0.99      0.99      0.99       999
 
 
-593789869
+329699082
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6864
-        1.0       0.93      0.73      0.81       136
+        0.0       1.00      1.00      1.00      6882
+        1.0       1.00      0.82      0.90       118
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       985
+        1.0       0.92      0.79      0.85        14
+
+avg / total       1.00      1.00      1.00       999
+
+
+166799115
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6883
+        1.0       1.00      0.65      0.79       117
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -1397,8 +998,413 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       983
-        1.0       0.89      0.50      0.64        16
+        0.0       0.99      1.00      1.00       978
+        1.0       1.00      0.57      0.73        21
+
+avg / total       0.99      0.99      0.99       999
+
+
+123937349
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6800
+        1.0       0.93      0.75      0.83       200
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       972
+        1.0       0.89      0.63      0.74        27
+
+avg / total       0.99      0.99      0.99       999
+
+
+244175447
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      6733
+        1.0       0.98      0.72      0.83       267
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      1.00      0.98       956
+        1.0       0.81      0.40      0.53        43
+
+avg / total       0.97      0.97      0.96       999
+
+
+598671995
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      6370
+        1.0       1.00      0.80      0.89       630
+
+avg / total       0.98      0.98      0.98      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      1.00      0.98       910
+        1.0       0.95      0.67      0.79        89
+
+avg / total       0.97      0.97      0.97       999
+
+
+7379612
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6875
+        1.0       1.00      0.79      0.88       125
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       988
+        1.0       1.00      0.64      0.78        11
+
+avg / total       1.00      1.00      1.00       999
+
+
+373642650
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6894
+        1.0       1.00      1.00      1.00       106
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       987
+        1.0       1.00      0.92      0.96        12
+
+avg / total       1.00      1.00      1.00       999
+
+
+176442061
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      6768
+        1.0       0.99      0.69      0.81       232
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       968
+        1.0       0.94      0.55      0.69        31
+
+avg / total       0.98      0.98      0.98       999
+
+
+40733398
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      3012
+        1.0       1.00      0.81      0.89       168
+
+avg / total       0.99      0.99      0.99      3180
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99       425
+        1.0       0.90      0.66      0.76        29
+
+avg / total       0.97      0.97      0.97       454
+
+
+317020900
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6431
+        1.0       1.00      0.89      0.94       569
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       910
+        1.0       0.95      0.87      0.91        89
+
+avg / total       0.98      0.98      0.98       999
+
+
+703984267945254912
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.1, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      0.99      6917
+        1.0       0.51      1.00      0.67        83
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       986
+        1.0       0.42      0.85      0.56        13
+
+avg / total       0.99      0.98      0.99       999
+
+
+184171256
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 0.1, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.96      1.00      0.98      6000
+        1.0       0.99      0.72      0.84      1000
+
+avg / total       0.96      0.96      0.96      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      1.00      0.97       857
+        1.0       1.00      0.67      0.80       142
+
+avg / total       0.96      0.95      0.95       999
+
+
+38488855
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.98      1.00      0.99      6557
+        1.0       1.00      0.77      0.87       443
+
+avg / total       0.99      0.99      0.98      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98       929
+        1.0       0.88      0.60      0.71        70
+
+avg / total       0.96      0.97      0.96       999
+
+
+69800760
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6828
+        1.0       1.00      0.79      0.88       172
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       969
+        1.0       0.97      0.93      0.95        30
+
+avg / total       1.00      1.00      1.00       999
+
+
+156703614
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6867
+        1.0       1.00      0.81      0.90       133
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       988
+        1.0       1.00      0.64      0.78        11
+
+avg / total       1.00      1.00      1.00       999
+
+
+127785900
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      1512
+        1.0       1.00      0.99      0.99        81
+
+avg / total       1.00      1.00      1.00      1593
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       212
+        1.0       1.00      1.00      1.00        15
+
+avg / total       1.00      1.00      1.00       227
+
+
+593789869
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6887
+        1.0       0.96      0.71      0.82       113
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       981
+        1.0       0.80      0.44      0.57        18
 
 avg / total       0.99      0.99      0.99       999
 
@@ -1408,26 +1414,26 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6864
-        1.0       1.00      0.99      1.00       136
+        0.0       1.00      1.00      1.00      6766
+        1.0       1.00      0.99      1.00       140
 
-avg / total       1.00      1.00      1.00      7000
+avg / total       1.00      1.00      1.00      6906
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       983
-        1.0       1.00      1.00      1.00        16
+        0.0       1.00      1.00      1.00       966
+        1.0       1.00      1.00      1.00        20
 
-avg / total       1.00      1.00      1.00       999
+avg / total       1.00      1.00      1.00       986
 
 
 138931123
@@ -1435,14 +1441,14 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6905
-        1.0       1.00      0.98      0.99        95
+        0.0       1.00      1.00      1.00      6900
+        1.0       1.00      0.99      0.99       100
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -1462,14 +1468,95 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.1, 'verbose': False, 'gamma': 0.1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6891
-        1.0       1.00      0.91      0.95       109
+        0.0       1.00      1.00      1.00      5161
+        1.0       0.99      0.97      0.98       119
+
+avg / total       1.00      1.00      1.00      5280
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       741
+        1.0       1.00      0.92      0.96        13
+
+avg / total       1.00      1.00      1.00       754
+
+
+251680163
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6924
+        1.0       1.00      0.86      0.92        76
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       980
+        1.0       1.00      0.79      0.88        19
+
+avg / total       1.00      1.00      1.00       999
+
+
+1424428034
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6777
+        1.0       0.98      0.80      0.88       223
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       970
+        1.0       0.81      0.59      0.68        29
+
+avg / total       0.98      0.98      0.98       999
+
+
+85861402
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6912
+        1.0       1.00      0.86      0.93        88
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -1484,100 +1571,19 @@ Scores on test set.
 avg / total       1.00      1.00      1.00       999
 
 
-251680163
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6919
-        1.0       1.00      0.68      0.81        81
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       987
-        1.0       1.00      0.83      0.91        12
-
-avg / total       1.00      1.00      1.00       999
-
-
-1424428034
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6770
-        1.0       1.00      0.77      0.87       230
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99       973
-        1.0       1.00      0.50      0.67        26
-
-avg / total       0.99      0.99      0.98       999
-
-
-85861402
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6916
-        1.0       1.00      0.93      0.96        84
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       983
-        1.0       1.00      0.94      0.97        16
-
-avg / total       1.00      1.00      1.00       999
-
-
 555971617
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
         0.0       1.00      1.00      1.00      6890
-        1.0       1.00      0.92      0.96       110
+        1.0       1.00      0.93      0.96       110
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -1586,8 +1592,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       986
-        1.0       1.00      0.69      0.82        13
+        0.0       1.00      1.00      1.00       985
+        1.0       1.00      0.79      0.88        14
 
 avg / total       1.00      1.00      1.00       999
 
@@ -1597,24 +1603,24 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99      6753
-        1.0       1.00      0.53      0.70       247
+        0.0       1.00      1.00      1.00      6744
+        1.0       1.00      0.90      0.94       256
 
-avg / total       0.98      0.98      0.98      7000
+avg / total       1.00      1.00      1.00      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99       967
-        1.0       1.00      0.62      0.77        32
+        0.0       0.99      1.00      0.99       959
+        1.0       0.91      0.80      0.85        40
 
 avg / total       0.99      0.99      0.99       999
 
@@ -1624,26 +1630,26 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99      6745
-        1.0       0.83      0.55      0.66       255
+        0.0       0.99      1.00      1.00      6761
+        1.0       1.00      0.79      0.88       239
 
-avg / total       0.98      0.98      0.98      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99       976
-        1.0       0.88      0.61      0.72        23
+        0.0       0.99      1.00      0.99       958
+        1.0       0.90      0.68      0.78        41
 
-avg / total       0.99      0.99      0.99       999
+avg / total       0.98      0.98      0.98       999
 
 
 151317587
@@ -1651,24 +1657,24 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6897
-        1.0       1.00      0.67      0.80       103
+        0.0       1.00      1.00      1.00      6894
+        1.0       1.00      0.94      0.97       106
 
-avg / total       1.00      1.00      0.99      7000
+avg / total       1.00      1.00      1.00      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       988
-        1.0       1.00      0.91      0.95        11
+        0.0       1.00      1.00      1.00       989
+        1.0       1.00      0.70      0.82        10
 
 avg / total       1.00      1.00      1.00       999
 
@@ -1678,26 +1684,26 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 0.1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.96      1.00      0.98      6327
-        1.0       0.95      0.59      0.73       673
+        0.0       0.99      1.00      0.99      6326
+        1.0       1.00      0.86      0.93       674
 
-avg / total       0.96      0.96      0.95      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.96      0.99      0.98       904
-        1.0       0.92      0.57      0.70        95
+        0.0       0.99      1.00      1.00       911
+        1.0       1.00      0.93      0.96        88
 
-avg / total       0.95      0.95      0.95       999
+avg / total       0.99      0.99      0.99       999
 
 
 359791727
@@ -1705,24 +1711,24 @@ avg / total       0.95      0.95      0.95       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.97      1.00      0.99      6549
-        1.0       0.96      0.60      0.74       451
+        0.0       0.99      1.00      0.99      6562
+        1.0       1.00      0.79      0.88       438
 
-avg / total       0.97      0.97      0.97      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.97      1.00      0.99       942
-        1.0       0.97      0.53      0.68        57
+        0.0       0.98      0.99      0.99       921
+        1.0       0.90      0.77      0.83        78
 
 avg / total       0.97      0.97      0.97       999
 
@@ -1732,14 +1738,14 @@ avg / total       0.97      0.97      0.97       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6831
-        1.0       1.00      0.93      0.97       169
+        0.0       1.00      1.00      1.00      6836
+        1.0       1.00      0.91      0.96       164
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -1748,8 +1754,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       969
-        1.0       1.00      0.93      0.97        30
+        0.0       1.00      1.00      1.00       967
+        1.0       1.00      0.91      0.95        32
 
 avg / total       1.00      1.00      1.00       999
 
@@ -1759,26 +1765,26 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'poly', 'C': 0.01, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6863
-        1.0       0.92      0.93      0.92       137
+        0.0       1.00      0.97      0.99      3030
+        1.0       0.58      0.97      0.72       117
 
-avg / total       1.00      1.00      1.00      7000
+avg / total       0.98      0.97      0.98      3147
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       986
-        1.0       1.00      0.77      0.87        13
+        0.0       0.99      0.98      0.98       426
+        1.0       0.64      0.78      0.71        23
 
-avg / total       1.00      1.00      1.00       999
+avg / total       0.97      0.97      0.97       449
 
 
 138588703
@@ -1786,14 +1792,14 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6899
-        1.0       1.00      0.75      0.86       101
+        0.0       1.00      1.00      1.00      6906
+        1.0       1.00      0.79      0.88        94
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -1802,8 +1808,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       987
-        1.0       1.00      0.83      0.91        12
+        0.0       1.00      1.00      1.00       984
+        1.0       1.00      0.87      0.93        15
 
 avg / total       1.00      1.00      1.00       999
 
@@ -1813,26 +1819,26 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6838
-        1.0       1.00      0.96      0.98       162
+        0.0       1.00      1.00      1.00      5103
+        1.0       1.00      0.96      0.98       156
 
-avg / total       1.00      1.00      1.00      7000
+avg / total       1.00      1.00      1.00      5259
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       970
-        1.0       1.00      1.00      1.00        29
+        0.0       1.00      1.00      1.00       728
+        1.0       1.00      0.96      0.98        23
 
-avg / total       1.00      1.00      1.00       999
+avg / total       1.00      1.00      1.00       751
 
 
 176276685
@@ -1840,26 +1846,26 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.97      1.00      0.99      6108
-        1.0       1.00      0.80      0.89       892
+        0.0       1.00      1.00      1.00      2963
+        1.0       1.00      0.99      1.00       881
 
-avg / total       0.98      0.97      0.97      7000
+avg / total       1.00      1.00      1.00      3844
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99       851
-        1.0       1.00      0.86      0.92       148
+        0.0       1.00      1.00      1.00       414
+        1.0       0.99      0.99      0.99       135
 
-avg / total       0.98      0.98      0.98       999
+avg / total       1.00      1.00      1.00       549
 
 
 746684368756801536
@@ -1867,14 +1873,14 @@ avg / total       0.98      0.98      0.98       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'rbf', 'C': 0.1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6864
-        1.0       0.99      0.61      0.75       136
+        0.0       0.99      1.00      1.00      6862
+        1.0       1.00      0.56      0.72       138
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -1883,10 +1889,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       976
-        1.0       1.00      0.65      0.79        23
+        0.0       1.00      1.00      1.00       989
+        1.0       1.00      0.70      0.82        10
 
-avg / total       0.99      0.99      0.99       999
+avg / total       1.00      1.00      1.00       999
 
 
 173348160
@@ -1894,16 +1900,16 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 10, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99      6832
-        1.0       1.00      0.43      0.61       168
+        0.0       0.99      1.00      1.00      6827
+        1.0       1.00      0.75      0.86       173
 
-avg / total       0.99      0.99      0.98      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
@@ -1921,14 +1927,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6834
-        1.0       1.00      0.87      0.93       166
+        0.0       1.00      1.00      1.00      6835
+        1.0       1.00      0.96      0.98       165
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -1937,10 +1943,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       973
-        1.0       1.00      0.77      0.87        26
+        0.0       1.00      1.00      1.00       978
+        1.0       0.91      1.00      0.95        21
 
-avg / total       0.99      0.99      0.99       999
+avg / total       1.00      1.00      1.00       999
 
 
 177965969
@@ -1948,149 +1954,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6915
-        1.0       1.00      0.75      0.86        85
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       982
-        1.0       1.00      0.53      0.69        17
-
-avg / total       0.99      0.99      0.99       999
-
-
-849468804
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6802
-        1.0       1.00      0.73      0.85       198
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       970
-        1.0       1.00      0.79      0.88        29
-
-avg / total       0.99      0.99      0.99       999
-
-
-369120654
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6867
-        1.0       1.00      0.79      0.88       133
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       982
-        1.0       0.90      0.53      0.67        17
-
-avg / total       0.99      0.99      0.99       999
-
-
-190037399
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6841
-        1.0       1.00      0.91      0.95       159
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       972
-        1.0       1.00      0.93      0.96        27
-
-avg / total       1.00      1.00      1.00       999
-
-
-1706131357
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6903
-        1.0       1.00      0.55      0.71        97
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       989
-        1.0       1.00      0.60      0.75        10
-
-avg / total       1.00      1.00      1.00       999
-
-
-282654132
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6915
-        1.0       1.00      0.81      0.90        85
+        0.0       1.00      1.00      1.00      6908
+        1.0       1.00      0.80      0.89        92
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -2105,19 +1976,154 @@ Scores on test set.
 avg / total       1.00      1.00      1.00       999
 
 
-1592178128
+849468804
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6851
-        1.0       0.99      0.66      0.80       149
+        0.0       1.00      1.00      1.00      6809
+        1.0       1.00      0.91      0.95       191
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       965
+        1.0       1.00      0.79      0.89        34
+
+avg / total       0.99      0.99      0.99       999
+
+
+369120654
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6853
+        1.0       0.98      0.82      0.90       147
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       984
+        1.0       0.79      0.73      0.76        15
+
+avg / total       0.99      0.99      0.99       999
+
+
+190037399
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 0.1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6832
+        1.0       1.00      0.95      0.97       168
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       970
+        1.0       1.00      0.93      0.96        29
+
+avg / total       1.00      1.00      1.00       999
+
+
+1706131357
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6913
+        1.0       1.00      0.79      0.88        87
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       984
+        1.0       0.80      0.53      0.64        15
+
+avg / total       0.99      0.99      0.99       999
+
+
+282654132
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6924
+        1.0       1.00      0.84      0.91        76
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       981
+        1.0       1.00      0.83      0.91        18
+
+avg / total       1.00      1.00      1.00       999
+
+
+1592178128
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      6863
+        1.0       1.00      0.43      0.60       137
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -2126,8 +2132,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99       976
-        1.0       0.89      0.35      0.50        23
+        0.0       0.98      1.00      0.99       970
+        1.0       1.00      0.38      0.55        29
 
 avg / total       0.98      0.98      0.98       999
 
@@ -2137,26 +2143,26 @@ avg / total       0.98      0.98      0.98       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99      6486
-        1.0       1.00      0.79      0.88       514
+        0.0       0.99      1.00      1.00      6450
+        1.0       1.00      0.89      0.94       550
 
-avg / total       0.98      0.98      0.98      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99       908
-        1.0       1.00      0.78      0.88        91
+        0.0       0.99      1.00      0.99       923
+        1.0       0.97      0.89      0.93        76
 
-avg / total       0.98      0.98      0.98       999
+avg / total       0.99      0.99      0.99       999
 
 
 1861363302
@@ -2164,26 +2170,26 @@ avg / total       0.98      0.98      0.98       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99      6379
-        1.0       1.00      0.77      0.87       621
+        0.0       0.99      1.00      1.00      6386
+        1.0       1.00      0.92      0.96       614
 
-avg / total       0.98      0.98      0.98      7000
+avg / total       0.99      0.99      0.99      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.97      1.00      0.98       900
-        1.0       1.00      0.70      0.82        99
+        0.0       0.99      1.00      0.99       911
+        1.0       0.99      0.89      0.93        88
 
-avg / total       0.97      0.97      0.97       999
+avg / total       0.99      0.99      0.99       999
 
 
 1895737279
@@ -2191,14 +2197,41 @@ avg / total       0.97      0.97      0.97       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6886
-        1.0       0.98      0.85      0.91       114
+        0.0       0.97      0.98      0.98       383
+        1.0       0.92      0.91      0.91       111
+
+avg / total       0.96      0.96      0.96       494
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.95      1.00      0.97        57
+        1.0       1.00      0.77      0.87        13
+
+avg / total       0.96      0.96      0.95        70
+
+
+14147237
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6873
+        1.0       1.00      0.82      0.90       127
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -2207,27 +2240,189 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       985
-        1.0       1.00      0.71      0.83        14
+        0.0       0.99      1.00      1.00       970
+        1.0       0.92      0.76      0.83        29
 
-avg / total       1.00      1.00      1.00       999
+avg / total       0.99      0.99      0.99       999
 
 
-14147237
+737360503
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 10, 'class_weight': 'balanced'}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99      6861
-        1.0       1.00      0.45      0.62       139
+        0.0       1.00      1.00      1.00      4594
+        1.0       1.00      0.67      0.80        70
+
+avg / total       1.00      1.00      0.99      4664
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00       655
+        1.0       1.00      0.55      0.71        11
+
+avg / total       0.99      0.99      0.99       666
+
+
+575465762
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99      6838
+        1.0       0.50      0.97      0.66       162
+
+avg / total       0.99      0.98      0.98      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.98      0.99       979
+        1.0       0.50      0.90      0.64        20
+
+avg / total       0.99      0.98      0.98       999
+
+
+250311288
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      1.00      6710
+        1.0       0.98      0.78      0.87       290
 
 avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99       956
+        1.0       0.97      0.70      0.81        43
+
+avg / total       0.99      0.99      0.98       999
+
+
+119998164
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 0.1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       0.99      1.00      0.99      6422
+        1.0       0.94      0.90      0.92       578
+
+avg / total       0.99      0.99      0.99      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      0.99      1.00       915
+        1.0       0.94      0.95      0.95        84
+
+avg / total       0.99      0.99      0.99       999
+
+
+67974875
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6744
+        1.0       1.00      0.88      0.94       256
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       961
+        1.0       1.00      0.89      0.94        38
+
+avg / total       1.00      1.00      1.00       999
+
+
+124526312
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      3108
+        1.0       1.00      0.99      0.99        88
+
+avg / total       1.00      1.00      1.00      3196
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       445
+        1.0       1.00      1.00      1.00        11
+
+avg / total       1.00      1.00      1.00       456
+
+
+222797605
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6897
+        1.0       1.00      0.81      0.89       103
+
+avg / total       1.00      1.00      1.00      7000
 
 
 Scores on test set.
@@ -2240,220 +2435,31 @@ Scores on test set.
 avg / total       0.99      0.99      0.99       999
 
 
-737360503
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6925
-        1.0       1.00      0.76      0.86        75
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       985
-        1.0       0.93      0.93      0.93        14
-
-avg / total       1.00      1.00      1.00       999
-
-
-575465762
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6838
-        1.0       0.85      0.94      0.89       162
-
-avg / total       1.00      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       981
-        1.0       0.79      0.83      0.81        18
-
-avg / total       0.99      0.99      0.99       999
-
-
-250311288
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99      6700
-        1.0       0.89      0.81      0.85       300
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      0.99      0.99       976
-        1.0       0.76      0.83      0.79        23
-
-avg / total       0.99      0.99      0.99       999
-
-
-119998164
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'poly', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      0.99      0.99      6396
-        1.0       0.93      0.93      0.93       604
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       922
-        1.0       0.97      0.91      0.94        77
-
-avg / total       0.99      0.99      0.99       999
-
-
-67974875
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6755
-        1.0       1.00      0.82      0.90       245
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00       951
-        1.0       1.00      0.90      0.95        48
-
-avg / total       1.00      0.99      0.99       999
-
-
-124526312
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00      6904
-        1.0       1.00      0.98      0.99        96
-
-avg / total       1.00      1.00      1.00      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       1.00      1.00      1.00       989
-        1.0       1.00      1.00      1.00        10
-
-avg / total       1.00      1.00      1.00       999
-
-
-222797605
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6887
-        1.0       1.00      0.55      0.71       113
-
-avg / total       0.99      0.99      0.99      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      0.99       984
-        1.0       1.00      0.33      0.50        15
-
-avg / total       0.99      0.99      0.99       999
-
-
 760133241441513472
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 0.1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.96      1.00      0.98      6313
-        1.0       0.97      0.66      0.79       687
+        0.0       1.00      1.00      1.00      6287
+        1.0       1.00      0.98      0.99       713
 
-avg / total       0.97      0.96      0.96      7000
+avg / total       1.00      1.00      1.00      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.96      1.00      0.98       896
-        1.0       1.00      0.61      0.76       103
+        0.0       1.00      1.00      1.00       911
+        1.0       0.99      0.97      0.98        88
 
-avg / total       0.96      0.96      0.96       999
+avg / total       1.00      1.00      1.00       999
 
 
 4194490175
@@ -2461,14 +2467,14 @@ avg / total       0.96      0.96      0.96       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.89      0.99      0.94      4954
-        1.0       0.97      0.72      0.83      2046
+        0.0       0.89      1.00      0.94      4914
+        1.0       0.99      0.71      0.83      2086
 
 avg / total       0.92      0.91      0.91      7000
 
@@ -2477,10 +2483,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.85      0.98      0.91       716
-        1.0       0.94      0.57      0.71       283
+        0.0       0.87      0.99      0.93       705
+        1.0       0.95      0.65      0.77       294
 
-avg / total       0.88      0.87      0.86       999
+avg / total       0.90      0.89      0.88       999
 
 
 146554716
@@ -2488,24 +2494,24 @@ avg / total       0.88      0.87      0.86       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6905
-        1.0       1.00      0.40      0.57        95
+        0.0       1.00      1.00      1.00      6913
+        1.0       1.00      0.79      0.88        87
 
-avg / total       0.99      0.99      0.99      7000
+avg / total       1.00      1.00      1.00      7000
 
 
 Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00       988
-        1.0       1.00      0.36      0.53        11
+        0.0       0.99      1.00      1.00       991
+        1.0       0.60      0.38      0.46         8
 
 avg / total       0.99      0.99      0.99       999
 
@@ -2515,14 +2521,14 @@ avg / total       0.99      0.99      0.99       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 1, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      1.00      6828
-        1.0       1.00      0.78      0.88       172
+        0.0       0.99      1.00      0.99      6828
+        1.0       1.00      0.59      0.74       172
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -2531,10 +2537,10 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99       968
-        1.0       1.00      0.55      0.71        31
+        0.0       0.99      1.00      1.00       972
+        1.0       1.00      0.67      0.80        27
 
-avg / total       0.99      0.99      0.98       999
+avg / total       0.99      0.99      0.99       999
 
 
 158232439
@@ -2542,41 +2548,14 @@ avg / total       0.99      0.99      0.98       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       0.98      1.00      0.99      6709
-        1.0       1.00      0.51      0.68       291
-
-avg / total       0.98      0.98      0.98      7000
-
-
-Scores on test set.
-
-             precision    recall  f1-score   support
-
-        0.0       0.97      1.00      0.99       954
-        1.0       1.00      0.44      0.62        45
-
-avg / total       0.98      0.97      0.97       999
-
-
-136787852
-# Tuning hyper-parameters for f1
-
-Best parameters set found on training set:
-
-{'kernel': 'rbf', 'C': 0.1, 'gamma': 1, 'class_weight': None}
-Detailed classification report:
-
-Scores on training set.
-             precision    recall  f1-score   support
-
-        0.0       0.99      1.00      1.00      6903
-        1.0       1.00      0.54      0.70        97
+        0.0       0.99      1.00      1.00      6716
+        1.0       1.00      0.79      0.88       284
 
 avg / total       0.99      0.99      0.99      7000
 
@@ -2585,25 +2564,25 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       0.99      1.00      0.99       979
-        1.0       1.00      0.30      0.46        20
+        0.0       0.98      1.00      0.99       955
+        1.0       0.93      0.61      0.74        44
 
-avg / total       0.99      0.99      0.98       999
+avg / total       0.98      0.98      0.98       999
 
 
-54304674
+136787852
 # Tuning hyper-parameters for f1
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 0.01, 'gamma': 1, 'class_weight': 'balanced'}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
         0.0       1.00      1.00      1.00      6895
-        1.0       1.00      0.99      1.00       105
+        1.0       1.00      0.82      0.90       105
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -2612,8 +2591,35 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       980
-        1.0       1.00      1.00      1.00        19
+        0.0       0.99      0.99      0.99       985
+        1.0       0.64      0.64      0.64        14
+
+avg / total       0.99      0.99      0.99       999
+
+
+54304674
+# Tuning hyper-parameters for f1
+
+Best parameters set found on training set:
+
+{'kernel': 'rbf', 'C': 0.01, 'verbose': False, 'gamma': 1, 'class_weight': 'balanced'}
+Detailed classification report:
+
+Scores on training set.
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00      6894
+        1.0       1.00      1.00      1.00       106
+
+avg / total       1.00      1.00      1.00      7000
+
+
+Scores on test set.
+
+             precision    recall  f1-score   support
+
+        0.0       1.00      1.00      1.00       985
+        1.0       1.00      0.93      0.96        14
 
 avg / total       1.00      1.00      1.00       999
 
@@ -2623,14 +2629,14 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 1, 'class_weight': None}
+{'kernel': 'poly', 'C': 0.01, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6849
-        1.0       0.99      0.87      0.93       151
+        0.0       1.00      1.00      1.00      6843
+        1.0       0.99      0.89      0.94       157
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -2639,8 +2645,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       986
-        1.0       1.00      0.85      0.92        13
+        0.0       1.00      1.00      1.00       976
+        1.0       1.00      0.96      0.98        23
 
 avg / total       1.00      1.00      1.00       999
 
@@ -2650,14 +2656,14 @@ avg / total       1.00      1.00      1.00       999
 
 Best parameters set found on training set:
 
-{'kernel': 'rbf', 'C': 1, 'gamma': 10, 'class_weight': None}
+{'kernel': 'rbf', 'C': 1, 'verbose': False, 'gamma': 10, 'class_weight': None}
 Detailed classification report:
 
 Scores on training set.
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00      6926
-        1.0       1.00      0.78      0.88        74
+        0.0       1.00      1.00      1.00      6916
+        1.0       0.99      0.88      0.93        84
 
 avg / total       1.00      1.00      1.00      7000
 
@@ -2666,8 +2672,8 @@ Scores on test set.
 
              precision    recall  f1-score   support
 
-        0.0       1.00      1.00      1.00       987
-        1.0       1.00      0.83      0.91        12
+        0.0       1.00      1.00      1.00       992
+        1.0       1.00      1.00      1.00         7
 
 avg / total       1.00      1.00      1.00       999
 

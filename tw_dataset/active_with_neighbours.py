@@ -19,7 +19,7 @@ for v in g.vertices():
         neighbors.update(n.out_neighbours())
     neighborhood_sizes[int(get_twitter_id(g,v))] = len(neighbors)
 
-active_with_neighbors = [x for x in rtcounts if rtcounts[x] > 100 and neighborhood_sizes[x] > 100]
+active_with_neighbors = [x for x in rtcounts if rtcounts[x] > 100 and neighborhood_sizes[x] > 100 if x != USER_DATA['id']]
 
 with open('active_with_neighbours.json','w') as f:
     json.dump(active_with_neighbors, f)
