@@ -21,7 +21,7 @@ def evaluate_model(clf, X_train, X_test, y_train, y_test):
     print(classification_report(y_true, y_pred))
 
 
-MODELS_FOLDER = "/media/pablo/data/Tesis/models/"
+MODELS_FOLDER = "/media/pablo/data/Tesis/models/old/"
 
 def save_model_small(clf, user_id, model_type, feat_space='', n_topics=None):
     n_topics_str = 't%d' % n_topics if n_topics else ''

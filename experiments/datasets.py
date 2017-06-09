@@ -170,14 +170,16 @@ def load_or_create_combined_dataset_small(nbuckets, test_size=0.3):
 
 
 def load_dataframe(uid):
-    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d.pickle" % uid)
-    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtest_%d.pickle" % uid)
-    ys_fname = join(DATAFRAMES_FOLDER, "ys_%d.pickle" % uid)
+    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
+    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
+    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
+    ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
     try:
         X_train = pd.read_pickle(Xtrain_fname)
-        X_test = pd.read_pickle(Xtest_fname)        
-        y_train, y_test = pickle.load(open(ys_fname, 'rb'))
-        return X_train, X_test, y_train, y_test
+        X_valid = pd.read_pickle(Xvalid_fname)
+        X_test = pd.read_pickle(Xtest_fname)                
+        y_train, y_valid, y_test = pickle.load(open(ys_fname, 'rb'))
+        return X_train, X_valid, X_test, y_train, y_valid, y_test
     except Exception as e:
         return None
 

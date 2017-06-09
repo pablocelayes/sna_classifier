@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from experiments.datasets import (load_or_create_dataframe, load_small_validation_dataframe, TEST_USERS_ALL)
 
-MODELS_FOLDER = "/media/pablo/data/Tesis/models/"
+MODELS_FOLDER = "/media/pablo/data/Tesis/models/old"
 
 from sklearn.ensemble import RandomForestClassifier
 # from sklearn.tree import DecisionTreeClassifier
