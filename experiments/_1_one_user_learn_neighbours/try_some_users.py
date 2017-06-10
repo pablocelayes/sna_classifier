@@ -73,9 +73,8 @@ def save_model_small(clf, user_id, model_type, feat_space='', n_topics=None):
     model_path = join(MODELS_FOLDER, "%s_%d_small_%s%s.pickle" % (model_type, user_id, feat_space, n_topics_str))
     joblib.dump(clf, model_path)
 
-def load_model_small(user_id, model_type, feat_space='', n_topics=None):
-    n_topics_str = 't%d' % n_topics if n_topics else ''
-    model_path = join(MODELS_FOLDER, "%s_%d_small_%s%s.pickle" % (model_type, user_id, feat_space, n_topics_str))
+def load_model_small(user_id, model_type):
+    model_path = join(MODELS_FOLDER, "%s_%d_small.pickle" % (model_type, user_id))
 
     clf = joblib.load(model_path)
     return clf
