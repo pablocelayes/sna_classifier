@@ -28,15 +28,17 @@ from time import time
 import re
 from gensim.models import LdaModel
 from gensim import corpora
-from tokenizer import tokenize, spanish_stopwords
 from sklearn.preprocessing import StandardScaler
-from __classifiers import model_select_svc, model_select_sgd, model_select_rdf
+from experiments._1_one_user_learn_neighbours.classifiers import model_select_svc
 from sklearn.externals import joblib
 import sys
 import time
+from experiments.datasets import *
 
 mpl = log_to_stderr()
 mpl.setLevel(logging.ERROR)
+
+N_TOPICS = 10
 
 PREFIX = '/home/pablo/Proyectos/cogfor/repo/data/es'
 
@@ -44,12 +46,16 @@ tu_path = "/home/pablo/Proyectos/tesiscomp/tw_dataset/active_with_neighbours.jso
 
 MODELS_FOLDER = "/media/pablo/data/Tesis/models/old/"
 
+TM_MODELS_PATH = '/media/pablo/data/Tesis/models/old/tm_feats/'
+
 TEST_USERS_ALL = json.load(open(tu_path))
 
 USER_ID = 37226353
 
+NLP_FEATS = pd.read_pickle(join(TM_MODELS_PATH, "./alltweets_es_lda%d.pickle" % N_TOPICS))
+
 def load_all_f1s():
-    with open('../_1_one_user_learn_neighbours/f1s_valid_svc.json') as f:
+    with open('../_1_one_user_learn_neighbours/scores/f1s_valid_svc.json') as f:
         f1s = json.load(f)
     
     f1s = f1s.items()
@@ -59,7 +65,7 @@ def load_all_f1s():
 
 def load_nlp_selected_users():
     if not exists('nlp_users.json'):
-        with open('../_1_one_user_learn_neighbours/f1s_valid_svc.json') as f:
+        with open('../_1_one_user_learn_neighbours/scores/f1s_valid_svc.json') as f:
             f1s = json.load(f)
         
         ur = f1s.items()
@@ -114,17 +120,18 @@ def normalize(X_train, X_test):
     return X_train, X_test
 
 def load_dataframe(uid):
-    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d.pickle" % uid)
-    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d.pickle" % uid)
-    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d.pickle" % uid)
-    ys_fname = join(DATAFRAMES_FOLDER, "ys_%d.pickle" % uid)
-
-    X_train = pd.read_pickle(Xtrain_fname)
-    X_valid = pd.read_pickle(Xvalid_fname)
-    X_test = pd.read_pickle(Xtest_fname)        
-    y_train, y_valid, y_test = pickle.load(open(ys_fname, 'rb'))
-
-    return X_train, X_valid, X_test, y_train, y_valid, y_test
+    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
+    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
+    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
+    ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
+    try:
+        X_train = pd.read_pickle(Xtrain_fname)
+        X_valid = pd.read_pickle(Xvalid_fname)
+        X_test = pd.read_pickle(Xtest_fname)                
+        y_train, y_valid, y_test = pickle.load(open(ys_fname, 'rb'))
+        return X_train, X_valid, X_test, y_train, y_valid, y_test
+    except Exception as e:
+        return None
 
 def save_model(clf, user_id, feat_space='', n_topics=None, subfolder=''):
     models_folder = MODELS_FOLDER
@@ -145,47 +152,57 @@ def load_model(user_id, feat_space='', n_topics=None, subfolder=''):
     clf = joblib.load(model_path)
     return clf
 
+def load_social_model(user_id):
+    models_folder = MODELS_FOLDER
+    model_path = join(models_folder, "svc_%d_small.pickle" % user_id)
+
+    clf = joblib.load(model_path)
+    return clf
+
 if __name__ == '__main__':
     f1s = load_nlp_selected_users()
 
-    nlp_model = sys.argv[1]
-
-    n_topics = int(sys.argv[2])
-
-    nlp_feats = pd.read_pickle('alltweets_es_%s%d.pickle' % (nlp_model, n_topics))
+    n_topics = int(sys.argv[1])
 
     pending_user_ids = []
     for uid, f1 in f1s:
         uid = int(uid)
-        # if uid in [393285785, 1592178128, 244175447]:
-        #     continue    
         try:
-            load_model(uid, 'svc' + nlp_model, n_topics=n_topics, subfolder='nlp')
-            # raise IOError
+            load_model(uid, 'svclda', n_topics=n_topics, subfolder='social_nlp')
         except IOError:
             # Train classifiers only if not created already
             print "==============================" 
             print "Processing %d ( f1 %.2f %%)" % (uid, 100 * f1)
 
-            X_train, X_valid, X_test, y_train, y_valid, y_test = load_dataframe(uid)
+            res = load_dataframe(uid)
+            if res:
+                X_train, X_valid, X_test, y_train, y_valid, y_test = res
+            else:
+                print "==============================" 
+                print "==============================" 
+                print "========== WARNING =============="
+                print "Missing dataframe for user %d" % uid
+                print "(we must recreate it)"
+                print "==============================" 
+                print "==============================" 
+                
+                continue
             
-            X_train_nlp = nlp_feats.loc[X_train.index]
-            X_valid_nlp = nlp_feats.loc[X_valid.index]
-            X_test_nlp = nlp_feats.loc[X_test.index]
+            X_train_nlp = NLP_FEATS.loc[X_train.index]
+            X_valid_nlp = NLP_FEATS.loc[X_valid.index]
+            X_test_nlp = NLP_FEATS.loc[X_test.index]
 
-            X_train_nlp, X_valid_nlp = scale(X_train_nlp, X_valid_nlp)
+            X_train_combined = np.hstack((X_train, X_train_nlp))
+            X_valid_combined = np.hstack((X_valid, X_valid_nlp))
+            X_test_combined = np.hstack((X_test, X_test_nlp))
 
-            ds_nlp = (X_train_nlp, X_valid_nlp, y_train, y_valid)
+            X_train_combined, X_valid_combined = scale(X_train_combined, X_valid_combined)
+
+            ds_comb = (X_train_combined, X_valid_combined, y_train, y_valid)
             
-            comb_clf = model_select_svc(ds, n_jobs=7, max_iter=5000)
-            save_model(comb_clf, uid, 'svc' + nlp_model , n_topics=n_topics, subfolder='nlp')
-
-            # comb_clf = model_select_sgd(ds_comb, n_jobs=7)
-            # save_model(comb_clf, uid, 'sgdlda', n_topics=n_topics)
-
-            # comb_clf = model_select_rdf(ds_comb, n_jobs=7)
-            # save_model(comb_clf, uid, 'rdflda', n_topics=n_topics)
+            comb_clf = model_select_svc(ds_comb, n_jobs=7, max_iter=100000)
+            save_model(comb_clf, uid, 'svclda', n_topics=n_topics, subfolder='social_nlp')
 
             print "Results on social model"
-            sna_clf = load_model(uid, 'svc')
+            sna_clf = load_social_model(uid)
             evaluate_model(sna_clf, X_train, X_valid, y_train, y_valid)

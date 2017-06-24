@@ -75,7 +75,7 @@ if __name__ == '__main__':
     pool.join()
 
     with open('scores/f1s_train_svc.json', 'w') as f:
-        json.dump(dict(f1s_valid), f)
+        json.dump(dict(f1s_train), f)
 
     with open('scores/f1s_valid_svc.json', 'w') as f:
         json.dump(dict(f1s_valid), f)
@@ -84,7 +84,7 @@ if __name__ == '__main__':
         json.dump(dict(f1s_testv), f)
 
     with open('scores/precisions_train_svc.json', 'w') as f:
-        json.dump(dict(precisions_valid), f)
+        json.dump(dict(precisions_train), f)
 
     with open('scores/precisions_valid_svc.json', 'w') as f:
         json.dump(dict(precisions_valid), f)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
         json.dump(dict(precisions_testv), f)
 
     with open('scores/recalls_train_svc.json', 'w') as f:
-        json.dump(dict(recalls_valid), f)
+        json.dump(dict(recalls_train), f)
 
     with open('scores/recalls_valid_svc.json', 'w') as f:
         json.dump(dict(recalls_valid), f)

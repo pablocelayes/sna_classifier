@@ -93,7 +93,7 @@ def model_select_rdf(dataset, cv=3, n_jobs=6):
 
     return clf
 
-def model_select_svc(dataset, cv=3, n_jobs=6):
+def model_select_svc(dataset, cv=3, n_jobs=6, max_iter=-1):
     X_train, X_test, y_train, y_test = dataset
 
     # Set the parameters by cross-validation
@@ -117,7 +117,7 @@ def model_select_svc(dataset, cv=3, n_jobs=6):
         print()
 
         clf = GridSearchCV(
-            SVC(),  
+            SVC(max_iter=max_iter),  
             param_grid=parameters,  # parameters to tune via cross validation
             refit=True,  # fit using all data, on the best detected classifier
             n_jobs=n_jobs,  # number of cores to use for parallelization; -1 for "all cores"
