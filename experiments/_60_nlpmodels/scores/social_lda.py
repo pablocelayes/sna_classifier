@@ -38,3 +38,9 @@ with open('recall_social_lda20_test.json', 'w') as f:
 
 with open('prec_social_lda20_test.json', 'w') as f:
     json.dump(prec_social_lda20, f)
+
+with open('recall_social_lda5_test.json', 'w') as f:
+    json.dump(recall_social_lda5, f)
+
+with open('prec_social_lda5_test.json', 'w') as f:
+    json.dump(prec_social_lda5, f)

@@ -161,13 +161,13 @@ if __name__ == '__main__':
 
     n_topics = int(sys.argv[1])
 
-    NLP_FEATS = pd.read_pickle(join(TM_MODELS_PATH, "./alltweets_es_lda%d.pickle" % n_topics))
+    NLP_FEATS = pd.read_pickle(join(TM_MODELS_PATH, "./alltweets_es_twlda%d.pickle" % n_topics))
 
     pending_user_ids = []
     for uid, f1 in f1s:
         uid = int(uid)
         try:
-            load_model(uid, 'svclda', n_topics=n_topics, subfolder='social_nlp')
+            load_model(uid, 'svctwlda', n_topics=n_topics, subfolder='social_nlp')
         except IOError:
             # Train classifiers only if not created already
             print "==============================" 
@@ -180,16 +180,22 @@ if __name__ == '__main__':
             X_valid_nlp = NLP_FEATS.loc[X_valid.index]
             X_test_nlp = NLP_FEATS.loc[X_test.index]
 
+            # TODO: solve missing tweets
+            X_train_nlp[np.isnan(X_train_nlp)] = 0
+            X_valid_nlp[np.isnan(X_valid_nlp)] = 0
+            X_test_nlp[np.isnan(X_test_nlp)] = 0
+
             X_train_combined = np.hstack((X_train, X_train_nlp))
             X_valid_combined = np.hstack((X_valid, X_valid_nlp))
             X_test_combined = np.hstack((X_test, X_test_nlp))
 
-            X_train_combined, X_valid_combined = scale(X_train_combined, X_valid_combined)
+            # import ipdb; ipdb.set_trace()
+            # X_train_combined, X_valid_combined = scale(X_train_combined, X_valid_combined)
 
             ds_comb = (X_train_combined, X_valid_combined, y_train, y_valid)
             
             comb_clf = model_select_svc(ds_comb, n_jobs=7, max_iter=100000)
-            save_model(comb_clf, uid, 'svclda', n_topics=n_topics, subfolder='social_nlp')
+            save_model(comb_clf, uid, 'svctwlda', n_topics=n_topics, subfolder='social_nlp')
 
             print "Results on social model"
             sna_clf = load_social_model(uid)
