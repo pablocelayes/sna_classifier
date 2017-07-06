@@ -11,7 +11,7 @@ import json
 
 MODELS_FOLDER = "/media/pablo/data/Tesis/models/old/"
 
-N_TOPICS = 20
+N_TOPICS = 15
 
 NLP_FEATS = pd.read_pickle(join(TM_MODELS_PATH, "./alltweets_es_twlda%d.pickle" % N_TOPICS))
 
