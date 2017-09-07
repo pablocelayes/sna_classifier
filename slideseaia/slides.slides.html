@@ -11862,9 +11862,7 @@ Dime a quiénes sigues y te diré qué prefieres
 </li>
 <li><p>Predicción social</p>
 </li>
-<li><p>Agregando PLN</p>
-</li>
-<li><p>Conclusiones</p>
+<li><p>Agregando PLN ( si alcanza el tiempo )</p>
 </li>
 </ul>
 
@@ -11971,7 +11969,7 @@ Dime a quiénes sigues y te diré qué prefieres
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Datos:-Contenido">Datos: Contenido<a class="anchor-link" href="#Datos:-Contenido">&#182;</a></h1><ul>
-<li><p>Subgrafo:</p>
+<li><p>Subgrafo $G$:</p>
 <ul>
 <li>partimos de un conjunto pequeño de usuarios</li>
 <li>agregamos 50 <em>seguidos</em> más <em>afines</em> ( según <em>seguidos</em> en común )</li>
@@ -11996,39 +11994,24 @@ Dime a quiénes sigues y te diré qué prefieres
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Predicci&#243;n-social">Predicci&#243;n social<a class="anchor-link" href="#Predicci&#243;n-social">&#182;</a></h1><p>¿ Dado un usuario, cuanto puedo saber de sus preferencias sabiendo las de su entorno ?</p>
+<h1 id="Predicci&#243;n-social">Predicci&#243;n social<a class="anchor-link" href="#Predicci&#243;n-social">&#182;</a></h1><p>¿ Dado un usuario $u$, cuánto puedo saber del <strong>contenido</strong> que <strong>prefiere</strong> sabiendo lo que prefieren los usuarios de su <strong>entorno</strong> social ?</p>
 <ul>
-<li><strong>Contenido</strong> =  tweets en español</li>
+<li><strong>Contenido</strong> =  tweets en español <em>"visibles"</em> ( $T_u$ )</li>
 <li><strong>Preferencias</strong> = retweets</li>
-<li><strong>Entorno</strong> = seguidos + seguidos-por-seguidos</li>
+<li><strong>Entorno</strong> = seguidos + seguidos-por-seguidos ( $E_u$ )</li>
 </ul>
 
 </div>
 </div>
-</div></section><section>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
 </div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Selecci&#243;n-de-usuarios">Selecci&#243;n de usuarios<a class="anchor-link" href="#Selecci&#243;n-de-usuarios">&#182;</a></h2><ul>
-<li>$A$ = $1000$ más <em>activos</em> (cant. de tweets)</li>
-<li>$I$ = $1000$ más <em>importantes</em> (centralidad de Katz)</li>
-<li>Tomamos $A \cap I$ : $194$ usuarios</li>
-</ul>
-
-</div>
-</div>
-</div></section><section>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Tweets-visibles">Tweets visibles<a class="anchor-link" href="#Tweets-visibles">&#182;</a></h2><ul>
-<li>Contenido compartido por $u$ o sus seguidos</li>
-<li>Excluímos contenido generado por $u$</li>
-<li><p>$ T_u := (\bigcup_{x \in \{ u \} \cup \texttt{seguidos}(u)} \texttt{timeline}(x)) - \{ t \in T | \texttt{autor}(t) = u \} $</p>
+<li>Compartidos por $u$ o sus seguidos</li>
+<li><p>Excluímos generados por $u$</p>
 </li>
 <li><p>máximo $10000$ ( submuestra de negativos si es necesario )</p>
 </li>
@@ -12042,9 +12025,30 @@ Dime a quiénes sigues y te diré qué prefieres
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Selecci&#243;n-de-usuarios">Selecci&#243;n de usuarios<a class="anchor-link" href="#Selecci&#243;n-de-usuarios">&#182;</a></h2><ul>
+<li>Entrenar y evaluar modelos es caro</li>
+<li>Soy vago y quería hacer todo en mi laptop</li>
+<li>Así que elegimos a quiénes analizar:<ul>
+<li>$A$ = $1000$ más <em>activos</em> (cant. de tweets)</li>
+<li>$I$ = $1000$ más <em>importantes</em> (centralidad de Katz)</li>
+<li>Tomamos $A \cap I$ : $194$ usuarios</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Extracci&#243;n-de-caracter&#237;sticas">Extracci&#243;n de caracter&#237;sticas<a class="anchor-link" href="#Extracci&#243;n-de-caracter&#237;sticas">&#182;</a></h2><ul>
-<li>Entorno $ E_u = (\bigcup_{x \in \{ u \} \cup \texttt{seguidos}(u)} \texttt{seguidos}(x)) - \{ u \} $</li>
-<li>$E_u = \{u_1, u_2, \ldots , u_n \}$ y  $T_u = \{ t_1, \ldots, t_m \}$</li>
+<li><p>$E_u = \{u_1, u_2, \ldots , u_n \}$</p>
+</li>
+<li><p>$T_u = \{ t_1, \ldots, t_m \}$</p>
+</li>
 </ul>
 $$
   M_u := [ \verb|tweet_en_tl|(t_i, u_j) ]_{\substack{ 1 \leq i \leq m \\ 1 \leq j \leq n}}  
@@ -12155,7 +12159,8 @@ $$
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Agregando-PLN">Agregando PLN<a class="anchor-link" href="#Agregando-PLN">&#182;</a></h1>
+<h1 id="&#191;Agregamos-PLN?">&#191;Agregamos PLN?<a class="anchor-link" href="#&#191;Agregamos-PLN?">&#182;</a></h1><p><img src="imgs/daeltiempo.jpg" alt=""></p>
+
 </div>
 </div>
 </div></section><section>
@@ -12305,34 +12310,39 @@ $$ v_{BOT}(tweet) = [count(t_i, tokens(tweet))]_{i=1}^{11000} $$<ul>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Evaluando-sobre-$M_u^{ev}$">Evaluando sobre $M_u^{ev}$<a class="anchor-link" href="#Evaluando-sobre-$M_u^{ev}$">&#182;</a></h2><ul>
+<h2 id="Evaluando-sobre-$M_u^{ev}$">Evaluando sobre $M_u^{ev}$<a class="anchor-link" href="#Evaluando-sobre-$M_u^{ev}$">&#182;</a></h2><p><img src="imgs/f1s_social_vs_socialldas.png" alt=""></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
 <li>Mejor: $\texttt{TwitterLDA10}$ ( mejora media de $1,7\%$)</li>
+<li>Por ahora agregar NLP no mejora mucho</li>
+<li>Muchos casos mejoran en <em>train</em> pero decaen en <em>test</em> (<em>overfitting</em>)</li>
 </ul>
 
 </div>
 </div>
-</div></section><section>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="imgs/f1s_social_vs_socialldas.png" alt=""></p>
-
-</div>
-</div>
-</div></section><section>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Pr&#243;ximos-pasos">Pr&#243;ximos pasos<a class="anchor-link" href="#Pr&#243;ximos-pasos">&#182;</a></h1><ul>
-<li>Reducir sobreajuste</li>
-<li>Características adicionales</li>
+<h1 id="&#191;C&#243;mo-sigue?">&#191;C&#243;mo sigue?<a class="anchor-link" href="#&#191;C&#243;mo-sigue?">&#182;</a></h1><ul>
 <li>Considerar temporalidad</li>
+<li>Características adicionales</li>
 <li>Generalizar ( modelo que no dependa del usuario )</li>
-<li>Retweeteabilidad en comunidades</li>
+<li><p><em>Retweeteabilidad</em> en comunidades</p>
+</li>
+<li><p>Resolver overfitting en caso Social+NLP</p>
+</li>
+<li>Probar word embeddings en la parte NLP?</li>
 </ul>
 
 </div>
