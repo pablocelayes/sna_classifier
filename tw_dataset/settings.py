@@ -11,4 +11,4 @@ SEARCH_STRING = "the OR a"
 
 N_USERS = 50
 
-from local_settings import *
+from .local_settings import *

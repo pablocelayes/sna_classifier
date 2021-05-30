@@ -36,7 +36,7 @@ def get_most_central_twids(N=100):
     g = gt.load_graph(GT_GRAPH_PATH)
     katzc=gt.katz(g)
     katzc_array = katzc.get_array()
-    katzc_sorted = sorted(enumerate(katzc_array), key=lambda (i, v):v)
+    katzc_sorted = sorted(enumerate(katzc_array), key=lambda t: t[1])
     most_central = [id for (id, c) in katzc_sorted][:N]
     most_central_twids = [get_twitter_id(g,id) for id in most_central]
     
@@ -112,7 +112,7 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats, nmostsimilar=30, nbucke
     g = load_nx_graph()
     fkatz_sims = finite_katz_measures(g, str(uid), K=10, alpha=0.2)
     ngs_fkatz = {i: fkatz_sims[str(i)] for i in ngids}
-    sorted_ngs_fkatz = sorted(ngs_fkatz.items(), key=lambda (i, s): s)
+    sorted_ngs_fkatz = sorted(ngs_fkatz.items(), key=lambda t: t[1])
     twid_to_colind = { twid: colind for colind, twid in enumerate(ngids)}
 
     # Create first buckets with most similar users
@@ -201,7 +201,7 @@ def count_doomed_samples(X, y):
 
     # The cost of an inconsistency is the minimum number of missclasified
     # samples
-    details = sorted(details, key=lambda (x, y): -min(y.values()))
+    details = sorted(details, key=lambda t: -min(t[1].values()))
 
     return miss_clf_counts, details
 

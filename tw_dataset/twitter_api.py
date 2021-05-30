@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from tweepy import Cursor, OAuthHandler, API
 from tweepy.error import TweepError
-from settings import *
+from .settings import *
 from random import choice
 
 
@@ -29,13 +29,13 @@ class APIHandler(object):
             try:
                 self.index = (self.index + 1) % len(self.auth_data)
                 d = self.auth_data[self.index]
-                print "Switching to API Credentials #%d" % self.index
+                print("Switching to API Credentials #%d" % self.index)
                 auth = OAuthHandler(d['consumer_key'], d['consumer_secret'])
                 auth.set_access_token(d['access_token'], d['access_token_secret'])
                 self.connection = API(auth_handler=auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
                 self.nreqs = 0
                 return self.connection
-            except TweepError, e:
+            except TweepError as e:
                 print("Error trying to connect: %s" % e.message)
                 time.sleep(10)
 

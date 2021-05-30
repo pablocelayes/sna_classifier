@@ -6,9 +6,9 @@ from sqlalchemy import (Integer, SmallInteger, String, Date, DateTime, Float, Bo
 from sqlalchemy.ext.declarative import declarative_base
 # from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy_utils.functions import drop_database, database_exists, create_database
+#from sqlalchemy_utils.functions import drop_database, database_exists, create_database
 
-from twitter_api import API_HANDLER
+from .twitter_api import API_HANDLER
 import time
 from datetime import timedelta, datetime, date
 import pickle
@@ -124,7 +124,7 @@ class User(Base):
     )
 
     def fetch_timeline(self, session):
-        print "Fetching timeline for user %d" % self.id
+        print("Fetching timeline for user %d" % self.id)
         start_time = time.time()
         # authenticating here ensures a different set of credentials
         # everytime we start processing a new county, to prevent hitting the rate limit
@@ -137,13 +137,13 @@ class User(Base):
             TW_API = API_HANDLER.get_fresh_connection()
             try:
                 tweets = TW_API.user_timeline(user_id=self.id, page=page)
-            except Exception, e:                
+            except Exception as e:                
                 if e.message == u'Not authorized.':
                     self.is_authorized = False
                     break
                 else:
                     print("Error: %s" % e.message)
-                    print "waiting..."
+                    print("waiting...")
                     time.sleep(10)
                     continue
 
@@ -178,14 +178,14 @@ class User(Base):
 
 
         elapsed_time =  time.time() - start_time
-        print "Done. Took %.1f secs to fetch %d tweets" % (elapsed_time, len(self.timeline))
+        print("Done. Took %.1f secs to fetch %d tweets" % (elapsed_time, len(self.timeline)))
         session.commit()
         
         return self.timeline
 
 
     def fetch_favorites(self, session):
-        print "Fetching favorites for user %d" % self.id
+        print("Fetching favorites for user %d" % self.id)
         start_time = time.time()
         self.favs = []
 
@@ -195,13 +195,13 @@ class User(Base):
             TW_API = API_HANDLER.get_fresh_connection()
             try:
                 tweets = TW_API.favorites(user_id=self.id, page=page)
-            except Exception, e:                
+            except Exception as e:                
                 if e.message == u'Not authorized.':
                     self.is_authorized = False
                     break
                 else:
                     print("Error: %s" % e.message)
-                    print "waiting..."
+                    print("waiting...")
                     time.sleep(10)
                     continue
 
@@ -227,7 +227,7 @@ class User(Base):
 
 
         elapsed_time =  time.time() - start_time
-        print "Done. Took %.1f secs to fetch %d favs" % (elapsed_time, len(self.favs))
+        print("Done. Took %.1f secs to fetch %d favs" % (elapsed_time, len(self.favs)))
         session.commit()
         
         return self.favs

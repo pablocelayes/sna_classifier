@@ -17,12 +17,16 @@ from os.path import join, exists
 from os import remove
 import random
 from random import sample
+from tw_dataset.settings import PROJECT_PATH
 
 import sys
 import json
 
-tu_path = "/home/pablo/Proyectos/tesiscomp/experiments/_1_one_user_learn_neighbours/active_and_central.json"
-TEST_USERS_ALL = json.load(open(tu_path))
+# tu_path = join(PROJECT_PATH, "./experiments/_1_one_user_learn_neighbours/active_and_central.json")
+# TEST_USERS_ALL = json.load(open(tu_path))
+
+TEST_USERS_ALL = [74153376, 1622441]
+
 
 def get_active_user(sess):
     rtcounts = {u: len(u.retweets) for u in sess.query(User).all()}
@@ -183,6 +187,7 @@ def load_dataframe(uid):
     except Exception as e:
         return None
 
+
 def repartition_dataframe(uid):
     ds = load_dataframe(uid)
 
@@ -218,6 +223,7 @@ def load_validation_dataframe(uid):
 
     return X_train, X_valid, X_test, y_train, y_valid, y_test
 
+
 def reduce_dataset(uid):
     ds = load_validation_dataframe(uid)
     X_train, X_valid, X_test, y_train, y_valid, y_test = ds
@@ -248,6 +254,7 @@ def reduce_dataset(uid):
     pickle.dump((y_train, y_valid, y_test), open(ys_fname, 'wb'))
 
     return X_train, X_valid, X_test, y_train, y_valid, y_test
+
 
 def load_small_validation_dataframe(uid):
     Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
@@ -305,10 +312,6 @@ def load_or_create_dataframe(uid):
         pickle.dump((y_train, y_test), open(ys_fname, 'wb'))
 
     return X_train, X_test, y_train, y_test
-
-
-
-
 
 
 def build_full_graph_dataset():
