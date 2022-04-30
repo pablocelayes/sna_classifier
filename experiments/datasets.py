@@ -22,10 +22,8 @@ from tw_dataset.settings import PROJECT_PATH
 import sys
 import json
 
-# tu_path = join(PROJECT_PATH, "./experiments/_1_one_user_learn_neighbours/active_and_central.json")
-# TEST_USERS_ALL = json.load(open(tu_path))
-
-TEST_USERS_ALL = [74153376, 1622441]
+tu_path = join(PROJECT_PATH, "./experiments/_1_one_user_learn_neighbours/active_and_central.json")
+TEST_USERS_ALL = json.load(open(tu_path))
 
 
 def get_active_user(sess):
@@ -60,6 +58,38 @@ def extract_features(tweets, neighbour_users, own_user):
 
     return X, y
 
+def extract_only_features(tweets, neighbour_users):
+    '''
+        Given tweets and neighbour_users, we extract
+        'neighbour activity' features for each tweet
+
+        These are obtained as follows:
+            - for each of these users a boolean feature is created
+            indicating if the tweet is authored/retweeted by that user
+    '''
+    nrows = len(tweets)
+    nfeats = len(neighbour_users)
+    X = np.empty((nrows, nfeats))
+
+    for j, u in enumerate(neighbour_users):
+        tl_ids = [t.id for t in u.timeline]
+        for i, t in enumerate(tweets):
+            X[i, j] = 1 if t.id in tl_ids else 0
+
+    return X
+
+def extract_target(tweets, own_user):
+    '''
+        Given tweets we extract the target (whether central user retweeted or not)
+    '''
+    nrows = len(tweets)
+    y = np.empty(nrows)
+
+    own_tl_ids = [t.id for t in own_user.timeline]
+    for i, t in enumerate(tweets):
+        y[i] = 1 if t.id in own_tl_ids else 0
+
+    return y
 
 def get_neighbourhood(uid):
     s = open_session()
@@ -102,32 +132,48 @@ def load_or_create_dataset(uid):
     return dataset
 
 
-def load_or_create_combined_dataset_small(nbuckets, test_size=0.3):
-    fname = join(DATASETS_FOLDER, "dataset_combined_small_b%02d.pickle" % nbuckets)
+def load_or_create_combined_dataset_small(g, centralities, nmostsimilar, nbuckets, test_size=0.3, include_activity_rank=False,
+                                          n_users=None):
+    users = TEST_USERS_ALL
+    if n_users:
+        users = users[:n_users]
+
+    fname = join(DATASETS_FOLDER, "dataset_combined_small_igraph_s%02d_b%02d" % (nmostsimilar, nbuckets))
+    if n_users:
+        fname += f"n_{n_users}"
+    if include_activity_rank:
+        fname += "_with_activity"
+    fname = fname + ".pickle"
     if os.path.exists(fname):
+        print(f"existing dataset will be loaded from {fname}")
         dataset = pickle.load(open(fname, 'rb'))
     else:
-        user_border = int((1 - test_size) * len(TEST_USERS))
-        train_users, test_users = TEST_USERS[:user_border], TEST_USERS[user_border:]
+        print(f"new dataset will be created and saved to {fname}")
+        user_border = int((1 - test_size) * len(users))
+        train_users, test_users = users[:user_border], users[user_border:]
         
         s = open_session()
-        # print("Creating training set based on %d users" % user_border)
+        print("Creating training set based on %d users" % user_border)
         X_train = None
         for uid, username, tweet_count in train_users:
-            # print("==================================")
-            # print("Loading training set for user %s (id %d)" % (username, uid))
-            u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataset(uid)
+            print("==================================")
+            print("Loading training set for user %s (id %d)" % (username, uid))
+            u_X_train, _, u_X_test, u_y_train, _, u_y_test = load_or_create_dataframe(uid)
 
             ds_size, ds_dimension = u_X_train.shape
-            # print("Size (#tweets): %d" % ds_size)
-            # print("Dimension (#neighbours): %d" % ds_dimension)
+            print("Size (#tweets): %d" % ds_size)
+            print("Dimension (#neighbours): %d" % ds_dimension)
             user = s.query(User).get(uid)
             neighbours = get_level2_neighbours(user, s)
             ngids = [str(ng.id) for ng in neighbours]
 
             u_X = np.vstack((u_X_train, u_X_test))
             u_y = np.hstack((u_y_train, u_y_test))
-            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X, nbuckets)
+            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X,
+                                                   g, centralities,
+                                                   nmostsimilar=nmostsimilar,
+                                                   nbuckets=nbuckets,
+                                                   include_activity_rank=include_activity_rank)
 
             if X_train is None:
                 X_train = u_X
@@ -137,28 +183,33 @@ def load_or_create_combined_dataset_small(nbuckets, test_size=0.3):
                 y_train = np.hstack((y_train, u_y))
         
         ds_size, ds_dimension = X_train.shape
-        # print("==================================")    
-        # print("Combined training set created.")
-        # print("Size (#tweets): %d" % ds_size)
-        # print("Dimension (#neighbour buckets): %d" % ds_dimension)
+        print("==================================")
+        print("Combined training set created.")
+        print("Size (#tweets): %d" % ds_size)
+        print("Dimension (#neighbour buckets): %d" % ds_dimension)
 
-        # print("Creating test set based on remaining users" % user_border)
+        print("Creating test set based on remaining %d users" % len(test_users))
         X_test = None    
         for uid, username, tweet_count in test_users:
-            # print("==================================")
-            # print("Loading training set for user %s (id %d)" % (username, uid))
-            u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataset(uid)
+            print("==================================")
+            print("Loading training set for user %s (id %d)" % (username, uid))
+            # u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataset(uid)
+            u_X_train, _, u_X_test, u_y_train, _, u_y_test = load_or_create_dataframe(uid)
 
             ds_size, ds_dimension = u_X_train.shape
-            # print("Size (#tweets): %d" % ds_size)
-            # print("Dimension (#neighbours): %d" % ds_dimension)
+            print("Size (#tweets): %d" % ds_size)
+            print("Dimension (#neighbours): %d" % ds_dimension)
             user = s.query(User).get(uid)
             neighbours = get_level2_neighbours(user, s)
             ngids = [str(ng.id) for ng in neighbours]
 
             u_X = np.vstack((u_X_train, u_X_test))
             u_y = np.hstack((u_y_train, u_y_test))
-            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X, nbuckets)
+            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X,
+                                                   g, centralities,
+                                                   nmostsimilar=nmostsimilar,
+                                                   nbuckets=nbuckets,
+                                                   include_activity_rank=include_activity_rank)
 
             if X_test is None:
                 X_test = u_X
@@ -224,34 +275,6 @@ def load_validation_dataframe(uid):
     return X_train, X_valid, X_test, y_train, y_valid, y_test
 
 
-def reduce_dataset(uid):
-    ds = load_validation_dataframe(uid)
-    X_train, X_valid, X_test, y_train, y_valid, y_test = ds
-
-    X=pd.concat((X_train,X_valid,X_test))
-    y=np.concatenate((y_train,y_valid,y_test))
-
-    if len(y) > 5000:
-        neg_inds = [i for i, v in enumerate(y) if v==0]
-        pos_inds = [i for i, v in enumerate(y) if v==1]
-
-        n_neg = 5000 - len(pos_inds)
-        neg_inds = sample(neg_inds, n_neg)
-        inds = sorted(neg_inds + pos_inds)
-        X = X.iloc[inds,:]
-        y = y[inds]
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-        X_valid, X_test, y_valid, y_test = train_test_split(X_test, y_test, test_size=0.66666, random_state=42)
-
-    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
-    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
-    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
-    ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
-
-    X_train.to_pickle(Xtrain_fname)
-    X_valid.to_pickle(Xvalid_fname)
-    X_test.to_pickle(Xtest_fname)
-    pickle.dump((y_train, y_valid, y_test), open(ys_fname, 'wb'))
 
     return X_train, X_valid, X_test, y_train, y_valid, y_test
 
@@ -271,47 +294,87 @@ def load_small_validation_dataframe(uid):
 
 
 def load_or_create_dataframe(uid):
-    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d.pickle" % uid)
-    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtest_%d.pickle" % uid)
-    ys_fname = join(DATAFRAMES_FOLDER, "ys_%d.pickle" % uid)
+    """
+        Creates a splitted featurized dataset (social features)
+        around a given user.
+            target (y): whether uid retweets or not given tweets
+            features (X): whether the each user in the 2nd order neighborhood retweeted or not
+
+    """
+    Xtrain_fname = join(DATAFRAMES_FOLDER, "dfXtrain_%d_small.pickle" % uid)
+    Xvalid_fname = join(DATAFRAMES_FOLDER, "dfXvalid_%d_small.pickle" % uid)
+    Xtest_fname = join(DATAFRAMES_FOLDER, "dfXtestv_%d_small.pickle" % uid)
+    ys_fname = join(DATAFRAMES_FOLDER, "ysv_%d_small.pickle" % uid)
+
     exists = False
     if os.path.exists(Xtrain_fname):
         try:
             X_train = pd.read_pickle(Xtrain_fname)
+            X_valid = pd.read_pickle(Xvalid_fname)
             X_test = pd.read_pickle(Xtest_fname)        
-            y_train, y_test = pickle.load(open(ys_fname, 'rb'))
+            y_train, y_valid, y_test = pickle.load(open(ys_fname, 'rb'))
             exists = True
         except Exception as e:
             pass
     
     if not exists:
         s = open_session()
-        user = s.query(User).get(uid)        
+        user = s.query(User).get(uid)
+        print("Getting neighbours")      
         neighbours = get_level2_neighbours(user, s)
+
         # remove central user from neighbours
         neighbours = [u for u in neighbours if u.id != user.id]
-        
+        neighbour_ids = [u.id for u in neighbours]
+        print(f"{len(neighbour_ids)} neighbours collected")
+
         # Fetch tweet universe (timelines of ownuser and neighbours)
         tweets = set(user.timeline)
         for u in neighbours:
             tweets.update(u.timeline)
+        print(f"Tweet universe contains {len(tweets)} tweets")
 
         # exclude tweets from central user or not in Spanish
         tweets = [t for t in tweets if t.author_id != uid and t.lang == 'es']
+        print(f"After removing central or non-Spanish tweets: {len(tweets)} tweets")
 
-        tweet_ids = [t.id for t in tweets]
-        neighbour_ids = [u.id for u in neighbours]
-        X, y = extract_features(tweets, neighbours, user)
+
+        # Computing targets
+        y = extract_target(tweets, user)
+
+        # Downsample negatives if necessary
+        if len(y) > 5000:
+            print("Downsampling to 5000 examples")
+            neg_inds = [i for i, v in enumerate(y) if v==0]
+            pos_inds = [i for i, v in enumerate(y) if v==1]
+            print(f"({len(pos_inds)} positive)")
+            n_neg = 5000 - len(pos_inds)
+            neg_inds = sample(neg_inds, n_neg)
+            inds = sorted(neg_inds + pos_inds)
+
+            y = y[inds]
+            tweets = [tweets[i] for i in inds]
+
+        print(f"Extracting features for {len(tweets)} tweets and {len(neighbour_ids)} neighbours")
+
+        X = extract_only_features(tweets, neighbours)
         s.close()
 
+        tweet_ids = [t.id for t in tweets]
         X = pd.DataFrame(data=X, index=tweet_ids, columns=neighbour_ids)
+
+
+        # Partition as train/validation/test
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        X_valid, X_test, y_valid, y_test = train_test_split(X_test, y_test,
+                                                test_size=0.6667, random_state=42)
 
         X_train.to_pickle(Xtrain_fname)
+        X_valid.to_pickle(Xvalid_fname)
         X_test.to_pickle(Xtest_fname)
-        pickle.dump((y_train, y_test), open(ys_fname, 'wb'))
+        pickle.dump((y_train, y_valid, y_test), open(ys_fname, 'wb'))
 
-    return X_train, X_test, y_train, y_test
+    return X_train, X_valid, X_test, y_train, y_valid, y_test
 
 
 def build_full_graph_dataset():
@@ -360,7 +423,7 @@ def build_datapoints(sample_uids, njob):
     g = load_nx_graph()
 
     for i, uid in enumerate(sample_uids):
-        if i % 50 == 0:
+        if i % 50 == 0 or True:
             progress = i * 100 / len(sample_uids)
             print("%.2f %%" % progress)
         user = s.query(User).get(uid)                    
@@ -416,7 +479,7 @@ def build_datapoints_job():
     njob = int(sys.argv[1])
 
     sample_uids = get_full_graph_usersample()
-    part_size = len(sample_uids) / 8
+    part_size = len(sample_uids) // 8
     uids = sample_uids[part_size * njob: part_size * (njob + 1)]
     build_datapoints(uids, njob)
 
@@ -433,6 +496,8 @@ def build_dataset_from_datapoints(njob, set_type, nbuckets=20, nmostsimilar=30):
         Given a dictionary of points (users and associated tweets)
         this generates a dataframe of features for those points
         and a vector y of output values. (1 = retweeted, 0 = not retweeted )
+
+        set_type: indicates if we're loading a train or a test set
     '''
     fname = join(DATASETS_FOLDER, 'datapoints_%s_%d.pickle' % (set_type, njob))
     dp = pickle.load(open(fname, 'rb'))
@@ -440,7 +505,9 @@ def build_dataset_from_datapoints(njob, set_type, nbuckets=20, nmostsimilar=30):
     dfs = []
     ys = []
 
-    for uid in dp:
+    n_users = len(dp.keys())
+    print(f"Will process {n_users} users")
+    for i, uid in enumerate(dp):
         user = s.query(User).get(uid)        
         neighbours = get_level2_neighbours(user, s)
 
@@ -458,6 +525,7 @@ def build_dataset_from_datapoints(njob, set_type, nbuckets=20, nmostsimilar=30):
         df = pd.DataFrame(data=X, index=df_index, columns=range(X.shape[1]))
         dfs.append(df)
         ys.append(y)
+        print(f"{(i+1)*100/n_users:.2f}%")        
     s.close()
     dfX = pd.concat(dfs)
     y = np.hstack(ys)
@@ -504,11 +572,17 @@ def build_dataset_from_datapoints_job():
 
 def load_or_create_dataframe_job():
     njob = int(sys.argv[1])
-    test_users = TEST_USERS[2 * njob: 2 * njob + 2]
+    part_size = len(TEST_USERS_ALL) // 10
+    test_users = TEST_USERS_ALL[part_size * (njob - 1): part_size * njob]
     for uid, _, _ in test_users:
         print("Creating dataframe for %d" % uid)
         load_or_create_dataframe(uid)
     
 if __name__ == '__main__':
+    # This one collects labeled tweets
     # build_datapoints_job()
-    build_dataset_from_datapoints_job()
+
+    # This one extracts features for those labeled tweets
+    # build_dataset_from_datapoints_job()
+
+    load_or_create_dataframe_job()

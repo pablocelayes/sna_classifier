@@ -1,15 +1,26 @@
 import graph_tool.all as gt
 import networkx as nx
+from igraph import Graph
 from tw_dataset.dbmodels import *
 from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH
 from experiments.relatedness import finite_katz_measures
 from collections import defaultdict
+import math
 
 from os.path import join
 import numpy as np
 
 def load_nx_graph():
     return nx.read_gpickle(NX_GRAPH_PATH)
+
+def load_ig_graph():
+    gnx = nx.read_gpickle(NX_GRAPH_PATH)
+    node_labels = gnx.nodes()
+    labels_to_inds = dict([(l,i) for (i,l) in enumerate(node_labels)])
+    edges_inds = [(labels_to_inds[i], labels_to_inds[j]) for (i,j) in gnx.edges()]
+    g=Graph(edges_inds)
+    g.vs['twid'] = gnx.nodes()
+    return g
 
 def load_gt_graph():
     return gt.load_graph(GT_GRAPH_PATH)
@@ -99,8 +110,18 @@ def get_level2_neighbours(user, session):
     
     return neighbour_users
 
+def normalize(metric):
+    sorted_metric = sorted(metric.items(), key=lambda t: t[1])
+    min_metric, max_metric = [sorted_metric[i][1] for i in [0,-1]]
+    normalized_metric = {u: (c - min_metric) / (max_metric - min_metric) for (u, c) in sorted_metric}
+    return normalized_metric
+
+
 # Feature transformations
-def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats, nmostsimilar=30, nbuckets=20):
+def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats,
+                                     g, centralities,
+                                     nmostsimilar=30, nbuckets=20,
+                                     include_activity_rank=False):
     '''
         We transform neighbour retweet features into a bucketed
         fixed-length format as follows:
@@ -108,38 +129,58 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats, nmostsimilar=30, nbucke
            * the 30 most similar stay with individual columns
            * the remaining are grouped in 20 buckets of similarity level
     '''
-    # Calculate katz similarities
-    g = load_nx_graph()
-    fkatz_sims = finite_katz_measures(g, str(uid), K=10, alpha=0.2)
-    ngs_fkatz = {i: fkatz_sims[str(i)] for i in ngids}
-    sorted_ngs_fkatz = sorted(ngs_fkatz.items(), key=lambda t: t[1])
     twid_to_colind = { twid: colind for colind, twid in enumerate(ngids)}
 
-    # Create first buckets with most similar users
+    # Filter centralities to cover only ngids
+    ng_inds = [i for (i,l) in enumerate(g.vs["twid"]) if l in ngids]
+    ng_centralities = [np.array(m)[ng_inds] for m in centralities]
+
+    # Normalize centralities to [0, 1]
+    def norm_metric(m):
+        m_min, m_max = m.min(), m.max()
+        return (m - m_min)/(m_max-m_min)
+
+    norm_centralities = np.vstack([norm_metric(m) for m in ng_centralities])
+    combined_centralities = norm_centralities.mean(axis=0)
+
+    # twids of neighbors in the order they show up in the graph vertices
+    g_sorted_ids = np.array(g.vs["twid"])[ng_inds]
+    ngs_scores = dict(zip(g_sorted_ids, combined_centralities))
+
+    if include_activity_rank:
+        # Compute RTs numbers, and normalize to [0,1]
+        sess = open_session()
+        ng_users = sess.query(User).filter(User.id.in_(ngids)).all()
+        rtcounts = {str(u.id): len(u.retweets) for u in ng_users}
+        norm_rtcounts = normalize(rtcounts)
+
+        twcounts = {str(u.id): len(u.timeline) - len(u.retweets) for u in ng_users}
+        norm_twcounts = normalize(twcounts)
+
+        activity = {u: (norm_rtcounts[u] + norm_twcounts[u])/2 for u in norm_rtcounts}
+
+        # average activity scores with centralities
+        ngs_scores = {u: (s + activity[u])/2 for (u, s) in ngs_scores.items()}
+
+    sorted_ngs_scores = sorted(ngs_scores.items(), key=lambda t: t[1])
+    # Create first buckets with highest scored users
     if nmostsimilar:
-        most_similar = sorted_ngs_fkatz[-nmostsimilar:]
+        most_similar = sorted_ngs_scores[-nmostsimilar:]
         most_similar_colinds = [[twid_to_colind[twid]] for twid, s in most_similar]
-        sorted_ngs_fkatz = sorted_ngs_fkatz[:-nmostsimilar]
+        sorted_ngs_scores = sorted_ngs_scores[:-nmostsimilar]
     else:
         most_similar_colinds = []
 
     # Group the remaining ones in nbuckets
-    ngs_logfkatz = [(x, np.log(k)) for (x,k) in sorted_ngs_fkatz]
-    lfk_range = [ngs_logfkatz[i][1] for i in [0,-1]]
-    
-    minfk, maxfk = lfk_range
-    dfk = maxfk - minfk
-    
-    step = dfk / nbuckets
-    endpoints = [minfk + i * step for i in range(1, nbuckets)]
 
+    # Rescale to fit the remaining scores in [0,1] interval
+    max_score = sorted_ngs_scores[-1][1]
     groups_colinds = [[] for i in range(nbuckets)]
-    group_i = 0
-    for (twid, logfkatz) in ngs_logfkatz:
-        if group_i < nbuckets - 1 and logfkatz > endpoints[group_i]:
-            group_i += 1
+    for (twid, score) in sorted_ngs_scores:
+        bucket_ind = math.floor(score / (max_score / nbuckets))
+        bucket_ind = min(bucket_ind, nbuckets - 1)
         colind = twid_to_colind[twid]
-        groups_colinds[group_i].append(colind)
+        groups_colinds[bucket_ind].append(colind)
 
     # Filter data frame and sum
     bucket_colinds = most_similar_colinds + groups_colinds
