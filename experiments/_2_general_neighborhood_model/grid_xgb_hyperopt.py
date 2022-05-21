@@ -20,11 +20,10 @@ from __future__ import print_function
 
 from sklearn import datasets
 from sklearn.model_selection import train_test_split, StratifiedKFold
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.metrics import classification_report, f1_score
-from sklearn.svm import SVC
+from sklearn.utils import check_random_state
 
-from hyperopt import hp, fmin, tpe
+from hyperopt import hp, fmin, tpe, Trials
 
 
 # from datasets import load_or_create_dataset
@@ -37,6 +36,14 @@ import xgboost as xgb
 
 import os
 import pickle
+from datetime import datetime
+
+# N_TRIALS = 50
+N_TRIALS = 20
+# N_TRIALS = 2
+
+N_USERS=None
+# N_USERS=4
 
 print("Loading user graph")
 g = load_ig_graph()
@@ -81,6 +88,7 @@ def objective(params):
 
     print("Computing bucketized dataset")
     dataset = load_or_create_combined_dataset_small(g, centralities,
+                                                    n_users=N_USERS,
                                                     nmostsimilar=nmostsimilar,
                                                     nbuckets=nbuckets,
                                                     include_activity_rank=True)
@@ -100,11 +108,19 @@ def objective(params):
 
     return -f1_score(y_true, y_pred)
 
-
-
-
 if __name__ == '__main__':
-    best = fmin(objective, params_space, algo=tpe.suggest,
-                max_evals=50)
+    # `hyperopt` tracks the results of each iteration in this `Trials` object. We’ll be collecting the
+    # data that we will use for visualization from this object.
+    trials = Trials()
+
+    # reproducibility!
+    rstate = np.random.default_rng(2022)
+
+    best = fmin(objective, params_space, algo=tpe.suggest, max_evals=N_TRIALS, trials=trials, rstate=rstate)
 
     print(best)
+
+    ts = datetime.now().strftime("%Y-%m-%d_%H:%M")
+    with open(f"trials_{ts}.pickle", "wb") as f:
+        pickle.dump(trials, f)
+
