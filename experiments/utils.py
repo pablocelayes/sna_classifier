@@ -2,7 +2,7 @@ import graph_tool.all as gt
 import networkx as nx
 from igraph import Graph
 from tw_dataset.dbmodels import *
-from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH
+from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH, IG_GRAPH_PATH
 from experiments.relatedness import finite_katz_measures
 from collections import defaultdict
 import math
@@ -11,15 +11,20 @@ from os.path import join
 import numpy as np
 
 def load_nx_graph():
-    return nx.read_gpickle(NX_GRAPH_PATH)
+    # return nx.read_gpickle(NX_GRAPH_PATH)
+    return nx.read_graphml(IG_GRAPH_PATH)
 
 def load_ig_graph():
+    return Graph.Read_GraphML(IG_GRAPH_PATH)
+
+def load_ig_graph_fromnx19():
     gnx = nx.read_gpickle(NX_GRAPH_PATH)
     node_labels = gnx.nodes()
     labels_to_inds = dict([(l,i) for (i,l) in enumerate(node_labels)])
     edges_inds = [(labels_to_inds[i], labels_to_inds[j]) for (i,j) in gnx.edges()]
-    g=Graph(edges_inds)
+    g=Graph(edges_inds, directed=True)
     g.vs['twid'] = gnx.nodes()
+    g.write_graphml(IG_GRAPH_PATH)
     return g
 
 def load_gt_graph():
@@ -91,15 +96,20 @@ def get_level2_neighbours(user, session):
         (followed and their followed)
     """
     # g = load_gt_graph()
-    g = load_nx_graph()
+    # g = load_nx_graph()
+    g = load_ig_graph()
+    # import ipdb; ipdb.set_trace()
     # v = get_vertex_by_twid(g, user.id)
     uid = str(user.id)
 
     # neighbourhood = set(v.out_neighbours())
-    neighbourhood = set(g.successors(uid))
+    def get_successors(uid):
+        v = g.vs.find(twid=uid)
+        return [w['twid'] for w in v.successors()]
 
-    for nid in g.successors(uid):
-        neighbourhood.update(g.successors(nid))
+    neighbourhood = set(get_successors(uid))
+    for nid in get_successors(uid):
+        neighbourhood.update(get_successors(nid))
 
     # neighbourhood_twids = [get_twitter_id(g, n) for n in neighbourhood]
     # neighbour_users = [session.query(User).get(twid) for twid in neighbourhood_twids]
@@ -167,20 +177,25 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats,
     if nmostsimilar:
         most_similar = sorted_ngs_scores[-nmostsimilar:]
         most_similar_colinds = [[twid_to_colind[twid]] for twid, s in most_similar]
+        if len(most_similar_colinds) < nmostsimilar:
+            diff_len = nmostsimilar - len(most_similar_colinds)
+            most_similar_colinds += [[]] * diff_len
         sorted_ngs_scores = sorted_ngs_scores[:-nmostsimilar]
     else:
         most_similar_colinds = []
 
+
     # Group the remaining ones in nbuckets
 
     # Rescale to fit the remaining scores in [0,1] interval
-    max_score = sorted_ngs_scores[-1][1]
-    groups_colinds = [[] for i in range(nbuckets)]
-    for (twid, score) in sorted_ngs_scores:
-        bucket_ind = math.floor(score / (max_score / nbuckets))
-        bucket_ind = min(bucket_ind, nbuckets - 1)
-        colind = twid_to_colind[twid]
-        groups_colinds[bucket_ind].append(colind)
+    groups_colinds = [[]] * nbuckets
+    if len(sorted_ngs_scores) and nbuckets:
+        max_score = sorted_ngs_scores[-1][1]
+        for (twid, score) in sorted_ngs_scores:
+            bucket_ind = math.floor(score / (max_score / nbuckets))
+            bucket_ind = min(bucket_ind, nbuckets - 1)
+            colind = twid_to_colind[twid]
+            groups_colinds[bucket_ind].append(colind)
 
     # Filter data frame and sum
     bucket_colinds = most_similar_colinds + groups_colinds
