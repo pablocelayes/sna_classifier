@@ -139,6 +139,7 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats,
            * the 30 most similar stay with individual columns
            * the remaining are grouped in 20 buckets of similarity level
     '''
+    ngids = [str(i) for i in ngids]
     twid_to_colind = { twid: colind for colind, twid in enumerate(ngids)}
 
     # Filter centralities to cover only ngids
@@ -148,7 +149,11 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats,
     # Normalize centralities to [0, 1]
     def norm_metric(m):
         m_min, m_max = m.min(), m.max()
-        return (m - m_min)/(m_max-m_min)
+        interval_length = (m_max - m_min)
+        if interval_length == 0:
+            return m / 2 * m_max # all equal, normalize to 0.5
+        else:
+            return (m - m_min) / interval_length
 
     norm_centralities = np.vstack([norm_metric(m) for m in ng_centralities])
     combined_centralities = norm_centralities.mean(axis=0)

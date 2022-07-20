@@ -24,6 +24,9 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.metrics import classification_report
 from sklearn.svm import SVC
 
+from hyperopt import hp, fmin, tpe
+
+
 # from datasets import load_or_create_dataset
 from experiments.datasets import load_or_create_combined_dataset_small
 from experiments.utils import load_ig_graph
@@ -82,6 +85,28 @@ def model_select_svc(dataset):
     y_true, y_pred = y_test, clf.predict(X_test)
     print(classification_report(y_true, y_pred))
     print()
+
+params_space = {
+    'n_estimators': hp.quniform('n_estimators', 100, 1000, 1),
+    'eta': hp.quniform('eta', 0.025, 0.5, 0.025),
+    # A problem with max_depth casted to float instead of int with
+    # the hp.quniform method.
+    'max_depth': hp.choice('max_depth', np.arange(1, 14, dtype=int)),
+    'min_child_weight': hp.quniform('min_child_weight', 1, 6, 1),
+    'subsample': hp.quniform('subsample', 0.5, 1, 0.05),
+    'gamma': hp.quniform('gamma', 0.5, 1, 0.05),
+    'colsample_bytree': hp.quniform('colsample_bytree', 0.5, 1, 0.05),
+    'eval_metric': 'logloss',
+    'objective': 'binary:logistic',
+    'booster': 'gbtree',
+    'tree_method': 'exact',
+    'nbuckets': hp.quniform('nbuckets', 0, 50, 1),
+    'nmostsimilar': hp.quniform('nbuckets', 5, 50, 1),
+    'silent': 1,
+    'seed': random_state
+}
+
+def objective(params):
 
 
 if __name__ == '__main__':

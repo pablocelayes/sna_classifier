@@ -20,7 +20,8 @@ from __future__ import print_function
 
 from sklearn import datasets
 from sklearn.model_selection import train_test_split, StratifiedKFold
-from sklearn.metrics import classification_report, f1_score
+from sklearn.model_selection import cross_val_score, KFold
+from sklearn.metrics import classification_report, f1_score, make_scorer
 from sklearn.utils import check_random_state
 
 from hyperopt import hp, fmin, tpe, Trials
@@ -38,18 +39,13 @@ import os
 import pickle
 from datetime import datetime
 
-# N_TRIALS = 50
-N_TRIALS = 20
-# N_TRIALS = 2
-
-N_USERS=None
-# N_USERS=4
 
 print("Loading user graph")
 g = load_ig_graph()
 
+
 params_space = {
-    'n_estimators': hp.choice('n_estimators', np.arange(100, 1000, 1, dtype=int)),
+    'n_estimators': hp.choice('n_estimators', np.arange(50, 1000, 1, dtype=int)),
     'eta': hp.quniform('eta', 0.025, 0.5, 0.025),
     'max_depth': hp.choice('max_depth', np.arange(1, 14, dtype=int)),
     'min_child_weight': hp.quniform('min_child_weight', 1, 6, 1),
@@ -67,6 +63,19 @@ params_space = {
     'seed': 42,
     'g': g
 }
+
+TESTING = False
+# TESTING = True
+
+if TESTING:
+    N_TRIALS = 2
+    N_USERS = 4
+    params_space['n_estimators'] = hp.choice('n_estimators', np.arange(2, 10, 1, dtype=int))
+else:
+    # N_TRIALS = 20
+    N_TRIALS = 50
+    N_USERS=None
+
 
 def objective(params):
     g, nmostsimilar, nbuckets = params["g"], params["nmostsimilar"], params["nbuckets"]
@@ -96,17 +105,24 @@ def objective(params):
     X_train, X_test, y_train, y_test = dataset
 
     # Set the parameters by cross-validation
-
     clf = xgb.XGBClassifier(use_label_encoder=False, **params)
 
-    # clf.fit(X_train[:100], y_train[:100])
-    clf.fit(X_train, y_train)
+    # Handle randomization by shuffling when creating folds. In reality, we probably want a better
+    # strategy for managing randomization than the fixed `RandomState` instance generated above.
+    # cv = KFold(n_splits=4, random_state=2022, shuffle=True)
+    cv = StratifiedKFold(n_splits=4, random_state=2022, shuffle=True)
 
-    print("Scores on test set.\n")
-    y_true, y_pred = y_test, clf.predict(X_test)
-    print(classification_report(y_true, y_pred))
+    # Calculate f1 score for each fold. Since `n_splits` is 4, `f1_trial` will be an
+    # array of size 4 with each element representing the f1 score for a fold.
+    f1_trial_cv = cross_val_score(
+        clf,
+        X_train,
+        y_train,
+        scoring=make_scorer(f1_score),
+        cv=cv,
+    )
 
-    return -f1_score(y_true, y_pred)
+    return -np.mean(f1_trial_cv)
 
 if __name__ == '__main__':
     # `hyperopt` tracks the results of each iteration in this `Trials` object. We’ll be collecting the
@@ -115,7 +131,6 @@ if __name__ == '__main__':
 
     # reproducibility!
     rstate = np.random.default_rng(2022)
-
     best = fmin(objective, params_space, algo=tpe.suggest, max_evals=N_TRIALS, trials=trials, rstate=rstate)
 
     print(best)
@@ -124,3 +139,9 @@ if __name__ == '__main__':
     with open(f"trials_{ts}.pickle", "wb") as f:
         pickle.dump(trials, f)
 
+    # Refit with best parameters, report results on test set
+    # clf.fit(X_train, y_train)
+    #
+    # print("Scores on test set.\n")
+    # y_true, y_pred = y_test, clf.predict(X_test)
+    # print(classification_report(y_true, y_pred))

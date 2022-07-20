@@ -7,7 +7,8 @@ from experiments.datasets import *
 from sklearn.metrics import f1_score, precision_score, recall_score
 import json
 
-MODELS_FOLDER = "/media/pablo/data/Tesis/models/old/"
+# MODELS_FOLDER = "/media/pablo/data/Tesis/models/old/"
+MODELS_FOLDER = "/Users/pablofreetime/Proyectos/sna_classifier/models"
 
 def load_model_small(uid):
     model_path = join(MODELS_FOLDER, "svc_%d_small.pickle" % uid)

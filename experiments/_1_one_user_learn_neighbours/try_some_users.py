@@ -5,7 +5,7 @@ from __future__ import print_function
 from experiments.datasets import (load_or_create_dataframe, load_small_validation_dataframe,
                                 TEST_USERS_ALL)
 
-MODELS_FOLDER = "/media/pablo/data/Tesis/models/old"
+MODELS_FOLDER = "/Users/pablofreetime/Proyectos/sna_classifier/models"
 
 from sklearn.ensemble import RandomForestClassifier
 # from sklearn.tree import DecisionTreeClassifier
@@ -17,7 +17,7 @@ import sys
 from os.path import join
 from multiprocessing import Pool
 
-from classifiers import model_select_rdf, model_select_svc
+from .classifiers import model_select_rdf, model_select_svc
 
 def train_and_evaluate(user_id, clf_class=RandomForestClassifier):
     print("==================================")
@@ -75,7 +75,7 @@ def save_model_small(clf, user_id, model_type, feat_space='', n_topics=None):
     joblib.dump(clf, model_path)
 
 def load_model_small(user_id, model_type):
-    model_path = join(MODELS_FOLDER, "%s_%d_small.pickle" % (model_type, user_id))
+    model_path = join(MODELS_FOLDER, "%s_%d_small_.pickle" % (model_type, user_id))
 
     clf = joblib.load(model_path)
     return clf
@@ -85,11 +85,13 @@ def worker(user_id):
     try:
         # clf = train_and_evaluate(user_id)
         X_train, X_valid, X_test, y_train, y_valid, y_test = load_small_validation_dataframe(user_id)
-        dataset = X_train, X_valid, y_train, y_valid        
+        dataset = X_train, X_valid, y_train, y_valid
+                
         clf = model_select_svc(dataset)
         save_model_small(clf, user_id, 'svc')
     except Exception as e:
-        print(e)
+        # print(e)
+        print(f"An exception occurred for {user_id}")
 
 
 if __name__ == '__main__':
@@ -100,21 +102,23 @@ if __name__ == '__main__':
         try:
             load_model_small(user_id, 'svc')
         except IOError:
+            print(user_id)
             pending_user_ids.append(user_id)
 
+    print(f"{len(pending_user_ids)} pending models will be trained")
 
-    # pool = Pool(processes=6)
-    # for user_id in pending_user_ids:
-    #     pool.apply_async(worker, (user_id,))
-    # pool.close()
-    # pool.join()
+    pool = Pool(processes=6)
+    for user_id in pending_user_ids:
+        pool.apply_async(worker, (user_id,))
+    pool.close()
+    pool.join()
 
     # pending_user_ids = [uid for uid,_,_ in TEST_USERS_ALL]
 
     # for user_id in pending_user_ids:
-    for user_id in [74153376, 1622441]:
-        print(user_id)
-        worker(user_id)
+    # for user_id in [76684633]:
+    #     print(user_id)
+    #     worker(user_id)
 
     # worker(117335842)        
 

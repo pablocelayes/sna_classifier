@@ -24,7 +24,10 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.svm import SVC
 
-from datasets import load_or_create_dataset
+# from datasets import load_or_create_dataset
+from experiments.datasets import load_or_create_combined_dataset_small
+from experiments.utils import load_ig_graph
+
 # print(__doc__)
 import numpy as np
 
@@ -41,47 +44,49 @@ def model_select_svc(dataset):
         },
     ]
 
+    print(f"# Tuning hyper-parameters for f1 score\n")
 
-    scores = [
-        # 'precision',
-        'recall',
-        # 'f1'
-    ]
+    clf = GridSearchCV(
+        SVC(),
+        param_grid=parameters,  # parameters to tune via cross validation
+        refit=True,  # fit using all data, on the best detected classifier
+        n_jobs=-1,  # number of cores to use for parallelization; -1 for "all cores"
+        scoring='f1',  # what score are we optimizing?
+        cv=3,  # what type of cross validation to use
+        verbose=7,
+    )
 
-    for score in scores:
-        print("# Tuning hyper-parameters for %s" % score)
-        print()
+    # clf.fit(X_train[:100], y_train[:100])
+    clf.fit(X_train, y_train)
 
-        clf = GridSearchCV(
-            SVC(),  
-            param_grid=parameters,  # parameters to tune via cross validation
-            refit=True,  # fit using all data, on the best detected classifier
-            n_jobs=-1,  # number of cores to use for parallelization; -1 for "all cores"
-            scoring=score,  # what score are we optimizing?
-            cv=StratifiedKFold(y_train, n_folds=3),  # what type of cross validation to use
-        )
+    print("Best parameters set found on training set:\n")
+    print(clf.best_params_)
 
-        clf.fit(X_train, y_train)
-
-        print("Best parameters set found on training set:")
-        print()
-        print(clf.best_params_)
-
-        print("Detailed classification report:")
-        print()
-        print("Scores on training set.")
-        y_true, y_pred = y_train, clf.predict(X_train)
-        print(classification_report(y_true, y_pred))
-        print()
+    print("Detailed classification report:\n")
+    print("Scores on training set.")
+    y_true, y_pred = y_train, clf.predict(X_train)
+    print(classification_report(y_true, y_pred))
+    print()
 
 
-        print("Scores on test set.")
-        print()
-        y_true, y_pred = y_test, clf.predict(X_test)
-        print(classification_report(y_true, y_pred))
-        print()
+    print("Scores on test set.\n")
+    y_true, y_pred = y_test, clf.predict(X_test)
+    print(classification_report(y_true, y_pred))
+    print()
 
 
 if __name__ == '__main__':
-    dataset = load_or_create_dataset(37226353)
+    # dataset = load_or_create_dataset(37226353)
+    # dataset = load_or_create_combined_dataset_small(nmostsimilar=30, nbuckets=20, include_activity_rank=True)
+    print("Loading user graph")
+    g = load_ig_graph()
+
+    print("Computing centralities")
+    centralities = g.pagerank(), g.betweenness(), g.closeness(), g.eigenvector_centrality(), g.eccentricity()
+
+    print("Computing bucketized dataset")
+    dataset = load_or_create_combined_dataset_small(g, centralities, nmostsimilar=10, nbuckets=10, include_activity_rank=True)
+    # dataset = load_or_create_combined_dataset_small(g, centralities, nmostsimilar=10, nbuckets=10, include_activity_rank=True, n_users=4)
+
+    print("Searching model hparams")
     model_select_svc(dataset)
