@@ -1,6 +1,6 @@
 import pickle
 import json
-from experiments.datasets import load_or_create_combined_dataset_small, load_user_splits, DATAFRAMES_FOLDER
+from experiments.datasets import load_or_create_combined_dataset_small, load_user_splits, DATAFRAMES_FOLDER, load_or_create_dataframe
 from experiments.datasets import TEST_USERS_ALL, load_or_create_bucketized_dataset_user, N_BUCKETS, N_MOST_SIMILAR
 from experiments.utils import load_ig_graph
 import xgboost as xgb
@@ -155,7 +155,7 @@ def eval_best_model_general():
     print(classification_report(y_true, y_pred))
 
 
-def eval_best_model_general_per_user():
+def eval_best_model_general_per_user(tag="_large"):
     print("Loading user graph")
     g = load_ig_graph()
 
@@ -165,7 +165,7 @@ def eval_best_model_general_per_user():
 
     # Load trained best model
     clf = xgb.XGBClassifier()
-    clf.load_model('best_model.xgb')
+    clf.load_model(f'best_model{tag}.xgb')
 
     # Load test sets for test users
     users = TEST_USERS_ALL
@@ -175,17 +175,28 @@ def eval_best_model_general_per_user():
     best_params = load_best_params()
 
     # compute f1s for each test set
-    f1_scores = {}
-    for uid, username, tweet_count in test_users:
-        X_train, X_test, y_train, y_test = load_or_create_bucketized_dataset_user(g, centralities,
-                                                                                  nmostsimilar=best_params['nmostsimilar'],
-                                                                                  nbuckets=best_params['nbuckets'],
-                                                                                  uid=uid)
-        y_true, y_pred = y_test, clf.predict(X_test)
-        print(classification_report(y_true, y_pred))
-        f1_scores[uid] = f1_score(y_true, y_pred)
+    us=load_user_splits()
 
-    with open("f1_scores_general_per_user.json", 'w') as f:
+    test_splits = ['u_test', 'u_train']
+    f1_scores = {s: {} for s in test_splits}
+    for split in test_splits:
+        for uid in us[split]:
+    # for uid, username, tweet_count in test_users:
+            try:
+                X_train, X_test, y_train, y_test = load_or_create_dataframe(uid, g, centralities)
+            except Exception:
+                continue
+
+            # X_train, X_test, y_train, y_test = load_or_create_bucketized_dataset_user(g, centralities,
+            #                                                                           nmostsimilar=best_params['nmostsimilar'],
+            #                                                                           nbuckets=best_params['nbuckets'],
+            #                                                                           uid=uid)
+            y_true, y_pred = y_test, clf.predict(X_test)
+            print(classification_report(y_true, y_pred))
+
+            f1_scores[split][uid] = f1_score(y_true, y_pred)
+
+    with open(f"f1_scores_general_per_user{tag}.json", 'w') as f:
         json.dump(f1_scores, f)
 
     return f1_scores
