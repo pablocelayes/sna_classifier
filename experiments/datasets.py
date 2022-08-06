@@ -401,8 +401,8 @@ def load_or_create_dataframe(uid, g, centralities, max_samples=5000):
         print(f"{len(neighbour_ids)} neighbours collected")
         if len(neighbour_ids) == 0:
             print("No neighbours!")
-            raise Exception
-
+            # raise Exception
+            return None, None, None, None
         # Fetch tweet universe (timelines of ownuser and neighbours)
         tweets = set(user.timeline)
         for u in neighbours:

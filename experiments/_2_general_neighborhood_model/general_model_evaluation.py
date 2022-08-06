@@ -38,41 +38,57 @@ def load_dataset(best_params):
     return dataset
 
 
-def load_dataset_large(n_sample=None):
+def load_dataset_large(include_u=True, include_v=True, n_sample=None):
     train_dfs = []
     test_dfs = []
     us = load_user_splits()
 
+    print("Loading user graph")
+    g = load_ig_graph()
+
+    print("Loading pre-computed centralities")
+    with open("centralities.pickle", 'rb') as f:
+        centralities = pickle.load(f)
+
     # Train users:
     # - train tweets go to train
     # - test tweets go to test
-    for u in us['u_train'] + us['au_train']:
-        fname = join(DATAFRAMES_FOLDER, f"dfXtrain_{u}.pickle")
-        if not os.path.exists(fname):
+    train_us = []
+    if include_u:
+        train_us += us["u_train"]
+    if include_v:
+        train_us += us['au_train']
+    for u in train_us:
+        X_train, X_test, y_train, y_test = load_or_create_dataframe(u, g, centralities)
+        if X_train is None:
             continue
-        Xy = pd.read_pickle(fname)
-        if Xy["y"].sum() < 10:
+        if sum(y_train) + sum(y_test) < 10:
             print(f"Skipping {u}: too few tweets")
             continue
-        train_dfs.append(Xy)
-
-        Xyt = pd.read_pickle(join(DATAFRAMES_FOLDER, f"dfXtest_{u}.pickle"))
-        test_dfs.append(Xyt)
+        X_train["y"] = y_train
+        X_test["y"] = y_test
+        train_dfs.append(X_train)
+        test_dfs.append(X_test)
 
     # Test users:
     # - all tweets go to test
-    for u in us['u_test'] + us['au_test']:
-        fname = join(DATAFRAMES_FOLDER, f"dfXtrain_{u}.pickle")
-        if not os.path.exists(fname):
+    test_us = []
+    if include_u:
+        test_us += us["u_test"]
+    if include_v:
+        test_us += us['au_test']
+    for u in test_us:
+        X_train, X_test, y_train, y_test = load_or_create_dataframe(u, g, centralities)
+        if X_train is None:
             continue
-        Xy = pd.read_pickle(fname)
-        if Xy["y"].sum() < 10:
+        if sum(y_train) + sum(y_test) < 10:
             print(f"Skipping {u}: too few tweets")
             continue
-        test_dfs.append(Xy)
+        X_train["y"] = y_train
+        test_dfs.append(X_train)
 
-        Xyt = pd.read_pickle(join(DATAFRAMES_FOLDER, f"dfXtest_{u}.pickle"))
-        test_dfs.append(Xyt)
+        X_test["y"] = y_test
+        test_dfs.append(X_test)
 
     Xy_train = pd.concat(train_dfs)
     Xy_test = pd.concat(test_dfs)
@@ -91,6 +107,20 @@ def load_dataset_large(n_sample=None):
 
     return X_train, X_test, y_train, y_test
 
+def count_valid_users(us):
+    valid_count = 0
+    for u in us:
+        try:
+            X_train, X_test, y_train, y_test = load_or_create_dataframe(u, g, centralities)
+        except Exception:
+            continue
+        if X_train is None:
+            continue
+        if sum(y_train) + sum(y_test) < 10:
+            print(f"Skipping {u}: too few tweets")
+            continue
+        valid_count += 1
+    return valid_count
 
 def train_best_model():
     # Load best parameters
@@ -133,9 +163,22 @@ def train_best_model_large():
     print("Scores on test set.\n")
     y_true, y_pred = y_test, clf.predict(X_test)
     # print classification report
-    print(classification_report(y_true, y_pred))
+    print(classification_report(y_true, y_pred, digits=3))
 
     return clf
+
+
+def eval_best_model_large():
+    # Load trained best model
+    clf = xgb.XGBClassifier()
+    clf.load_model('best_model_large.xgb')
+
+    X_train, X_test, y_train, y_test = load_dataset_large(n_sample=None, include_u=True, include_v=True)
+
+    print("Scores on test set.\n")
+    y_true, y_pred = y_test, clf.predict(X_test)
+    # print classification report
+    print(classification_report(y_true, y_pred, digits=3))
 
 
 def eval_best_model_general():
@@ -152,10 +195,10 @@ def eval_best_model_general():
     print("Scores on test set.\n")
     y_true, y_pred = y_test, clf.predict(X_test)
     # print classification report
-    print(classification_report(y_true, y_pred))
+    print(classification_report(y_true, y_pred, digits=3))
 
 
-def eval_best_model_general_per_user(tag="_large"):
+def eval_best_model_general_per_user_u(tag="_large"):
     print("Loading user graph")
     g = load_ig_graph()
 
@@ -167,13 +210,6 @@ def eval_best_model_general_per_user(tag="_large"):
     clf = xgb.XGBClassifier()
     clf.load_model(f'best_model{tag}.xgb')
 
-    # Load test sets for test users
-    users = TEST_USERS_ALL
-    user_border = int(0.7 * len(users))
-    test_users = users[user_border:]
-
-    best_params = load_best_params()
-
     # compute f1s for each test set
     us=load_user_splits()
 
@@ -181,22 +217,56 @@ def eval_best_model_general_per_user(tag="_large"):
     f1_scores = {s: {} for s in test_splits}
     for split in test_splits:
         for uid in us[split]:
-    # for uid, username, tweet_count in test_users:
             try:
                 X_train, X_test, y_train, y_test = load_or_create_dataframe(uid, g, centralities)
             except Exception:
                 continue
 
-            # X_train, X_test, y_train, y_test = load_or_create_bucketized_dataset_user(g, centralities,
-            #                                                                           nmostsimilar=best_params['nmostsimilar'],
-            #                                                                           nbuckets=best_params['nbuckets'],
-            #                                                                           uid=uid)
             y_true, y_pred = y_test, clf.predict(X_test)
-            print(classification_report(y_true, y_pred))
+            print(classification_report(y_true, y_pred, digits=3))
 
             f1_scores[split][uid] = f1_score(y_true, y_pred)
 
     with open(f"f1_scores_general_per_user{tag}.json", 'w') as f:
+        json.dump(f1_scores, f)
+
+    return f1_scores
+
+
+def eval_best_model_general_per_user_au(tag="_large"):
+    print("Loading user graph")
+    g = load_ig_graph()
+
+    print("Loading pre-computed centralities")
+    with open("centralities.pickle", 'rb') as f:
+        centralities = pickle.load(f)
+
+    # Load trained best model
+    clf = xgb.XGBClassifier()
+    clf.load_model(f'best_model{tag}.xgb')
+
+    # compute f1s for each test set
+    us=load_user_splits()
+
+    test_splits = ['au_test', 'au_train']
+    f1_scores = {s: {} for s in test_splits}
+    for split in test_splits:
+        for uid in us[split]:
+            try:
+                X_train, X_test, y_train, y_test = load_or_create_dataframe(uid, g, centralities)
+                if sum(y_test) + sum(y_train) < 10:
+                    print(f"Skipping {u}: too few tweets")
+                    continue
+
+            except Exception:
+                continue
+
+            y_true, y_pred = y_test, clf.predict(X_test)
+            print(classification_report(y_true, y_pred, digits=3))
+
+            f1_scores[split][uid] = f1_score(y_true, y_pred)
+
+    with open(f"f1_scores_general_per_user{tag}_au.json", 'w') as f:
         json.dump(f1_scores, f)
 
     return f1_scores
@@ -218,7 +288,26 @@ def eval_best_model_large_test_U():
     del X_test['y']
     y_true, y_pred = y_test, clf.predict(X_test)
     # print classification report
-    print(classification_report(y_true, y_pred))
+    print(classification_report(y_true, y_pred, digits=3))
+
+
+def eval_best_model_large_all_U_test_tuits():
+    # Load trained best model
+    clf = xgb.XGBClassifier()
+    clf.load_model('best_model_large.xgb')
+
+    us=load_user_splits()
+    u_test_dfs = []
+    for u in us['u_train'] + us['u_test']:
+        Xy = pd.read_pickle(join(DATAFRAMES_FOLDER, f'dfXtest_{u}.pickle'))
+        u_test_dfs.append(Xy)
+    Xy_u_test = pd.concat(u_test_dfs)
+    y_test = Xy_u_test['y']
+    X_test = Xy_u_test
+    del X_test['y']
+    y_true, y_pred = y_test, clf.predict(X_test)
+    # print classification report
+    print(classification_report(y_true, y_pred, digits=3))
 
 
 def eval_best_model_large_train_U_test_tuits():
@@ -237,7 +326,7 @@ def eval_best_model_large_train_U_test_tuits():
     del X_test['y']
     y_true, y_pred = y_test, clf.predict(X_test)
     # print classification report
-    print(classification_report(y_true, y_pred))
+    print(classification_report(y_true, y_pred, digits=3))
 
 
 def eval_best_model_large_train_AU_test_tuits():
@@ -263,8 +352,10 @@ def eval_best_model_large_train_AU_test_tuits():
     del X_test['y']
     y_true, y_pred = y_test, clf.predict(X_test)
     # print classification report
-    print(classification_report(y_true, y_pred))
+    print(classification_report(y_true, y_pred, digits=3))
 
 
 if __name__ == '__main__':
-    train_best_model_large()
+    # train_best_model_large()
+    # eval_best_model_general_per_user_au()
+    eval_best_model_large()

@@ -2,20 +2,25 @@ import graph_tool.all as gt
 import networkx as nx
 from igraph import Graph
 from tw_dataset.dbmodels import *
+from tw_dataset.local_settings import IG_GRAPH_EMA_PATH
 from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH, IG_GRAPH_PATH
 from experiments.relatedness import finite_katz_measures
 from collections import defaultdict
 import math
-
+import os
 from os.path import join
 import numpy as np
+import pickle
 
 def load_nx_graph():
     # return nx.read_gpickle(NX_GRAPH_PATH)
     return nx.read_graphml(IG_GRAPH_PATH)
 
-def load_ig_graph():
-    return Graph.Read_GraphML(IG_GRAPH_PATH)
+def load_ig_graph(datos_ema=False):
+    if datos_ema:
+        return Graph.Read_GraphML(IG_GRAPH_EMA_PATH)
+    else:
+        return Graph.Read_GraphML(IG_GRAPH_PATH)
 
 def load_ig_graph_fromnx19():
     gnx = nx.read_gpickle(NX_GRAPH_PATH)
@@ -26,6 +31,24 @@ def load_ig_graph_fromnx19():
     g.vs['twid'] = gnx.nodes()
     g.write_graphml(IG_GRAPH_PATH)
     return g
+
+def compute_centralities_ema():
+    print("Loading user graph")
+    g = load_ig_graph(datos_ema=True)
+
+    # TODO: save to pickle
+    fname = "centralities_ema.pickle"
+    if os.path.exists(fname):
+        print("Loading pre-computed centralities")
+        with open(fname, 'rb') as f:
+            centralities = pickle.load(f)
+    else:
+        print("Computing centralities")
+        centralities = g.pagerank(), g.betweenness(), g.closeness(), g.eigenvector_centrality(), g.eccentricity()
+        with open(fname, 'wb') as f:
+            pickle.dump(centralities, f)
+
+    return centralities
 
 def load_gt_graph():
     return gt.load_graph(GT_GRAPH_PATH)
