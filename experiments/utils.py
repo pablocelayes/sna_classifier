@@ -3,7 +3,7 @@ import networkx as nx
 from igraph import Graph
 from tw_dataset.dbmodels import *
 from tw_dataset.local_settings import IG_GRAPH_EMA_PATH
-from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH, IG_GRAPH_PATH
+from tw_dataset.settings import PROJECT_PATH, GT_GRAPH_PATH, NX_GRAPH_PATH, IG_GRAPH_PATH, DATASETS_FOLDER
 from experiments.relatedness import finite_katz_measures
 from collections import defaultdict
 import math
@@ -11,6 +11,7 @@ import os
 from os.path import join
 import numpy as np
 import pickle
+import json
 
 def load_nx_graph():
     # return nx.read_gpickle(NX_GRAPH_PATH)
@@ -18,7 +19,9 @@ def load_nx_graph():
 
 def load_ig_graph(datos_ema=False):
     if datos_ema:
-        return Graph.Read_GraphML(IG_GRAPH_EMA_PATH)
+        g = Graph.Read_GraphML(IG_GRAPH_EMA_PATH)
+        g.vs['twid'] = g.vs['id']
+        return g
     else:
         return Graph.Read_GraphML(IG_GRAPH_PATH)
 
@@ -27,7 +30,7 @@ def load_ig_graph_fromnx19():
     node_labels = gnx.nodes()
     labels_to_inds = dict([(l,i) for (i,l) in enumerate(node_labels)])
     edges_inds = [(labels_to_inds[i], labels_to_inds[j]) for (i,j) in gnx.edges()]
-    g=Graph(edges_inds, directed=True)
+    g = Graph(edges_inds, directed=True)
     g.vs['twid'] = gnx.nodes()
     g.write_graphml(IG_GRAPH_PATH)
     return g
@@ -165,8 +168,132 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats,
     ngids = [str(i) for i in ngids]
     twid_to_colind = { twid: colind for colind, twid in enumerate(ngids)}
 
-    # Filter centralities to cover only ngids
+    # print("# Filter centralities to cover only ngids")
     ng_inds = [i for (i,l) in enumerate(g.vs["twid"]) if l in ngids]
+    ng_centralities = [np.array(m)[ng_inds] for m in centralities]
+
+    # print("# Normalize centralities to [0, 1]")
+    def norm_metric(m):
+        m_min, m_max = m.min(), m.max()
+        interval_length = (m_max - m_min)
+        if interval_length == 0:
+            return m / 2 * m_max # all equal, normalize to 0.5
+        else:
+            return (m - m_min) / interval_length
+
+    norm_centralities = np.vstack([norm_metric(m) for m in ng_centralities])
+    combined_centralities = norm_centralities.mean(axis=0)
+
+    # print("# twids of neighbors in the order they show up in the graph vertices")
+    g_sorted_ids = np.array(g.vs["twid"])[ng_inds]
+    ngs_scores = dict(zip(g_sorted_ids, combined_centralities))
+
+    if include_activity_rank:
+        # Compute RTs numbers, and normalize to [0,1]
+        sess = open_session()
+        ng_users = sess.query(User).filter(User.id.in_(ngids)).all()
+        rtcounts = {str(u.id): len(u.retweets) for u in ng_users}
+        norm_rtcounts = normalize(rtcounts)
+
+        twcounts = {str(u.id): len(u.timeline) - len(u.retweets) for u in ng_users}
+        norm_twcounts = normalize(twcounts)
+
+        activity = {u: (norm_rtcounts[u] + norm_twcounts[u])/2 for u in norm_rtcounts}
+
+        # average activity scores with centralities
+        ngs_scores = {u: (s + activity[u])/2 for (u, s) in ngs_scores.items()}
+
+    sorted_ngs_scores = sorted(ngs_scores.items(), key=lambda t: t[1])
+    # print("# Create first buckets with highest scored users")
+    if nmostsimilar:
+        most_similar = sorted_ngs_scores[-nmostsimilar:]
+        most_similar_colinds = [[twid_to_colind[twid]] for twid, s in most_similar]
+        if len(most_similar_colinds) < nmostsimilar:
+            diff_len = nmostsimilar - len(most_similar_colinds)
+            most_similar_colinds += [[]] * diff_len
+        sorted_ngs_scores = sorted_ngs_scores[:-nmostsimilar]
+    else:
+        most_similar_colinds = []
+
+
+    # print("# Group the remaining ones in nbuckets")
+    # Rescale to fit the remaining scores in [0,1] interval
+    groups_colinds = [[] for _ in range(nbuckets)]
+    if len(sorted_ngs_scores) and nbuckets:
+        max_score = sorted_ngs_scores[-1][1]
+        for (twid, score) in sorted_ngs_scores:
+            bucket_ind = math.floor(score / (max_score / nbuckets))
+            bucket_ind = min(bucket_ind, nbuckets - 1)
+            colind = twid_to_colind[twid]
+            groups_colinds[bucket_ind].append(colind)
+
+
+    # Filter data frame and sum
+    bucket_colinds = most_similar_colinds + groups_colinds
+    if type(Xfeats) is not np.ndarray: # pandas dataframe
+        Xfeats = Xfeats.to_numpy()
+
+    bucket_columns = [Xfeats[:, colinds].sum(axis=1) for colinds in bucket_colinds]
+    grXfeats = np.column_stack(bucket_columns)
+
+    return grXfeats
+
+def extract_fields(t):
+    isretweet = False
+    if 'retweeted_status' in t:
+        isretweet = True
+        t = t["retweeted_status"]
+    return {
+        "author_id": t['user']['id_str'],
+        "created_at": t['created_at'],
+        "is_retweet": isretweet,
+        "id": t['id_str'],
+        "lang": t['lang']
+    }
+
+
+def get_timeline(uuid, dbh):
+    raw_tl = dbh.tweet_collection.find({'user.id_str': uuid})
+
+    # Excluding tuits/retuits happening before the studied date period
+    # Important: it's not a problem if the original tuit was created before
+    # (This is the way it was done for older data)
+    processed_tl = []
+    for t in raw_tl:
+        t_created_at = datetime.strptime(t['created_at'], '%a %b %d %H:%M:%S +0000 %Y')
+        # drop too old!!
+        if t_created_at >= datetime(2018, 9, 1):
+            processed_tl.append(extract_fields(t))
+
+    return processed_tl
+
+
+def load_timeline(uid):
+    fname = join(DATASETS_FOLDER, "timelines_ema", f"{uid}.json")
+    with open(fname) as f:
+        tl = json.load(f)
+        for t in tl:
+            t['created_at'] = datetime.strptime(t['created_at'], '%a %b %d %H:%M:%S +0000 %Y')
+        return tl
+
+
+# Feature transformations
+def transform_ngfeats_to_bucketfeats_ema(uid, ngids, Xfeats,
+                                     g, centralities,
+                                     nmostsimilar=30, nbuckets=20,
+                                     include_activity_rank=False):
+    '''
+        We transform neighbour retweet features into a bucketed
+        fixed-length format as follows:
+           * neighbours are sorted by katz similarity
+           * the 30 most similar stay with individual columns
+           * the remaining are grouped in 20 buckets of similarity level
+    '''
+    ngids = [str(i) for i in ngids]
+    twid_to_colind = { twid: colind for colind, twid in enumerate(ngids)}
+
+    # Filter centralities to cover only ngids
+    ng_inds = [i for (i,l) in enumerate(g.vs["id"]) if l in ngids]
     ng_centralities = [np.array(m)[ng_inds] for m in centralities]
 
     # Normalize centralities to [0, 1]
@@ -182,17 +309,17 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats,
     combined_centralities = norm_centralities.mean(axis=0)
 
     # twids of neighbors in the order they show up in the graph vertices
-    g_sorted_ids = np.array(g.vs["twid"])[ng_inds]
+    g_sorted_ids = np.array(g.vs["id"])[ng_inds]
     ngs_scores = dict(zip(g_sorted_ids, combined_centralities))
 
     if include_activity_rank:
         # Compute RTs numbers, and normalize to [0,1]
-        sess = open_session()
-        ng_users = sess.query(User).filter(User.id.in_(ngids)).all()
-        rtcounts = {str(u.id): len(u.retweets) for u in ng_users}
+        timelines = {nid: load_timeline(nid) for nid in ngids}
+
+        rtcounts = {str(nid): len([t for t in tl if t['is_retweet']]) for nid, tl in timelines.items()}
         norm_rtcounts = normalize(rtcounts)
 
-        twcounts = {str(u.id): len(u.timeline) - len(u.retweets) for u in ng_users}
+        twcounts = {str(nid): len(tl) - rtcounts[nid] for nid, tl in timelines.items()}
         norm_twcounts = normalize(twcounts)
 
         activity = {u: (norm_rtcounts[u] + norm_twcounts[u])/2 for u in norm_rtcounts}
@@ -216,7 +343,7 @@ def transform_ngfeats_to_bucketfeats(uid, ngids, Xfeats,
     # Group the remaining ones in nbuckets
 
     # Rescale to fit the remaining scores in [0,1] interval
-    groups_colinds = [[]] * nbuckets
+    groups_colinds = [[] for _ in range(nbuckets)]
     if len(sorted_ngs_scores) and nbuckets:
         max_score = sorted_ngs_scores[-1][1]
         for (twid, score) in sorted_ngs_scores:
@@ -243,9 +370,11 @@ def get_unique_rows(a):
 
     return a[idx], counts
 
+
 def vector_to_neighbour_list(v, neighbours):
     ns = [neighbours[i] for i in range(len(v)) if v[i]]
     return [n.username for n in ns]
+
 
 def count_doomed_samples(X, y):
     """
@@ -288,6 +417,7 @@ def count_doomed_samples(X, y):
     details = sorted(details, key=lambda t: -min(t[1].values()))
 
     return miss_clf_counts, details
+
 
 def merge_Xy(X, y):
     Xy = np.hstack((X, np.zeros((X.shape[0],1))))
