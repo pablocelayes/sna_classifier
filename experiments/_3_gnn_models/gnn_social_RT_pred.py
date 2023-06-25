@@ -12,6 +12,7 @@ from torch_geometric.utils import scatter
 import os
 import torch
 from os.path import join
+import logging
 import pandas as pd
 from torch_geometric.loader import DataLoader
 from torch.nn import Linear, Sigmoid
@@ -20,6 +21,9 @@ from torch_geometric.nn import GCNConv, global_mean_pool, avg_pool_x
 from sklearn.metrics import classification_report, f1_score
 from scipy import sparse
 from time import time
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 # TRAIN = False
 TRAIN = True
@@ -50,12 +54,14 @@ def create_pyg_data_objects(tweet_ids, user_id, neighbour_users):
             is_central_user
             is_retweeting
     '''
+    g = load_ig_graph()
+    centralities = load_precomputed_centralities()
     s = open_session()
     user = s.query(User).get(user_id)
 
     ### Compute index mappings (igraph, twid, row_id)
 
-    # print("# Filter centralities to cover only ngids")
+    print("# Filter centralities to cover only ngids")
     # This is the fixed order we will keep for nodes in x,
     # for all the generated datasamples for this central user
     user_id = user.id
@@ -302,27 +308,7 @@ def get_running_config(config_name):
         BATCH_SIZE
     )
 
-if __name__ == '__main__':
-    config_name = sys.argv[1]
-    (
-        N_EPOCHS,
-        LIMIT_SAMPLE_USERS,
-        LIMIT_SAMPLE_TWEETS,
-        ONLY_ACTIVE_USERS,
-        N_BATCHES_LOG_FREQUENCY,
-        BATCH_SIZE
-    ) = get_running_config(config_name)
-
-    os.environ['TORCH'] = torch.__version__
-
-    print("Loading user graph...")
-    g = load_ig_graph()
-
-    fname = "../../centralities.pickle"
-    print("Loading pre-computed centralities")
-    with open(fname, 'rb') as f:
-        centralities = pickle.load(f)
-
+def get_samples(n_users=None, n_tweets=None, only_active_users=False):
     train_samples = {}
     test_samples = {}
 
@@ -339,21 +325,47 @@ if __name__ == '__main__':
             samples = test_samples
         else:
             continue
-        if len(samples) == LIMIT_SAMPLE_USERS:
+        if len(samples) == n_users:
             continue
         user_id = fname.split(".")[0].split("_")[-1]
         # TODO: remove this, now it is filtering only active users
-        if ONLY_ACTIVE_USERS and not int(user_id) in us['u_train']:
+        if only_active_users and not int(user_id) in us['u_train']:
             continue
         Xy = pd.read_pickle(df_path)
         tweets = Xy.index.values.tolist()
-        if LIMIT_SAMPLE_TWEETS:
-            tweets = tweets[:LIMIT_SAMPLE_TWEETS]
+        if n_tweets:
+            tweets = tweets[:n_tweets]
         samples[user_id] = tweets
 
-    if LIMIT_SAMPLE_USERS:
-        train_samples = dict(list(train_samples.items())[:LIMIT_SAMPLE_USERS])
-        test_samples = dict(list(test_samples.items())[:LIMIT_SAMPLE_USERS])
+    if n_users:
+        train_samples = dict(list(train_samples.items())[:n_users])
+        test_samples = dict(list(test_samples.items())[:n_users])
+
+    return train_samples, test_samples
+
+
+if __name__ == '__main__':
+    config_name = sys.argv[1]
+    (
+        N_EPOCHS,
+        LIMIT_SAMPLE_USERS,
+        LIMIT_SAMPLE_TWEETS,
+        ONLY_ACTIVE_USERS,
+        N_BATCHES_LOG_FREQUENCY,
+        BATCH_SIZE
+    ) = get_running_config(config_name)
+
+    os.environ['TORCH'] = torch.__version__
+
+    print("Loading userrrrr graph...")
+    g = load_ig_graph()
+
+    print("Loading pre-computed centralities")
+    centralities = load_precomputed_centralities()
+
+    train_samples, test_samples = get_samples(n_users=LIMIT_SAMPLE_USERS,
+                                              n_tweets=LIMIT_SAMPLE_TWEETS,
+                                              only_active_users=ONLY_ACTIVE_USERS)
 
     print("train and test users:")
     print(len(train_samples))
@@ -376,7 +388,7 @@ if __name__ == '__main__':
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
-    import ipdb; ipdb.set_trace()
+    # import ipdb; ipdb.set_trace()
 
 
     for step, data in enumerate(train_loader):
@@ -435,5 +447,5 @@ if __name__ == '__main__':
     print("Evaluation on test data")
     evaluate(test_loader)
 
-    import ipdb; ipdb.set_trace()
+    # import ipdb; ipdb.set_trace()
 

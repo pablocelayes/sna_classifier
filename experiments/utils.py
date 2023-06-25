@@ -25,6 +25,12 @@ def load_ig_graph(datos_ema=False):
     else:
         return Graph.Read_GraphML(IG_GRAPH_PATH)
 
+def load_precomputed_centralities():
+    fname = join(PROJECT_PATH, "./centralities.pickle")
+    with open(fname, 'rb') as f:
+        centralities = pickle.load(f)
+    return centralities
+
 def load_ig_graph_fromnx19():
     gnx = nx.read_gpickle(NX_GRAPH_PATH)
     node_labels = gnx.nodes()

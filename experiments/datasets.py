@@ -6,7 +6,6 @@ from multiprocessing import Pool
 
 from sklearn.model_selection import train_test_split, StratifiedKFold
 
-from tw_dataset.dbmongoema import DBHandler
 from tw_dataset.settings import DATASETS_FOLDER, DATAFRAMES_FOLDER
 from experiments.utils import *
 import pickle, os
@@ -18,6 +17,7 @@ from tw_dataset.settings import PROJECT_PATH
 
 import sys
 import json
+import logging
 
 tu_path = join(PROJECT_PATH, "./experiments/_1_one_user_learn_neighbours/active_and_central.json")
 TEST_USERS_ALL = json.load(open(tu_path))
@@ -146,10 +146,13 @@ def extract_only_features(tweets, neighbour_users):
     nfeats = len(neighbour_users)
     X = np.empty((nrows, nfeats))
 
+    logging.debug("Starting")
     for j, u in enumerate(neighbour_users):
         tl_ids = [t.id for t in u.timeline]
         for i, t in enumerate(tweets):
             X[i, j] = 1 if t.id in tl_ids else 0
+        if (j + 1) % 20 == 0:
+            logging.debug(f"Processed {100.0 * j / len(neighbour_users):.1f} % of neighbours")
 
     return X
 
@@ -1164,30 +1167,6 @@ def load_or_create_dataframe_batch_job_ema(rewrite=False, n_users=None, tag=""):
 
     tall = time.time() - start_all
     print(f"Took {tall:.2f} secs to process {len(users)}")
-
-
-def fetch_timelines_ema():
-    """
-    Save all timelines to JSON files for easier reuse
-    """
-    print("Loading user graph")
-    g = load_ig_graph(datos_ema=True)
-    users = g.vs['id']
-
-    njob = int(sys.argv[1])
-    print(f"#job {njob}")
-    part_size = len(users) // 32
-    batch_users = users[part_size * (njob - 1): part_size * njob]
-
-    dbh = DBHandler()
-
-    for uid in batch_users:
-        print(uid)
-        tl = get_timeline(uid, dbh)
-        print(len(tl))
-        fname = join(DATASETS_FOLDER, "timelines_ema", f"{uid}.json")
-        with open(fname, 'w') as f:
-            json.dump(tl, f)
 
 
 if __name__ == '__main__':
