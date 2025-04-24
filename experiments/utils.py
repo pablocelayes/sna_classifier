@@ -80,8 +80,9 @@ def get_central_and_followed():
 
     return central_twid, followed_twids
 
-def get_most_central_twids(N=100):
-    g = gt.load_graph(GT_GRAPH_PATH)
+def get_most_central_twids(g=None, N=100):
+    if g is None:
+        g = gt.load_graph(GT_GRAPH_PATH)
     katzc=gt.katz(g)
     katzc_array = katzc.get_array()
     katzc_sorted = sorted(enumerate(katzc_array), key=lambda t: t[1])

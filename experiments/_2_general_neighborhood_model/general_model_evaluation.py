@@ -107,6 +107,75 @@ def load_dataset_large(include_u=True, include_v=True, n_sample=None):
 
     return X_train, X_test, y_train, y_test
 
+def load_dataset_large_embeddings(include_u=True, include_v=True, n_sample=None):
+    train_dfs = []
+    test_dfs = []
+    us = load_user_splits()
+
+    print("Loading user graph")
+    g = load_ig_graph()
+
+    print("Loading pre-computed centralities")
+    with open("centralities.pickle", 'rb') as f:
+        centralities = pickle.load(f)
+
+    # Train users:
+    # - train tweets go to train
+    # - test tweets go to test
+    train_us = []
+    if include_u:
+        train_us += us["u_train"]
+    if include_v:
+        train_us += us['au_train']
+    for u in train_us:
+        X_train, X_test, y_train, y_test = load_or_create_dataframe(u, g, centralities)
+        if X_train is None:
+            continue
+        if sum(y_train) + sum(y_test) < 10:
+            print(f"Skipping {u}: too few tweets")
+            continue
+        X_train["y"] = y_train
+        X_test["y"] = y_test
+        train_dfs.append(X_train)
+        test_dfs.append(X_test)
+
+    # Test users:
+    # - all tweets go to test
+    test_us = []
+    if include_u:
+        test_us += us["u_test"]
+    if include_v:
+        test_us += us['au_test']
+    for u in test_us:
+        X_train, X_test, y_train, y_test = load_or_create_dataframe(u, g, centralities)
+        if X_train is None:
+            continue
+        if sum(y_train) + sum(y_test) < 10:
+            print(f"Skipping {u}: too few tweets")
+            continue
+        X_train["y"] = y_train
+        test_dfs.append(X_train)
+
+        X_test["y"] = y_test
+        test_dfs.append(X_test)
+
+    Xy_train = pd.concat(train_dfs)
+    Xy_test = pd.concat(test_dfs)
+    if n_sample:
+        Xy_train = Xy_train.sample(n_sample)
+
+    feat_col_names = [f"#{i + 1}" for i in range(N_MOST_SIMILAR)] + [f"b{b + 1}" for b in range(N_BUCKETS)]
+    X_train = Xy_train[feat_col_names]
+    y_train = Xy_train["y"]
+    X_test = Xy_test[feat_col_names]
+    y_test = Xy_test["y"]
+    print("Train")
+    print(X_train.shape)
+    print("Test")
+    print(X_test.shape)
+
+    return X_train, X_test, y_train, y_test
+
 def count_valid_users(us):
     valid_count = 0
     for u in us:
@@ -356,6 +425,6 @@ def eval_best_model_large_train_AU_test_tuits():
 
 
 if __name__ == '__main__':
-    # train_best_model_large()
+    train_best_model_large()
     # eval_best_model_general_per_user_au()
     eval_best_model_large()

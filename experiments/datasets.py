@@ -346,12 +346,13 @@ def load_or_create_combined_dataset_small(g, centralities, nmostsimilar, nbucket
         print(f"new dataset will be created and saved to {fname}")
         user_border = int((1 - test_size) * len(users))
         train_users, test_users = users[:user_border], users[user_border:]
-        
+
         s = open_session()
         print("Creating training set based on %d users" % user_border)
+
         # for uid, username, tweet_count in train_users:
         def f_train(uid, g, centralities,
-            nmostsimilar, nbuckets, include_activity_rank):
+                    nmostsimilar, nbuckets, include_activity_rank):
             print("==================================")
             print("Loading training set for user (id %d)" % uid)
             u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataframe_raw(uid)
@@ -379,7 +380,7 @@ def load_or_create_combined_dataset_small(g, centralities, nmostsimilar, nbucket
             X_train_parts, y_train_parts = zip(results)
             X_train = np.vstack(X_train_parts)
             y_train = np.hstack(y_train_parts)
-        
+
         ds_size, ds_dimension = X_train.shape
         print("==================================")
         print("Combined training set created.")
@@ -387,9 +388,10 @@ def load_or_create_combined_dataset_small(g, centralities, nmostsimilar, nbucket
         print("Dimension (#neighbour buckets): %d" % ds_dimension)
 
         print("Creating test set based on remaining %d users" % len(test_users))
+
         # for uid, username, tweet_count in test_users:
         def f_test(uid, g, centralities,
-            nmostsimilar, nbuckets, include_activity_rank):
+                   nmostsimilar, nbuckets, include_activity_rank):
             print("==================================")
             print("Loading training set for user (id %d)" % uid)
             # u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataset(uid)
@@ -417,6 +419,108 @@ def load_or_create_combined_dataset_small(g, centralities, nmostsimilar, nbucket
             else:
                 X_test = np.vstack((X_train, u_X))
                 y_test = np.hstack((y_train, u_y))
+
+        dataset = (X_train, X_test, y_train, y_test)
+        pickle.dump(dataset, open(fname, 'wb'))
+        s.close()
+    return dataset
+
+
+def load_or_create_combined_dataset_small_embeddings(
+        test_size=0.3,
+        n_users=None,
+        tag="",
+        users=None):
+    # TODO: remove this, it is specific to the hp tuning dataset!!!!!
+    # !!!!!!!!!!!!!!!
+    if users is None:
+        users = load_user_splits()['u_train']
+
+    fname = join(DATASETS_FOLDER, f"dataset_combined_small_embeddings{tag}")
+    if n_users:
+        fname += f"_n{n_users}"
+    fname = fname + ".pickle"
+    if os.path.exists(fname):
+        print(f"existing dataset will be loaded from {fname}")
+        dataset = pickle.load(open(fname, 'rb'))
+    else:
+        print(f"new dataset will be created and saved to {fname}")
+        user_border = int((1 - test_size) * len(users))
+        train_users, test_users = users[:user_border], users[user_border:]
+
+        s = open_session()
+        print("Creating training set based on %d users" % user_border)
+
+        # for uid, username, tweet_count in train_users:
+        def f_train(uid, g, centralities,
+                    nmostsimilar, nbuckets, include_activity_rank):
+            print("==================================")
+            print("Loading training set for user (id %d)" % uid)
+            u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataframe_raw(uid)
+
+            ds_size, ds_dimension = u_X_train.shape
+            print("Size (#tweets): %d" % ds_size)
+            print("Dimension (#neighbours): %d" % ds_dimension)
+            user = s.query(User).get(uid)
+            neighbours = get_level2_neighbours(user, s)
+            ngids = [str(ng.id) for ng in neighbours]
+            print(f"{len(ngids)} 2-neighbors in graph")
+
+            u_X = np.vstack((u_X_train, u_X_test))
+            u_y = np.hstack((u_y_train, u_y_test))
+
+            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X,
+                                                   g, centralities,
+                                                   nmostsimilar=nmostsimilar,
+                                                   nbuckets=nbuckets,
+                                                   include_activity_rank=include_activity_rank)
+            return u_X, u_y
+
+        with Pool(32) as p:
+            results = p.map(f_train(), train_users)
+            X_train_parts, y_train_parts = zip(results)
+            X_train = np.vstack(X_train_parts)
+            y_train = np.hstack(y_train_parts)
+
+        ds_size, ds_dimension = X_train.shape
+        print("==================================")
+        print("Combined training set created.")
+        print("Size (#tweets): %d" % ds_size)
+        print("Dimension (#neighbour buckets): %d" % ds_dimension)
+
+        print("Creating test set based on remaining %d users" % len(test_users))
+
+        # for uid, username, tweet_count in test_users:
+        def f_test(uid, g, centralities,
+                   nmostsimilar, nbuckets, include_activity_rank):
+            print("==================================")
+            print("Loading training set for user (id %d)" % uid)
+            # u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataset(uid)
+            u_X_train, u_X_test, u_y_train, u_y_test = load_or_create_dataframe_raw(uid)
+
+            ds_size, ds_dimension = u_X_train.shape
+            print("Size (#tweets): %d" % ds_size)
+            print("Dimension (#neighbours): %d" % ds_dimension)
+            user = s.query(User).get(uid)
+            neighbours = get_level2_neighbours(user, s)
+            ngids = [str(ng.id) for ng in neighbours]
+
+            u_X = np.vstack((u_X_train, u_X_test))
+            u_y = np.hstack((u_y_train, u_y_test))
+
+            u_X = transform_ngfeats_to_bucketfeats(uid, ngids, u_X,
+                                                   g, centralities,
+                                                   nmostsimilar=nmostsimilar,
+                                                   nbuckets=nbuckets,
+                                                   include_activity_rank=include_activity_rank)
+
+            if X_test is None:
+                X_test = u_X
+                y_test = u_y
+            else:
+                X_test = np.vstack((X_train, u_X))
+                y_test = np.hstack((y_train, u_y))
+
         dataset = (X_train, X_test, y_train, y_test)
         pickle.dump(dataset, open(fname, 'wb'))
         s.close()
@@ -569,7 +673,12 @@ def load_small_validation_dataframe(uid):
     return X_train, X_valid, X_test, y_train, y_valid, y_test
 
 
-def load_or_create_dataframe_raw(uid, max_samples=5000, tag=""):
+def to_sparse_df(df):
+    return df.astype(pd.SparseDtype("float", 0.0))
+
+def load_or_create_dataframe_raw(uid,
+                                 max_samples=5000, tag="",
+                                 just_try_load=False, sparse=False):
     """
         Creates a splitted featurized dataset (social features)
         around a given user.
@@ -577,54 +686,65 @@ def load_or_create_dataframe_raw(uid, max_samples=5000, tag=""):
             features (X): whether the each user in the 2nd order neighborhood retweeted or not
 
     """
+    logging.debug(f"Processing {uid}")
     if tag:
         tag = f"_{tag}"
-    Xytrain_fname = join(DATAFRAMES_FOLDER, f"raw/dfXtrain{tag}_{uid}.pickle")
-    Xytest_fname = join(DATAFRAMES_FOLDER, f"raw/dfXtest{tag}_{uid}.pickle")
+
+    if sparse:
+        Xytrain_fname = join(DATAFRAMES_FOLDER, f"raw_sparse/dfXtrain{tag}_{uid}.pickle")
+        Xytest_fname = join(DATAFRAMES_FOLDER, f"raw_sparse/dfXtest{tag}_{uid}.pickle")
+    else:
+        Xytrain_fname = join(DATAFRAMES_FOLDER, f"raw/dfXtrain{tag}_{uid}.pickle")
+        Xytest_fname = join(DATAFRAMES_FOLDER, f"raw/dfXtest{tag}_{uid}.pickle")
 
     exists = False
     if os.path.exists(Xytrain_fname):
+        logging.debug("Path exists, trying to load")
         try:
             Xy_train = pd.read_pickle(Xytrain_fname)
             Xy_test = pd.read_pickle(Xytest_fname)
             exists = True
+            logging.debug("OK")
         except Exception as e:
             pass
 
     if not exists:
+        if just_try_load:
+            return None
+
         s = open_session()
         user = s.query(User).get(uid)
-        print(f"Processing {uid}")
-        print("Getting neighbours")
+        logging.debug(f"Processing {uid}")
+        logging.debug("Getting neighbours")
         neighbours = get_level2_neighbours(user, s)
 
         # remove central user from neighbours
         neighbours = [u for u in neighbours if u.id != user.id]
         neighbour_ids = [u.id for u in neighbours]
-        print(f"{len(neighbour_ids)} neighbours collected")
+        logging.debug(f"{len(neighbour_ids)} neighbours collected")
         if len(neighbour_ids) == 0:
-            print("No neighbours!")
+            logging.debug("No neighbours!")
             # raise Exception
             return None, None, None, None
         # Fetch tweet universe (timelines of ownuser and neighbours)
         tweets = set(user.timeline)
         for u in neighbours:
             tweets.update(u.timeline)
-        print(f"Tweet universe contains {len(tweets)} tweets")
+        logging.debug(f"Tweet universe contains {len(tweets)} tweets")
 
         # exclude tweets from central user or not in Spanish
         tweets = [t for t in tweets if t.author_id != uid and t.lang == 'es']
-        print(f"After removing central or non-Spanish tweets: {len(tweets)} tweets")
+        logging.debug(f"After removing central or non-Spanish tweets: {len(tweets)} tweets")
 
         # Computing targets
         y = extract_target(tweets, user)
 
         # Downsample negatives if necessary
         if len(y) > max_samples:
-            print("Downsampling to 5000 examples")
+            logging.debug("Downsampling to 5000 examples")
             neg_inds = [i for i, v in enumerate(y) if v == 0]
             pos_inds = [i for i, v in enumerate(y) if v == 1]
-            print(f"({len(pos_inds)} positive)")
+            logging.debug(f"({len(pos_inds)} positive)")
             n_neg = max_samples - len(pos_inds)
             neg_inds = sample(neg_inds, n_neg)
             inds = sorted(neg_inds + pos_inds)
@@ -632,9 +752,9 @@ def load_or_create_dataframe_raw(uid, max_samples=5000, tag=""):
             y = y[inds]
             tweets = [tweets[i] for i in inds]
 
-        print(f"Extracting neighborhood features for {len(tweets)} tweets and {len(neighbour_ids)} neighbours")
+        logging.debug(f"Extracting neighborhood features for {len(tweets)} tweets and {len(neighbour_ids)} neighbours")
 
-        print("Extracting raw features")
+        logging.debug("Extracting raw features")
         X = extract_only_features(tweets, neighbours)
 
         s.close()
@@ -654,6 +774,10 @@ def load_or_create_dataframe_raw(uid, max_samples=5000, tag=""):
 
         Xy_train = X[X.index.isin(twids_train)]
         Xy_test = X[X.index.isin(twids_test)]
+
+        if sparse:
+            Xy_train = to_sparse_df(Xy_train)
+            Xy_test = to_sparse_df(Xy_test)
 
         Xy_train.to_pickle(Xytrain_fname)
         Xy_test.to_pickle(Xytest_fname)
@@ -1084,7 +1208,7 @@ def build_dataset_from_datapoints_job():
     build_dataset_from_datapoints(njob=njob, set_type=set_type)
 
 
-def load_or_create_dataframe_batch_job(tag="", raw=False, users=None):
+def load_or_create_dataframe_batch_job(tag="", raw=False, users=None, sparse=False):
     """
     :param tag: identifier of the experiment being run
         we use to distinguish between data from 2017 and 2020
@@ -1098,25 +1222,23 @@ def load_or_create_dataframe_batch_job(tag="", raw=False, users=None):
 
     print("Generating dataframes for old dataset")
     print(f"#job {njob}")
-    part_size = len(users) // 32
+    part_size = len(users) // 10
     batch_users = users[part_size * (njob - 1): part_size * njob]
-    # import ipdb; ipdb.set_trace()
 
     print("Loading user graph")
     g = load_ig_graph()
 
-    fname = "centralities.pickle"
     print("Loading pre-computed centralities")
-    with open(fname, 'rb') as f:
-        centralities = pickle.load(f)
+    centralities = load_precomputed_centralities()
 
     failed_uids = []
     start_all = time.time()
     for uid in batch_users:
         start = time.time()
+        print(uid)
         try:
             if raw:
-                load_or_create_dataframe_raw(uid)
+                load_or_create_dataframe_raw(uid, sparse=sparse)
             else:
                 load_or_create_dataframe(uid, g, centralities, max_samples=5000, tag=tag)
         except Exception:
@@ -1171,9 +1293,10 @@ def load_or_create_dataframe_batch_job_ema(rewrite=False, n_users=None, tag=""):
 
 if __name__ == '__main__':
     # load_or_create_dataframe_batch_job_ema(rewrite=True, n_users=20)
-    load_or_create_dataframe_batch_job_ema(tag="new_ema")
+    # load_or_create_dataframe_batch_job_ema(tag="new_ema")
     # load_or_create_dataframe_raw(uid)
     # users = load_hptuning_sample()
     # load_or_create_dataframe_batch_job(users=users, raw=True)
+    load_or_create_dataframe_batch_job(raw=True, sparse=True)
     # load_or_create_dataframe_batch_job(tag="_fix_new_hps")
     # fetch_timelines_ema()
