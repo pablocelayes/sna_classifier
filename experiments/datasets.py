@@ -34,6 +34,8 @@ import sys
 import json
 import logging
 
+logging.basicConfig(level=logging.DEBUG)
+
 tu_path = join(PROJECT_PATH, "./experiments/_1_one_user_learn_neighbours/active_and_central.json")
 TEST_USERS_ALL = json.load(open(tu_path))
 
@@ -721,6 +723,7 @@ def load_or_create_dataframe_raw(uid,
             exists = True
             logging.debug("OK")
         except Exception as e:
+            logging.debug(f"Error loading {Xytrain_fname}: {e}")
             pass
 
     if not exists:
