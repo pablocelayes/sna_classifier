@@ -49,20 +49,20 @@ def load_dataframe_raw(uid, tag="", sparse=False):
 
     return X_train, X_test, y_train, y_test
 
-def Xy_to_GNN_samples(central_user_id, neighbor_ids, subgraph_edges, X, y):
+def Xy_to_GNN_samples(central_user_id, neighbor_ids, global_inds_map, subgraph_edges, X, y):
     Xy = X.copy()
     Xy["label"] = y
     gnn_samples = []
     for _, r in Xy.iterrows():
         label = r["label"]
-        retweeted_ids = [ni for ni in neighbor_ids if r[ni] == 1]
+        retweeted_ids = [ni for ni in neighbor_ids if r[int(ni)] == 1]
 
         # Create a sample for the GNN
         sample = {
-            "central_user_id": central_user_id,
+            "central_user_id": global_inds_map[central_user_id],
             "label": label,
-            "neighbor_ids": neighbor_ids,
-            "retweeted_ids": retweeted_ids,
+            "neighbor_ids": [global_inds_map[ni] for ni in neighbor_ids],
+            "retweeted_ids": [global_inds_map[ri] for ri in retweeted_ids],
             "edge_index": subgraph_edges,
         }
         gnn_samples.append(sample)
@@ -71,13 +71,15 @@ def Xy_to_GNN_samples(central_user_id, neighbor_ids, subgraph_edges, X, y):
 
 def create_gnn_train_val_samples(central_user_id, graph, X_tr, y_tr, X_te, y_te):
     # 1. Get neighbor ids
-    neighbor_ids = X_tr.columns
-    neighborhood_ids = [central_user_id] + neighbor_ids.values.tolist()
-    neighborhood_ids = [str(ni) for ni in neighborhood_ids]
+    neighbor_ids = [str(ni) for ni in X_tr.columns]
+    central_user_id = str(central_user_id)
+    neighborhood_ids = [central_user_id] + neighbor_ids
 
     # 2. Get nodes matching those values
     matching_nodes_map = {}
-    for node, attrs in graph.nodes(data=True):
+    global_inds_map = {}
+    for i, (node, attrs) in enumerate(graph.nodes(data=True)):
+        global_inds_map[attrs["twid"]] = i
         if attrs.get("twid") in neighborhood_ids:
             matching_nodes_map[attrs["twid"]] = node
 
@@ -93,7 +95,8 @@ def create_gnn_train_val_samples(central_user_id, graph, X_tr, y_tr, X_te, y_te)
     ]
 
     # 4. Create GNN samples
-    train_gnn_samples = Xy_to_GNN_samples(central_user_id, neighbor_ids, subgraph_edges, X_tr, y_tr)
-    val_gnn_samples = Xy_to_GNN_samples(central_user_id, neighbor_ids, subgraph_edges, X_te, y_te)
+    train_gnn_samples = Xy_to_GNN_samples(central_user_id, neighbor_ids, global_inds_map, subgraph_edges, X_tr, y_tr)
+    val_gnn_samples = Xy_to_GNN_samples(central_user_id, neighbor_ids, global_inds_map, subgraph_edges, X_te, y_te)
+
 
     return train_gnn_samples, val_gnn_samples
