@@ -9,13 +9,8 @@ import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from sklearn.metrics import f1_score
-from torch_geometric.data import Data, Dataset
 from torch_geometric.loader import DataLoader
-from torch_geometric.nn import TransformerConv
-from torch_geometric_signed_directed.nn.directed import MagNetConv
 
 # ============================================================
 # Parameters (notebook widgets)
@@ -87,125 +82,12 @@ plt.show()
 # COMMAND ----------
 
 # DBTITLE 1,Model and evaluate definitions
+from gnn_models import PretrainedEmbeddingLookup, RetweetDataset, RetweetGNN, evaluate
+
 DATA_PATH = "/Workspace/Users/pablo.celayes@bolt.eu/learning/data/sna_classifier"
 EMBEDDINGS_PATH = f"{DATA_PATH}/node_embeddings.pt"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}")
-
-# ---------------------------------------------------------------------------
-# Model classes (same as 3.0)
-# ---------------------------------------------------------------------------
-class PretrainedEmbeddingLookup(nn.Module):
-    def __init__(self, embeddings_path: str, device: str):
-        super().__init__()
-        pretrained = torch.load(embeddings_path, weights_only=True, map_location=device)
-        self.register_buffer("embeddings", pretrained)
-        self.embedding_dim = pretrained.shape[1]
-
-    def forward(self, user_ids: torch.Tensor) -> torch.Tensor:
-        return self.embeddings[user_ids]
-
-
-class RetweetDataset(Dataset):
-    def __init__(self, raw_samples: list):
-        super().__init__()
-        self.samples = raw_samples
-
-    def len(self):
-        return len(self.samples)
-
-    def get(self, idx):
-        s = self.samples[idx]
-        all_ids = [s["central_user_id"]] + list(s["neighbor_ids"])
-        num_nodes = len(all_ids)
-        user_ids = torch.tensor(all_ids, dtype=torch.long)
-        retweeted_set = set(s["retweeted_ids"])
-        retweet_flag = torch.tensor(
-            [1.0 if uid in retweeted_set else 0.0 for uid in all_ids],
-            dtype=torch.float
-        ).unsqueeze(1)
-        if len(s["edge_index"]) > 0:
-            edge_index = torch.tensor(s["edge_index"], dtype=torch.long).t().contiguous()
-        else:
-            edge_index = torch.zeros((2, 0), dtype=torch.long)
-        label = torch.tensor(s["label"], dtype=torch.long)
-        return Data(
-            user_ids=user_ids, retweet_flag=retweet_flag, edge_index=edge_index,
-            y=label, num_nodes=num_nodes,
-            central_mask=torch.zeros(num_nodes, dtype=torch.bool).index_fill_(0, torch.tensor([0]), True)
-        )
-
-
-class RetweetGNN(nn.Module):
-    def __init__(self, embeddings_path, device, ff_hidden_dim=256, gcn_hidden_dim=128,
-                 transformer_dim=128, transformer_heads=4, num_classes=2, dropout=0.3,
-                 q=0.25, K=1):
-        super().__init__()
-        self.flag_scale = nn.Parameter(torch.tensor(10.0))
-        self.lookup = PretrainedEmbeddingLookup(embeddings_path, device)
-        embed_dim = self.lookup.embedding_dim
-        ff_input_dim = embed_dim + 1
-        self.ff = nn.Sequential(
-            nn.Linear(ff_input_dim, ff_hidden_dim), nn.LayerNorm(ff_hidden_dim), nn.GELU(),
-            nn.Dropout(dropout), nn.Linear(ff_hidden_dim, gcn_hidden_dim),
-            nn.LayerNorm(gcn_hidden_dim), nn.GELU(),
-        )
-        self.magnet1 = MagNetConv(gcn_hidden_dim, gcn_hidden_dim, q=q, K=K, trainable_q=True)
-        self.transformer = TransformerConv(
-            in_channels=gcn_hidden_dim * 2, out_channels=transformer_dim // transformer_heads,
-            heads=transformer_heads, edge_dim=1, dropout=dropout, concat=True,
-        )
-        self.post_transformer_norm = nn.LayerNorm(transformer_dim)
-        self.gate_param = nn.Parameter(torch.tensor(-5.0))
-        self.shortcut_head = nn.Sequential(nn.Linear(2, 16), nn.GELU(), nn.Linear(16, num_classes))
-        self.gnn_head = nn.Sequential(
-            nn.Linear(transformer_dim, transformer_dim // 2), nn.GELU(), nn.Dropout(dropout),
-            nn.Linear(transformer_dim // 2, num_classes),
-        )
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, data):
-        user_ids, retweet_flag = data.user_ids, data.retweet_flag
-        edge_index, batch, central_mask = data.edge_index, data.batch, data.central_mask
-        with torch.no_grad():
-            pretrained = self.lookup(user_ids)
-        x = torch.cat([pretrained, self.flag_scale * retweet_flag], dim=-1)
-        x = self.ff(x)
-        x_real, x_imag = x, torch.zeros_like(x)
-        x_real, x_imag = self.magnet1(x_real, x_imag, edge_index)
-        x_real, x_imag = F.gelu(x_real), F.gelu(x_imag)
-        x_real, x_imag = self.dropout(x_real), self.dropout(x_imag)
-        x = torch.cat([x_real, x_imag], dim=-1)
-        edge_attr = retweet_flag[data.edge_index[1]]
-        x = self.transformer(x, edge_index, edge_attr=edge_attr)
-        x = F.gelu(x)
-        x = self.post_transformer_norm(x)
-        central_x = x[central_mask]
-        num_graphs = batch.max().item() + 1
-        non_central = ~central_mask
-        nc_flags = retweet_flag[non_central].squeeze()
-        nc_batch = batch[non_central]
-        rt_sum = torch.zeros(num_graphs, device=x.device).scatter_add_(0, nc_batch, nc_flags)
-        node_counts = torch.zeros(num_graphs, device=x.device).scatter_add_(0, nc_batch, torch.ones_like(nc_flags))
-        rt_frac = (rt_sum / node_counts.clamp(min=1)).unsqueeze(-1)
-        node_counts = (node_counts / 50.0).unsqueeze(-1)
-        shortcuts = torch.cat([rt_frac, node_counts], dim=-1)
-        gate = torch.sigmoid(self.gate_param)
-        return (1 - gate) * self.shortcut_head(shortcuts) + gate * self.gnn_head(central_x)
-
-
-@torch.no_grad()
-def evaluate(model, loader, device):
-    model.eval()
-    all_preds, all_labels = [], []
-    for batch in loader:
-        batch = batch.to(device)
-        logits = model(batch)
-        all_preds.append(logits.argmax(dim=-1).cpu())
-        all_labels.append(batch.y.cpu())
-    all_preds = torch.cat(all_preds)
-    all_labels = torch.cat(all_labels)
-    return f1_score(all_labels, all_preds), all_preds, all_labels
 
 # COMMAND ----------
 
@@ -243,7 +125,7 @@ torch.cuda.empty_cache()
 test_ds = RetweetDataset(all_test_samples)
 test_loader = DataLoader(test_ds, batch_size=32, shuffle=False)
 
-global_f1, global_preds, global_labels = evaluate(model, test_loader, device)
+global_f1, global_preds, global_labels, _ = evaluate(model, test_loader, device)
 print(f"=== GNN Global Test F1: {global_f1:.4f} ===")
 print(f"  Total test samples: {len(all_test_samples)}")
 print(f"  Positive rate: {global_labels.float().mean():.3f}")
@@ -259,7 +141,7 @@ for uid, samples in user_test_samples.items():
         continue
     user_ds = RetweetDataset(samples)
     user_loader = DataLoader(user_ds, batch_size=32, shuffle=False)
-    user_f1, _, _ = evaluate(model, user_loader, device)
+    user_f1, _, _, _ = evaluate(model, user_loader, device)
     gnn_f1s[uid] = user_f1
 
 gnn_f1_values = list(gnn_f1s.values())
