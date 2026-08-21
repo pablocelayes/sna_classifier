@@ -311,7 +311,7 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
 
     # Mixed precision setup
     scaler = torch.cuda.amp.GradScaler(enabled=mixed_precision)
-    _autocast_device = device.split(":")[0]  # "cuda:0" -> "cuda"
+    _autocast_device = str(device).split(":")[0]  # "cuda:0" -> "cuda", handles torch.device too
     if mixed_precision:
         print(f"Mixed precision: enabled (float16 autocast + GradScaler)")
 
