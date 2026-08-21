@@ -227,7 +227,8 @@ def evaluate(model, loader, device, class_weights=None, epoch=None):
 def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
                 epochs=50, batch_size=128, lr=1e-2, device="cuda",
                 log_every_n_steps=100, patience=15, lr_warmup_epochs=0,
-                weight_decay=1e-3, resume=False):
+                weight_decay=1e-3, resume=False, gradient_accumulation_steps=None,
+                mixed_precision=False):
     """Unified training loop with checkpointing and configurable settings.
 
     Args:
@@ -246,6 +247,12 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
             0 means no warmup (plain cosine decay).
         weight_decay: L2 regularization strength for AdamW.
         resume: whether to resume from a previous checkpoint.
+        gradient_accumulation_steps: if not None and > 1, accumulate gradients
+            over this many micro-batches before each optimizer step. Effective
+            batch size = batch_size * gradient_accumulation_steps. None or 1
+            disables accumulation (default behavior).
+        mixed_precision: if True, use automatic mixed precision (float16) with
+            GradScaler for faster training on CUDA. Requires CUDA device.
 
     Returns:
         (model, history) — model loaded with best weights, and full training history dict.
@@ -297,6 +304,17 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
     print(f"LR warmup: {lr_warmup_epochs} epochs | weight_decay: {weight_decay} | "
           f"patience: {patience}")
 
+    _use_grad_accum = (gradient_accumulation_steps is not None and gradient_accumulation_steps > 1)
+    if _use_grad_accum:
+        print(f"Gradient accumulation: {gradient_accumulation_steps} steps | "
+              f"Effective batch size: {batch_size * gradient_accumulation_steps}")
+
+    # Mixed precision setup
+    scaler = torch.cuda.amp.GradScaler(enabled=mixed_precision)
+    _autocast_device = device.split(":")[0]  # "cuda:0" -> "cuda"
+    if mixed_precision:
+        print(f"Mixed precision: enabled (float16 autocast + GradScaler)")
+
     best_val_f1 = 0
     global_step = 0
     running_loss = 0.0
@@ -337,14 +355,26 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
                     bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} "
                               "[{elapsed}<{remaining}, {rate_fmt}]")
 
+        if _use_grad_accum:
+            optimizer.zero_grad()
+
         for step_in_epoch, batch in pbar:
             batch = batch.to(device)
-            optimizer.zero_grad()
-            logits = model(batch)
-            loss = combined_loss(logits, batch.y.float(), class_weights, epoch)
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-            optimizer.step()
+            with torch.autocast(device_type=_autocast_device, dtype=torch.float16, enabled=mixed_precision):
+                logits = model(batch)
+                loss = combined_loss(logits, batch.y.float(), class_weights, epoch)
+            if _use_grad_accum:
+                scaler.scale(loss / gradient_accumulation_steps).backward()
+            else:
+                optimizer.zero_grad()
+                scaler.scale(loss).backward()
+
+            if not _use_grad_accum or step_in_epoch % gradient_accumulation_steps == 0:
+                scaler.unscale_(optimizer)
+                torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad()
 
             global_step += 1
             running_loss += loss.item()
@@ -399,6 +429,15 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
                 model.train()
 
         pbar.close()
+
+        # Flush any remaining accumulated gradients at epoch boundary
+        if _use_grad_accum and step_in_epoch % gradient_accumulation_steps != 0:
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            scaler.step(optimizer)
+            scaler.update()
+            optimizer.zero_grad()
+
         scheduler.step()
 
         # End-of-epoch evaluation
