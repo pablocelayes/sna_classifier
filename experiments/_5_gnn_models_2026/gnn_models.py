@@ -497,7 +497,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
     history = {
         "step": [], "train_loss": [], "val_loss": [], "val_f1": [],
-        "epoch_step": [], "epoch_train_f1": [], "epoch_val_f1": [], "epoch_val_loss": [],
+        "epoch_step": [], "epoch_train_loss": [], "epoch_train_f1": [],
+        "epoch_val_f1": [], "epoch_val_loss": [],
     }
 
     # Resume from checkpoint if available
@@ -523,6 +524,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
     for epoch in range(start_epoch, epochs + 1):
         model.train()
+        epoch_loss_sum = 0.0
+        epoch_loss_batches = 0
         pbar = tqdm(enumerate(train_loader, 1), total=steps_per_epoch,
                     desc=f"Epoch {epoch}/{epochs}", leave=False,
                     bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} "
@@ -549,10 +552,13 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 scaler.update()
                 optimizer.zero_grad()
 
+            loss_item = loss.item()
             global_step += 1
-            running_loss += loss.item()
+            running_loss += loss_item
             running_steps += 1
-            pbar.set_postfix(loss=f"{loss.item():.4f}", step=global_step)
+            epoch_loss_sum += loss_item
+            epoch_loss_batches += 1
+            pbar.set_postfix(loss=f"{loss_item:.4f}", step=global_step)
 
             # Periodic checkpoint
             if global_step % log_every_n_steps == 0:
@@ -624,6 +630,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
         scheduler.step()
 
+        epoch_train_loss = epoch_loss_sum / max(epoch_loss_batches, 1)
+
         # End-of-epoch evaluation
         print(f"\n  === End of epoch {epoch}/{epochs} ===")
         _compute_train_f1 = (train_f1_every_n_epochs is not None
@@ -644,13 +652,15 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
         gate_val = torch.sigmoid(model.gate_param).item()
         if train_f1 is not None:
-            print(f"    Train F1: {train_f1:.4f} | Val F1: {val_f1:.4f} | "
-                  f"Val Loss: {val_loss:.4f} | Best: {best_val_f1:.4f} | Gate: {gate_val:.4f}")
-        else:
-            print(f"    Val F1: {val_f1:.4f} | Val Loss: {val_loss:.4f} | "
+            print(f"    Train Loss: {epoch_train_loss:.4f} | Train F1: {train_f1:.4f} | "
+                  f"Val F1: {val_f1:.4f} | Val Loss: {val_loss:.4f} | "
                   f"Best: {best_val_f1:.4f} | Gate: {gate_val:.4f}")
+        else:
+            print(f"    Train Loss: {epoch_train_loss:.4f} | Val F1: {val_f1:.4f} | "
+                  f"Val Loss: {val_loss:.4f} | Best: {best_val_f1:.4f} | Gate: {gate_val:.4f}")
 
         history["epoch_step"].append(global_step)
+        history["epoch_train_loss"].append(epoch_train_loss)
         history["epoch_train_f1"].append(train_f1)
         history["epoch_val_f1"].append(val_f1)
         history["epoch_val_loss"].append(val_loss)
