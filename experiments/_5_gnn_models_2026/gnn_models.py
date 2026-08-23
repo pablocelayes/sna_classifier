@@ -3,6 +3,7 @@
 Contains:
 - PretrainedEmbeddingLookup: frozen embedding layer
 - RetweetDataset: PyG dataset wrapping raw sample dicts
+- ParquetGNNLoader: streaming DataLoader that reads one parquet file at a time
 - RetweetGNN: full model architecture (MagNet + Transformer + shortcut gate)
 - soft_f1_loss, combined_loss: training objectives
 - evaluate: inference + F1 computation
@@ -11,14 +12,16 @@ Contains:
 import os
 import time
 import pickle
+from random import shuffle as _shuffle_list
 
 import numpy as np
+import pyarrow.parquet as pq
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from sklearn.metrics import f1_score
 from sklearn.utils.class_weight import compute_class_weight
-from torch_geometric.data import Data, Dataset
+from torch_geometric.data import Data, Dataset, Batch
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import TransformerConv
 from torch_geometric_signed_directed.nn.directed import MagNetConv
@@ -73,6 +76,167 @@ class RetweetDataset(Dataset):
             num_nodes=num_nodes,
             central_mask=torch.zeros(num_nodes, dtype=torch.bool).index_fill_(0, torch.tensor([0]), True)
         )
+
+
+# ---------------------------------------------------------------------------
+# Streaming Parquet DataLoader
+# ---------------------------------------------------------------------------
+class ParquetGNNLoader:
+    """Streaming DataLoader that reads one parquet file at a time.
+
+    Each parquet file contains rows that are a multiple of batch_size.
+    On each epoch, file order is shuffled (for train) or sequential (for val).
+    Yields PyG Batch objects ready for model consumption.
+    """
+
+    def __init__(self, parquet_dir, batch_size=256, shuffle_files=True,
+                 fs=None, max_samples=None):
+        """
+        Args:
+            parquet_dir: path to directory containing .parquet files.
+            batch_size: number of samples per batch.
+            shuffle_files: whether to shuffle file order each epoch.
+            fs: optional s3fs.S3FileSystem for S3 paths. None = local.
+            max_samples: if set, cap the number of samples yielded per
+                epoch to approximately this many (rounded down to full
+                batches). Files are shuffled so the subset is random.
+        """
+        self.parquet_dir = parquet_dir
+        self.batch_size = batch_size
+        self.shuffle_files = shuffle_files
+        self.fs = fs
+        self.max_samples = max_samples
+
+        # Discover files
+        if fs is not None:
+            all_files = sorted(fs.ls(parquet_dir, detail=False))
+            self.files = [f for f in all_files if f.endswith('.parquet')]
+        else:
+            self.files = sorted(
+                os.path.join(parquet_dir, f)
+                for f in os.listdir(parquet_dir)
+                if f.endswith('.parquet')
+            )
+
+        # Count total samples for __len__ (read metadata only)
+        self._total_samples = 0
+        for fpath in self.files:
+            if fs is not None:
+                pf = pq.ParquetFile(fs.open(fpath, 'rb'))
+            else:
+                pf = pq.ParquetFile(fpath)
+            self._total_samples += pf.metadata.num_rows
+
+    def __len__(self):
+        """Total number of batches across all files (respects max_samples)."""
+        effective = self._total_samples
+        if self.max_samples is not None:
+            effective = min(effective, self.max_samples)
+        return effective // self.batch_size
+
+    @property
+    def total_samples(self):
+        if self.max_samples is not None:
+            return min(self._total_samples, self.max_samples)
+        return self._total_samples
+
+    def _parquet_to_samples(self, fpath):
+        """Read a parquet file into a list of sample dicts."""
+        if self.fs is not None:
+            table = pq.read_table(fpath, filesystem=self.fs)
+        else:
+            table = pq.read_table(fpath)
+
+        central_ids = table.column('central_user_id').to_pylist()
+        neighbor_ids = table.column('neighbor_ids').to_pylist()
+        retweeted_ids = table.column('retweeted_ids').to_pylist()
+        edge_srcs = table.column('edge_src').to_pylist()
+        edge_dsts = table.column('edge_dst').to_pylist()
+        labels = table.column('label').to_pylist()
+        del table
+
+        samples = []
+        for i in range(len(central_ids)):
+            src, dst = edge_srcs[i], edge_dsts[i]
+            if src:
+                edge_arr = np.column_stack([src, dst]).astype(np.int32)
+            else:
+                edge_arr = np.empty((0, 2), dtype=np.int32)
+            samples.append({
+                "central_user_id": central_ids[i],
+                "neighbor_ids": np.array(neighbor_ids[i], dtype=np.int64),
+                "retweeted_ids": np.array(retweeted_ids[i], dtype=np.int64),
+                "edge_index": edge_arr,
+                "label": labels[i],
+            })
+        return samples
+
+    def _sample_to_data(self, s):
+        """Convert a sample dict to a PyG Data object."""
+        all_ids = [s["central_user_id"]] + list(s["neighbor_ids"])
+        num_nodes = len(all_ids)
+        user_ids = torch.tensor(all_ids, dtype=torch.long)
+        retweeted_set = set(s["retweeted_ids"].tolist()) if isinstance(s["retweeted_ids"], np.ndarray) else set(s["retweeted_ids"])
+        retweet_flag = torch.tensor(
+            [1.0 if uid in retweeted_set else 0.0 for uid in all_ids],
+            dtype=torch.float
+        ).unsqueeze(1)
+        if len(s["edge_index"]) > 0:
+            edge_index = torch.tensor(s["edge_index"], dtype=torch.long).t().contiguous()
+        else:
+            edge_index = torch.zeros((2, 0), dtype=torch.long)
+        label = torch.tensor(s["label"], dtype=torch.long)
+        return Data(
+            user_ids=user_ids,
+            retweet_flag=retweet_flag,
+            edge_index=edge_index,
+            y=label,
+            num_nodes=num_nodes,
+            central_mask=torch.zeros(num_nodes, dtype=torch.bool).index_fill_(
+                0, torch.tensor([0]), True
+            ),
+        )
+
+    def __iter__(self):
+        """Iterate over all files, yielding PyG Batch objects."""
+        file_order = list(range(len(self.files)))
+        if self.shuffle_files:
+            _shuffle_list(file_order)
+
+        max_batches = len(self) if self.max_samples is not None else None
+        batches_yielded = 0
+
+        for fi in file_order:
+            fpath = self.files[fi]
+            samples = self._parquet_to_samples(fpath)
+
+            # Convert to Data objects and batch
+            for batch_start in range(0, len(samples), self.batch_size):
+                batch_samples = samples[batch_start:batch_start + self.batch_size]
+                if len(batch_samples) < self.batch_size:
+                    # Skip incomplete last batch (files should be multiples of batch_size)
+                    continue
+                data_list = [self._sample_to_data(s) for s in batch_samples]
+                yield Batch.from_data_list(data_list)
+                batches_yielded += 1
+                if max_batches is not None and batches_yielded >= max_batches:
+                    del samples
+                    return
+
+            del samples  # free memory before loading next file
+
+    def get_label_counts(self):
+        """Scan all files to count label occurrences (for class weights)."""
+        counts = {}
+        for fpath in self.files:
+            if self.fs is not None:
+                table = pq.read_table(fpath, columns=['label'], filesystem=self.fs)
+            else:
+                table = pq.read_table(fpath, columns=['label'])
+            for label in table.column('label').to_pylist():
+                counts[label] = counts.get(label, 0) + 1
+            del table
+        return counts
 
 
 # ---------------------------------------------------------------------------
@@ -205,6 +369,7 @@ def evaluate(model, loader, device, class_weights=None, epoch=None):
     model.eval()
     all_preds, all_labels = [], []
     total_loss = 0.0
+    n_batches = 0
     compute_loss = class_weights is not None and epoch is not None
     for batch in loader:
         batch = batch.to(device)
@@ -212,32 +377,42 @@ def evaluate(model, loader, device, class_weights=None, epoch=None):
         preds = logits.argmax(dim=-1)
         all_preds.append(preds.cpu())
         all_labels.append(batch.y.cpu())
+        n_batches += 1
         if compute_loss:
             total_loss += combined_loss(logits, batch.y.float(), class_weights, epoch).item()
     all_preds = torch.cat(all_preds)
     all_labels = torch.cat(all_labels)
     f1 = f1_score(all_labels, all_preds)
-    avg_loss = total_loss / len(loader) if compute_loss else None
+    avg_loss = total_loss / max(n_batches, 1) if compute_loss else None
     return f1, all_preds, all_labels, avg_loss
 
 
 # ---------------------------------------------------------------------------
 # Training loop
 # ---------------------------------------------------------------------------
-def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
-                epochs=50, batch_size=128, lr=1e-2, device="cuda",
+def _fmt_duration(seconds):
+    """Format seconds as Xm Ys."""
+    m, s = divmod(int(seconds), 60)
+    if m > 0:
+        return f"{m}m {s}s"
+    return f"{seconds:.1f}s"
+
+
+def train_model(model, train_loader, val_loader, experiment_dir,
+                class_weights, epochs=50, lr=1e-2, device="cuda",
                 log_every_n_steps=100, patience=15, lr_warmup_epochs=0,
                 weight_decay=1e-3, resume=False, gradient_accumulation_steps=None,
-                mixed_precision=False):
+                mixed_precision=False, train_f1_every_n_epochs=1):
     """Unified training loop with checkpointing and configurable settings.
 
     Args:
         model: RetweetGNN instance (already on device).
-        raw_train_samples: list of sample dicts for training.
-        raw_val_samples: list of sample dicts for validation.
+        train_loader: iterable yielding PyG Batch objects (e.g. ParquetGNNLoader).
+            Must support len() returning total number of batches.
+        val_loader: iterable yielding PyG Batch objects for validation.
         experiment_dir: path to experiment output directory.
+        class_weights: torch tensor of class weights (pre-computed).
         epochs: number of training epochs.
-        batch_size: batch size for DataLoader.
         lr: peak learning rate (reached after warmup).
         device: torch device string.
         log_every_n_steps: how often to log checkpoint metrics.
@@ -253,6 +428,9 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
             disables accumulation (default behavior).
         mixed_precision: if True, use automatic mixed precision (float16) with
             GradScaler for faster training on CUDA. Requires CUDA device.
+        train_f1_every_n_epochs: compute train F1 every N epochs during
+            training. None skips train F1 entirely during the loop. In all
+            cases, final train F1 on the best model is computed at the end.
 
     Returns:
         (model, history) — model loaded with best weights, and full training history dict.
@@ -264,16 +442,6 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
     checkpoint_path = f"{experiment_dir}/training_checkpoint.pt"
     best_model_path = f"{experiment_dir}/best_retweet_gnn_general.pt"
     history_path = f"{experiment_dir}/training_history.pkl"
-
-    y = np.array([s["label"] for s in raw_train_samples])
-    class_weights = compute_class_weight(class_weight="balanced", classes=np.unique(y), y=y)
-    class_weights = torch.tensor(class_weights, dtype=torch.float)
-
-    train_ds = RetweetDataset(raw_train_samples)
-    val_ds = RetweetDataset(raw_val_samples)
-
-    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, drop_last=True)
-    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
 
     optimizer = torch.optim.AdamW(
         filter(lambda p: p.requires_grad, model.parameters()),
@@ -297,14 +465,18 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
 
     steps_per_epoch = len(train_loader)
     total_steps = steps_per_epoch * epochs
-    print(f"Training on {device} | {len(train_ds)} train / {len(val_ds)} val samples")
+    n_train = train_loader.total_samples if hasattr(train_loader, 'total_samples') else '?'
+    n_val = val_loader.total_samples if hasattr(val_loader, 'total_samples') else '?'
+    print(f"Training on {device} | {n_train} train / {n_val} val samples")
     print(f"Trainable params: {sum(p.numel() for p in model.parameters() if p.requires_grad):,}")
     print(f"Steps/epoch: {steps_per_epoch} | Total steps: {total_steps} | "
           f"Logging every {log_every_n_steps} steps")
     print(f"LR warmup: {lr_warmup_epochs} epochs | weight_decay: {weight_decay} | "
           f"patience: {patience}")
+    print(f"Train F1 every: {train_f1_every_n_epochs} epochs")
 
     _use_grad_accum = (gradient_accumulation_steps is not None and gradient_accumulation_steps > 1)
+    batch_size = train_loader.batch_size if hasattr(train_loader, 'batch_size') else 256
     if _use_grad_accum:
         print(f"Gradient accumulation: {gradient_accumulation_steps} steps | "
               f"Effective batch size: {batch_size * gradient_accumulation_steps}")
@@ -316,6 +488,7 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
         print(f"Mixed precision: enabled (float16 autocast + GradScaler)")
 
     best_val_f1 = 0
+    best_epoch = 0
     global_step = 0
     running_loss = 0.0
     running_steps = 0
@@ -391,11 +564,12 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
                 t_val = time.time()
                 val_f1, _, _, val_loss = evaluate(model, val_loader, device,
                                                   class_weights=class_weights, epoch=epoch)
-                print(f"    Val eval took {time.time() - t_val:.1f}s")
+                print(f"    Val eval took {_fmt_duration(time.time() - t_val)}")
                 gate_val = torch.sigmoid(model.gate_param).item()
 
                 if val_f1 > best_val_f1:
                     best_val_f1 = val_f1
+                    best_epoch = epoch
                     steps_since_improvement = 0
                     torch.save(model.state_dict(), best_model_path)
                 else:
@@ -422,6 +596,16 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
                                     optimizer, scheduler, best_val_f1,
                                     steps_since_improvement)
                     model.load_state_dict(torch.load(best_model_path, weights_only=True))
+                    # Compute final train F1 on best model
+                    print(f"    Computing train F1 on best model (epoch {best_epoch})...")
+                    t_train_f1 = time.time()
+                    final_train_f1, _, _, _ = evaluate(model, train_loader, device)
+                    print(f"    Train F1 took {_fmt_duration(time.time() - t_train_f1)}")
+                    print(f"    Best model train F1: {final_train_f1:.4f}")
+                    history["final_train_f1"] = final_train_f1
+                    history["best_epoch"] = best_epoch
+                    with open(history_path, "wb") as f:
+                        pickle.dump(history, f)
                     return model, history
 
                 running_loss = 0.0
@@ -442,20 +626,29 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
 
         # End-of-epoch evaluation
         print(f"\n  === End of epoch {epoch}/{epochs} ===")
-        print(f"    Computing train F1...")
-        t_train_f1 = time.time()
-        train_f1, _, _, _ = evaluate(model, train_loader, device)
-        print(f"    Train F1 took {time.time() - t_train_f1:.1f}s")
+        _compute_train_f1 = (train_f1_every_n_epochs is not None
+                             and epoch % train_f1_every_n_epochs == 0)
+        if _compute_train_f1:
+            print(f"    Computing train F1...")
+            t_train_f1 = time.time()
+            train_f1, _, _, _ = evaluate(model, train_loader, device)
+            print(f"    Train F1 took {_fmt_duration(time.time() - t_train_f1)}")
+        else:
+            train_f1 = None
 
         print(f"    Computing val F1 + val loss (single pass)...")
         t_val = time.time()
         val_f1, _, _, val_loss = evaluate(model, val_loader, device,
                                           class_weights=class_weights, epoch=epoch)
-        print(f"    Val eval took {time.time() - t_val:.1f}s")
+        print(f"    Val eval took {_fmt_duration(time.time() - t_val)}")
 
         gate_val = torch.sigmoid(model.gate_param).item()
-        print(f"    Train F1: {train_f1:.4f} | Val F1: {val_f1:.4f} | "
-              f"Val Loss: {val_loss:.4f} | Best: {best_val_f1:.4f} | Gate: {gate_val:.4f}")
+        if train_f1 is not None:
+            print(f"    Train F1: {train_f1:.4f} | Val F1: {val_f1:.4f} | "
+                  f"Val Loss: {val_loss:.4f} | Best: {best_val_f1:.4f} | Gate: {gate_val:.4f}")
+        else:
+            print(f"    Val F1: {val_f1:.4f} | Val Loss: {val_loss:.4f} | "
+                  f"Best: {best_val_f1:.4f} | Gate: {gate_val:.4f}")
 
         history["epoch_step"].append(global_step)
         history["epoch_train_f1"].append(train_f1)
@@ -464,6 +657,7 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
 
         if val_f1 > best_val_f1:
             best_val_f1 = val_f1
+            best_epoch = epoch
             steps_since_improvement = 0
             torch.save(model.state_dict(), best_model_path)
 
@@ -477,6 +671,16 @@ def train_model(model, raw_train_samples, raw_val_samples, experiment_dir,
 
     print(f"\nTraining complete. Best val F1: {best_val_f1:.4f} | Total steps: {global_step}")
     model.load_state_dict(torch.load(best_model_path, weights_only=True))
+    # Compute final train F1 on best model
+    print(f"    Computing train F1 on best model (epoch {best_epoch})...")
+    t_train_f1 = time.time()
+    final_train_f1, _, _, _ = evaluate(model, train_loader, device)
+    print(f"    Train F1 took {_fmt_duration(time.time() - t_train_f1)}")
+    print(f"    Best model train F1: {final_train_f1:.4f}")
+    history["final_train_f1"] = final_train_f1
+    history["best_epoch"] = best_epoch
+    with open(history_path, "wb") as f:
+        pickle.dump(history, f)
     return model, history
 
 
