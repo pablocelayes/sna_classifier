@@ -402,7 +402,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 class_weights, epochs=50, lr=1e-2, device="cuda",
                 log_every_n_steps=100, patience=15, lr_warmup_epochs=0,
                 weight_decay=1e-3, resume=False, gradient_accumulation_steps=None,
-                mixed_precision=False, train_f1_every_n_epochs=1):
+                mixed_precision=False, train_f1_every_n_epochs=1,
+                progress_every_n_steps=None):
     """Unified training loop with checkpointing and configurable settings.
 
     Args:
@@ -525,6 +526,10 @@ def train_model(model, train_loader, val_loader, experiment_dir,
         model.train()
         epoch_loss_sum = 0.0
         epoch_loss_batches = 0
+        running_loss = 0.0
+        running_steps = 0
+        _progress_interval = progress_every_n_steps or max(1, steps_per_epoch // 10)
+        _last_progress_time = time.time()
         print(f"  Epoch {epoch}/{epochs} — {steps_per_epoch} steps")
         _epoch_start_time = time.time()
 
