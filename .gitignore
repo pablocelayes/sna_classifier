@@ -3,6 +3,9 @@
 *.pyc
 localsettings.py
 tw_dataset/big_graph.gpickle
+experiments/_5_gnn_models_2026/cornell
+experiments/_5_gnn_models_2026/experiments
+*.pt
 *.pickle
 *.db
 *.bak

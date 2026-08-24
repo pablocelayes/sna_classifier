@@ -19,7 +19,7 @@ import pyarrow.parquet as pq
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, precision_score, recall_score
 from sklearn.utils.class_weight import compute_class_weight
 from torch_geometric.data import Data, Dataset, Batch
 from torch_geometric.loader import DataLoader
@@ -362,7 +362,7 @@ def combined_loss(logits, labels, class_weights, epoch, warmup_epochs=10):
 # ---------------------------------------------------------------------------
 @torch.no_grad()
 def evaluate(model, loader, device, class_weights=None, epoch=None):
-    """Evaluate model on loader. Returns (f1, preds, labels, avg_loss).
+    """Evaluate model on loader. Returns (f1, precision, recall, preds, labels, avg_loss).
     If class_weights and epoch are provided, also computes average loss (single pass).
     Otherwise avg_loss is None.
     """
@@ -383,8 +383,10 @@ def evaluate(model, loader, device, class_weights=None, epoch=None):
     all_preds = torch.cat(all_preds)
     all_labels = torch.cat(all_labels)
     f1 = f1_score(all_labels, all_preds)
+    precision = precision_score(all_labels, all_preds, zero_division=0)
+    recall = recall_score(all_labels, all_preds, zero_division=0)
     avg_loss = total_loss / max(n_batches, 1) if compute_loss else None
-    return f1, all_preds, all_labels, avg_loss
+    return f1, precision, recall, all_preds, all_labels, avg_loss
 
 
 # ---------------------------------------------------------------------------
@@ -487,6 +489,12 @@ def train_model(model, train_loader, val_loader, experiment_dir,
     if mixed_precision:
         print(f"Mixed precision: enabled (float16 autocast + GradScaler)")
 
+    # Use sampled train-eval loader if provided, otherwise fall back to full train_loader
+    _train_eval = train_eval_loader if train_eval_loader is not None else train_loader
+    _train_eval_label = "sampled" if train_eval_loader is not None else "full"
+    n_train_eval = _train_eval.total_samples if hasattr(_train_eval, 'total_samples') else '?'
+    print(f"Train-eval loader ({_train_eval_label}): {n_train_eval} samples")
+
     best_val_f1 = 0
     best_epoch = 0
     global_step = 0
@@ -497,8 +505,11 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
     history = {
         "step": [], "train_loss": [], "val_loss": [], "val_f1": [],
+        "val_precision": [], "val_recall": [],
         "epoch_step": [], "epoch_train_loss": [], "epoch_train_f1": [],
+        "epoch_train_precision": [], "epoch_train_recall": [],
         "epoch_val_f1": [], "epoch_val_loss": [],
+        "epoch_val_precision": [], "epoch_val_recall": [],
     }
 
     # Resume from checkpoint if available
@@ -541,6 +552,13 @@ def train_model(model, train_loader, val_loader, experiment_dir,
             with torch.autocast(device_type=_autocast_device, dtype=torch.float16, enabled=mixed_precision):
                 logits = model(batch)
                 loss = combined_loss(logits, batch.y.float(), class_weights, epoch)
+
+            if not torch.isfinite(loss):
+                raise RuntimeError(
+                    f"Non-finite training loss at epoch {epoch}, step {step_in_epoch}. "
+                    f"Rerun with mixed_precision=False for this model/run."
+                )
+
             if _use_grad_accum:
                 scaler.scale(loss / gradient_accumulation_steps).backward()
             else:
@@ -572,8 +590,9 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                       f"(epoch {epoch}/{epochs}, step {step_in_epoch}/{steps_per_epoch}) ---")
                 print(f"    Computing val F1 + val loss (single pass)...")
                 t_val = time.time()
-                val_f1, _, _, val_loss = evaluate(model, val_loader, device,
-                                                  class_weights=class_weights, epoch=epoch)
+                val_f1, val_prec, val_rec, _, _, val_loss = evaluate(
+                    model, val_loader, device,
+                    class_weights=class_weights, epoch=epoch)
                 print(f"    Val eval took {_fmt_duration(time.time() - t_val)}")
                 gate_val = torch.sigmoid(model.gate_param).item()
 
@@ -586,7 +605,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                     steps_since_improvement += 1
 
                 print(f"    Loss: {avg_loss:.4f} | Val Loss: {val_loss:.4f} | "
-                      f"Val F1: {val_f1:.4f} | Best: {best_val_f1:.4f} | "
+                      f"Val F1: {val_f1:.4f} (P={val_prec:.4f} R={val_rec:.4f}) | "
+                      f"Best: {best_val_f1:.4f} | "
                       f"Gate: {gate_val:.4f} | "
                       f"No improvement: {steps_since_improvement}/{patience}")
 
@@ -594,6 +614,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 history["train_loss"].append(avg_loss)
                 history["val_loss"].append(val_loss)
                 history["val_f1"].append(val_f1)
+                history["val_precision"].append(val_prec)
+                history["val_recall"].append(val_rec)
 
                 # Early stopping
                 if patience and steps_since_improvement >= patience:
@@ -605,13 +627,15 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                                     optimizer, scheduler, best_val_f1,
                                     steps_since_improvement)
                     model.load_state_dict(torch.load(best_model_path, weights_only=True))
-                    # Compute final train F1 on best model
-                    print(f"    Computing train F1 on best model (epoch {best_epoch})...")
+                    # Compute final train F1 on best model (using sampled loader)
+                    print(f"    Computing train F1 on best model (epoch {best_epoch}, {_train_eval_label})...")
                     t_train_f1 = time.time()
-                    final_train_f1, _, _, _ = evaluate(model, train_loader, device)
+                    final_train_f1, final_train_prec, final_train_rec, _, _, _ = evaluate(model, _train_eval, device)
                     print(f"    Train F1 took {_fmt_duration(time.time() - t_train_f1)}")
-                    print(f"    Best model train F1: {final_train_f1:.4f}")
+                    print(f"    Best model train F1: {final_train_f1:.4f} (P={final_train_prec:.4f} R={final_train_rec:.4f})")
                     history["final_train_f1"] = final_train_f1
+                    history["final_train_precision"] = final_train_prec
+                    history["final_train_recall"] = final_train_rec
                     history["best_epoch"] = best_epoch
                     with open(history_path, "wb") as f:
                         pickle.dump(history, f)
@@ -663,8 +687,12 @@ def train_model(model, train_loader, val_loader, experiment_dir,
         history["epoch_step"].append(global_step)
         history["epoch_train_loss"].append(epoch_train_loss)
         history["epoch_train_f1"].append(train_f1)
+        history["epoch_train_precision"].append(train_prec)
+        history["epoch_train_recall"].append(train_rec)
         history["epoch_val_f1"].append(val_f1)
         history["epoch_val_loss"].append(val_loss)
+        history["epoch_val_precision"].append(val_prec)
+        history["epoch_val_recall"].append(val_rec)
 
         if val_f1 > best_val_f1:
             best_val_f1 = val_f1
@@ -682,13 +710,15 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
     print(f"\nTraining complete. Best val F1: {best_val_f1:.4f} | Total steps: {global_step}")
     model.load_state_dict(torch.load(best_model_path, weights_only=True))
-    # Compute final train F1 on best model
-    print(f"    Computing train F1 on best model (epoch {best_epoch})...")
+    # Compute final train F1 on best model (using sampled loader)
+    print(f"    Computing train F1 on best model (epoch {best_epoch}, {_train_eval_label})...")
     t_train_f1 = time.time()
-    final_train_f1, _, _, _ = evaluate(model, train_loader, device)
+    final_train_f1, final_train_prec, final_train_rec, _, _, _ = evaluate(model, _train_eval, device)
     print(f"    Train F1 took {_fmt_duration(time.time() - t_train_f1)}")
-    print(f"    Best model train F1: {final_train_f1:.4f}")
+    print(f"    Best model train F1: {final_train_f1:.4f} (P={final_train_prec:.4f} R={final_train_rec:.4f})")
     history["final_train_f1"] = final_train_f1
+    history["final_train_precision"] = final_train_prec
+    history["final_train_recall"] = final_train_rec
     history["best_epoch"] = best_epoch
     with open(history_path, "wb") as f:
         pickle.dump(history, f)
