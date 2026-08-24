@@ -437,7 +437,6 @@ def train_model(model, train_loader, val_loader, experiment_dir,
     """
     import pickle
     import time
-    from tqdm.auto import tqdm
 
     checkpoint_path = f"{experiment_dir}/training_checkpoint.pt"
     best_model_path = f"{experiment_dir}/best_retweet_gnn_general.pt"
@@ -526,15 +525,13 @@ def train_model(model, train_loader, val_loader, experiment_dir,
         model.train()
         epoch_loss_sum = 0.0
         epoch_loss_batches = 0
-        pbar = tqdm(enumerate(train_loader, 1), total=steps_per_epoch,
-                    desc=f"Epoch {epoch}/{epochs}", leave=False,
-                    bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} "
-                              "[{elapsed}<{remaining}, {rate_fmt}]")
+        print(f"  Epoch {epoch}/{epochs} — {steps_per_epoch} steps")
+        _epoch_start_time = time.time()
 
         if _use_grad_accum:
             optimizer.zero_grad()
 
-        for step_in_epoch, batch in pbar:
+        for step_in_epoch, batch in enumerate(train_loader, 1):
             batch = batch.to(device)
             with torch.autocast(device_type=_autocast_device, dtype=torch.float16, enabled=mixed_precision):
                 logits = model(batch)
@@ -558,11 +555,13 @@ def train_model(model, train_loader, val_loader, experiment_dir,
             running_steps += 1
             epoch_loss_sum += loss_item
             epoch_loss_batches += 1
-            pbar.set_postfix(loss=f"{loss_item:.4f}", step=global_step)
+            if step_in_epoch % max(1, steps_per_epoch // 10) == 0:
+                elapsed = time.time() - _epoch_start_time
+                print(f"    step {step_in_epoch}/{steps_per_epoch} — "
+                      f"loss: {loss_item:.4f} — {elapsed:.0f}s elapsed")
 
             # Periodic checkpoint
             if global_step % log_every_n_steps == 0:
-                pbar.refresh()
                 avg_loss = running_loss / running_steps
                 print(f"\n  --- Checkpoint at step {global_step} "
                       f"(epoch {epoch}/{epochs}, step {step_in_epoch}/{steps_per_epoch}) ---")
@@ -595,7 +594,6 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 if patience and steps_since_improvement >= patience:
                     print(f"\n  Early stopping: no val F1 improvement for {patience} "
                           f"consecutive checkpoints. Best val F1: {best_val_f1:.4f}")
-                    pbar.close()
                     with open(history_path, "wb") as f:
                         pickle.dump(history, f)
                     _save_checkpoint(checkpoint_path, epoch, global_step, model,
@@ -617,8 +615,6 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 running_loss = 0.0
                 running_steps = 0
                 model.train()
-
-        pbar.close()
 
         # Flush any remaining accumulated gradients at epoch boundary
         if _use_grad_accum and step_in_epoch % gradient_accumulation_steps != 0:
