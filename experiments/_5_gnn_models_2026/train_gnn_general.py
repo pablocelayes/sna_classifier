@@ -6,7 +6,6 @@ configuration from cells 4 and 5 as command-line arguments.
 """
 
 import argparse
-import atexit
 import gc
 import glob
 import json
@@ -16,7 +15,6 @@ import pickle
 import shutil
 import subprocess
 import sys
-import threading
 import time
 import warnings
 from contextlib import contextmanager
@@ -39,9 +37,6 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 from sklearn.metrics.pairwise import linear_kernel, polynomial_kernel, rbf_kernel
 from sklearn.svm import SVC
 from torch_geometric.data import Batch, Data
-
-import mlflow
-from mlflow.tracking import MlflowClient
 
 from gnn_models import RetweetGNN, train_model
 from tw_dataset.settings import IG_GRAPH_PATH
@@ -107,59 +102,6 @@ def tee_to_log(log_path):
         sys.stdout = original_stdout
         tee.close()
         print(f"Training log saved to: {log_path}")
-
-
-class MLflowHistoryLogger(threading.Thread):
-    """Daemon thread that polls training_history.pkl and logs new metrics to MLflow."""
-
-    def __init__(self, history_path, poll_interval=30):
-        super().__init__(daemon=True)
-        self.history_path = history_path
-        self.poll_interval = poll_interval
-        self._stop_event = threading.Event()
-        self._logged_checkpoint_steps = set()
-        self._logged_epoch_steps = set()
-
-    def stop(self):
-        self._stop_event.set()
-
-    def sync(self):
-        if not os.path.exists(self.history_path):
-            return
-        try:
-            with open(self.history_path, "rb") as f:
-                history = pickle.load(f)
-        except Exception:
-            return
-
-        for i, step in enumerate(history.get("step", [])):
-            if step not in self._logged_checkpoint_steps:
-                mlflow.log_metrics(
-                    {
-                        "checkpoint/train_loss": history["train_loss"][i],
-                        "checkpoint/val_loss": history["val_loss"][i],
-                        "checkpoint/val_f1": history["val_f1"][i],
-                    },
-                    step=step,
-                )
-                self._logged_checkpoint_steps.add(step)
-
-        for i, step in enumerate(history.get("epoch_step", [])):
-            if step not in self._logged_epoch_steps:
-                metrics = {
-                    "epoch/val_loss": history["epoch_val_loss"][i],
-                    "epoch/val_f1": history["epoch_val_f1"][i],
-                }
-                if i < len(history.get("epoch_train_f1", [])):
-                    metrics["epoch/train_f1"] = history["epoch_train_f1"][i]
-                mlflow.log_metrics(metrics, step=step)
-                self._logged_epoch_steps.add(step)
-
-    def run(self):
-        while not self._stop_event.is_set():
-            self.sync()
-            self._stop_event.wait(self.poll_interval)
-        self.sync()
 
 
 class ChunkedGNNTrainLoader:
@@ -1378,52 +1320,40 @@ def resolve_training_hparams(args):
     }
 
 
-def start_mlflow_run(args, valid_users, train_plan):
-    experiment_name = f"/Users/pablo.celayes@bolt.eu/sna_classifier_gnn/{args.final_tag}"
-    os.makedirs(f"/Workspace{os.path.dirname(experiment_name)}", exist_ok=True)
-    client = MlflowClient()
-    experiment = client.get_experiment_by_name(experiment_name)
-    if experiment is None:
-        experiment_id = client.create_experiment(experiment_name)
-    else:
-        experiment_id = experiment.experiment_id
-    mlflow.set_experiment(experiment_id=experiment_id)
-
-    mlflow_run = mlflow.start_run(run_name=args.final_tag)
-
-    mlflow.log_params(
-        {
-            "experiment_tag": args.experiment_tag,
-            "final_tag": args.final_tag,
-            "n_users": args.n_users if args.n_users else "all",
-            "n_train_users": len(valid_users),
-            "epochs": args.epochs,
-            "batch_size": args.batch_size,
-            "train_chunk_size": args.train_chunk_size,
-            "lr": train_plan["train_lr"],
-            "weight_decay": train_plan["train_wd"],
-            "warmup_epochs": train_plan["warmup_epochs"],
-            "patience": args.patience if args.patience else "disabled",
-            "gradient_accumulation_steps": args.gradient_accumulation_steps or 1,
-            "mixed_precision": args.mixed_precision,
-            "log_every_n_steps": args.log_every_n_steps,
-            "train_f1_every_n_epochs": args.train_f1_every_n_epochs or "disabled",
-            "max_val_samples": args.max_val_samples or "all",
-            "max_train_eval_samples": args.max_train_eval_samples or "all",
-            "ff_hidden_dim": 64,
-            "gcn_hidden_dim": 64,
-            "transformer_dim": 64,
-            "transformer_heads": 4,
-            "dropout": args.dropout,
-            "drop_edge_rate": args.drop_edge_rate,
-            "init_weights_path": args.init_weights_path or "none",
-            "reset_gnn_training": args.reset_gnn_training,
-        }
-    )
-
-    print(f"MLflow experiment: {experiment_name}")
-    print(f"MLflow run ID:     {mlflow_run.info.run_id}")
-    return mlflow_run
+def save_run_params(args, valid_users, train_plan):
+    """Save all run parameters to a JSON file in the experiment directory."""
+    params = {
+        "experiment_tag": args.experiment_tag,
+        "final_tag": args.final_tag,
+        "n_users": args.n_users if args.n_users else "all",
+        "n_train_users": len(valid_users),
+        "epochs": args.epochs,
+        "batch_size": args.batch_size,
+        "train_chunk_size": args.train_chunk_size,
+        "lr": train_plan["train_lr"],
+        "weight_decay": train_plan["train_wd"],
+        "warmup_epochs": train_plan["warmup_epochs"],
+        "patience": args.patience if args.patience else "disabled",
+        "gradient_accumulation_steps": args.gradient_accumulation_steps or 1,
+        "mixed_precision": args.mixed_precision,
+        "log_every_n_steps": args.log_every_n_steps,
+        "train_f1_every_n_epochs": args.train_f1_every_n_epochs or "disabled",
+        "max_val_samples": args.max_val_samples or "all",
+        "max_train_eval_samples": args.max_train_eval_samples or "all",
+        "ff_hidden_dim": 64,
+        "gcn_hidden_dim": 64,
+        "transformer_dim": 64,
+        "transformer_heads": 4,
+        "dropout": args.dropout,
+        "drop_edge_rate": args.drop_edge_rate,
+        "init_weights_path": args.init_weights_path or "none",
+        "reset_gnn_training": args.reset_gnn_training,
+        "started_at": datetime.now().isoformat(),
+    }
+    params_path = os.path.join(args.experiment_dir, "run_params.json")
+    with open(params_path, "w") as f:
+        json.dump(params, f, indent=2)
+    print(f"Run parameters saved to: {params_path}")
 
 
 def free_unused_memory():
@@ -1434,128 +1364,86 @@ def free_unused_memory():
 
 def train_and_log(args, device, model, class_weights, train_loader, val_loader, train_eval_loader, train_plan):
     training_log_path = f"{args.experiment_dir}/training.log"
-    history_pkl = os.path.join(args.experiment_dir, "training_history.pkl")
-    mlflow_logger = MLflowHistoryLogger(history_pkl, poll_interval=30)
-    mlflow_logger.start()
 
-    def cleanup_mlflow_logger():
-        if mlflow_logger.is_alive():
-            mlflow_logger.stop()
-            mlflow_logger.join(timeout=5)
-        mlflow_logger.sync()
+    with tee_to_log(training_log_path):
+        if args._apply_init_weights:
+            print("\n" + "=" * 60)
+            print("INITIAL EVALUATION (pre-trained weights, before training)")
+            print("=" * 60)
+            model.eval()
+            init_criterion = torch.nn.CrossEntropyLoss(weight=class_weights.to(device))
 
-    atexit.register(cleanup_mlflow_logger)
-
-    history = None
-    try:
-        with tee_to_log(training_log_path):
-            if args._apply_init_weights:
-                print("\n" + "=" * 60)
-                print("INITIAL EVALUATION (pre-trained weights, before training)")
-                print("=" * 60)
-                model.eval()
-                init_criterion = torch.nn.CrossEntropyLoss(weight=class_weights.to(device))
-
-                val_preds, val_labels, val_loss, val_batches = [], [], 0.0, 0
-                t_val_init = time.time()
-                with torch.no_grad():
-                    for batch in val_loader:
-                        batch = batch.to(device)
-                        out = model(batch)
-                        val_loss += init_criterion(out, batch.y).item()
-                        val_batches += 1
-                        val_preds.extend(out.argmax(dim=1).cpu().tolist())
-                        val_labels.extend(batch.y.cpu().tolist())
-                val_init_elapsed = time.time() - t_val_init
-                print(
-                    f"  Val   — Loss: {val_loss / max(val_batches, 1):.4f} | "
-                    f"Acc: {accuracy_score(val_labels, val_preds):.4f} | "
-                    f"F1: {f1_score(val_labels, val_preds):.4f} | "
-                    f"P: {precision_score(val_labels, val_preds, zero_division=0):.4f} | "
-                    f"R: {recall_score(val_labels, val_preds, zero_division=0):.4f} | "
-                    f"samples: {len(val_labels)} | "
-                    f"took {int(val_init_elapsed)//60}m {int(val_init_elapsed)%60:02d}s"
-                )
-
-                tr_preds, tr_labels, tr_loss, tr_batches = [], [], 0.0, 0
-                t_tr_init = time.time()
-                with torch.no_grad():
-                    for batch in train_eval_loader:
-                        batch = batch.to(device)
-                        out = model(batch)
-                        tr_loss += init_criterion(out, batch.y).item()
-                        tr_batches += 1
-                        tr_preds.extend(out.argmax(dim=1).cpu().tolist())
-                        tr_labels.extend(batch.y.cpu().tolist())
-                tr_init_elapsed = time.time() - t_tr_init
-                print(
-                    f"  Train — Loss: {tr_loss / max(tr_batches, 1):.4f} | "
-                    f"Acc: {accuracy_score(tr_labels, tr_preds):.4f} | "
-                    f"F1: {f1_score(tr_labels, tr_preds):.4f} | "
-                    f"P: {precision_score(tr_labels, tr_preds, zero_division=0):.4f} | "
-                    f"R: {recall_score(tr_labels, tr_preds, zero_division=0):.4f} | "
-                    f"samples: {len(tr_labels)} | "
-                    f"took {int(tr_init_elapsed)//60}m {int(tr_init_elapsed)%60:02d}s"
-                )
-                print("=" * 60 + "\n")
-                del val_preds, val_labels, tr_preds, tr_labels, init_criterion
-                free_unused_memory()
-
-            def mlflow_on_checkpoint(history_dict, global_step, is_epoch_end):
-                try:
-                    metrics = {}
-                    if not is_epoch_end and history_dict["step"]:
-                        i = len(history_dict["step"]) - 1
-                        metrics["checkpoint/train_loss"] = history_dict["train_loss"][i]
-                        metrics["checkpoint/val_loss"] = history_dict["val_loss"][i]
-                        metrics["checkpoint/val_f1"] = history_dict["val_f1"][i]
-                    if is_epoch_end and history_dict["epoch_step"]:
-                        i = len(history_dict["epoch_step"]) - 1
-                        metrics["epoch/val_loss"] = history_dict["epoch_val_loss"][i]
-                        metrics["epoch/val_f1"] = history_dict["epoch_val_f1"][i]
-                        if (
-                            i < len(history_dict.get("epoch_train_f1", []))
-                            and history_dict["epoch_train_f1"][i] is not None
-                        ):
-                            metrics["epoch/train_f1"] = history_dict["epoch_train_f1"][i]
-                    if metrics:
-                        mlflow.log_metrics(metrics, step=global_step)
-                except Exception as exc:
-                    print(f"Warning: MLflow callback error: {exc}")
-
-            model, history = train_model(
-                model=model,
-                train_loader=train_loader,
-                val_loader=val_loader,
-                experiment_dir=args.experiment_dir,
-                class_weights=class_weights,
-                epochs=args.epochs,
-                device=device,
-                lr=train_plan["train_lr"],
-                log_every_n_steps=args.log_every_n_steps,
-                patience=args.patience,
-                lr_warmup_epochs=train_plan["warmup_epochs"],
-                weight_decay=train_plan["train_wd"],
-                resume=train_plan["can_resume"],
-                gradient_accumulation_steps=args.gradient_accumulation_steps,
-                mixed_precision=args.mixed_precision,
-                train_f1_every_n_epochs=args.train_f1_every_n_epochs,
-                train_eval_loader=train_eval_loader,
-                on_checkpoint=mlflow_on_checkpoint,
+            val_preds, val_labels, val_loss, val_batches = [], [], 0.0, 0
+            t_val_init = time.time()
+            with torch.no_grad():
+                for batch in val_loader:
+                    batch = batch.to(device)
+                    out = model(batch)
+                    val_loss += init_criterion(out, batch.y).item()
+                    val_batches += 1
+                    val_preds.extend(out.argmax(dim=1).cpu().tolist())
+                    val_labels.extend(batch.y.cpu().tolist())
+            val_init_elapsed = time.time() - t_val_init
+            print(
+                f"  Val   — Loss: {val_loss / max(val_batches, 1):.4f} | "
+                f"Acc: {accuracy_score(val_labels, val_preds):.4f} | "
+                f"F1: {f1_score(val_labels, val_preds):.4f} | "
+                f"P: {precision_score(val_labels, val_preds, zero_division=0):.4f} | "
+                f"R: {recall_score(val_labels, val_preds, zero_division=0):.4f} | "
+                f"samples: {len(val_labels)} | "
+                f"took {int(val_init_elapsed)//60}m {int(val_init_elapsed)%60:02d}s"
             )
-    finally:
-        mlflow_logger.stop()
-        mlflow_logger.join(timeout=10)
-        print(
-            f"MLflow logger: logged {len(mlflow_logger._logged_checkpoint_steps)} checkpoints, "
-            f"{len(mlflow_logger._logged_epoch_steps)} epochs during training."
+
+            tr_preds, tr_labels, tr_loss, tr_batches = [], [], 0.0, 0
+            t_tr_init = time.time()
+            with torch.no_grad():
+                for batch in train_eval_loader:
+                    batch = batch.to(device)
+                    out = model(batch)
+                    tr_loss += init_criterion(out, batch.y).item()
+                    tr_batches += 1
+                    tr_preds.extend(out.argmax(dim=1).cpu().tolist())
+                    tr_labels.extend(batch.y.cpu().tolist())
+            tr_init_elapsed = time.time() - t_tr_init
+            print(
+                f"  Train — Loss: {tr_loss / max(tr_batches, 1):.4f} | "
+                f"Acc: {accuracy_score(tr_labels, tr_preds):.4f} | "
+                f"F1: {f1_score(tr_labels, tr_preds):.4f} | "
+                f"P: {precision_score(tr_labels, tr_preds, zero_division=0):.4f} | "
+                f"R: {recall_score(tr_labels, tr_preds, zero_division=0):.4f} | "
+                f"samples: {len(tr_labels)} | "
+                f"took {int(tr_init_elapsed)//60}m {int(tr_init_elapsed)%60:02d}s"
+            )
+            print("=" * 60 + "\n")
+            del val_preds, val_labels, tr_preds, tr_labels, init_criterion
+            free_unused_memory()
+
+        model, history = train_model(
+            model=model,
+            train_loader=train_loader,
+            val_loader=val_loader,
+            experiment_dir=args.experiment_dir,
+            class_weights=class_weights,
+            epochs=args.epochs,
+            device=device,
+            lr=train_plan["train_lr"],
+            log_every_n_steps=args.log_every_n_steps,
+            patience=args.patience,
+            lr_warmup_epochs=train_plan["warmup_epochs"],
+            weight_decay=train_plan["train_wd"],
+            resume=train_plan["can_resume"],
+            gradient_accumulation_steps=args.gradient_accumulation_steps,
+            mixed_precision=args.mixed_precision,
+            train_f1_every_n_epochs=args.train_f1_every_n_epochs,
+            train_eval_loader=train_eval_loader,
+            on_checkpoint=None,
         )
-        mlflow_logger.sync()
 
     return history
 
 
-def log_final_mlflow_artifacts(args, history, mlflow_run):
+def save_final_results(args, history):
+    """Save training summary metrics and curves to the experiment directory."""
     if history:
         summary = {}
         if history.get("val_f1"):
@@ -1568,19 +1456,19 @@ def log_final_mlflow_artifacts(args, history, mlflow_run):
             summary["final_train_loss"] = history["train_loss"][-1]
         if history.get("val_loss"):
             summary["final_val_loss"] = history["val_loss"][-1]
+        summary["completed_at"] = datetime.now().isoformat()
         if summary:
-            mlflow.log_metrics(summary)
+            summary_path = os.path.join(args.experiment_dir, "run_summary.json")
+            with open(summary_path, "w") as f:
+                json.dump(summary, f, indent=2)
+            print(f"Run summary saved to: {summary_path}")
             for key, value in summary.items():
-                print(f"  {key}: {value:.4f}")
+                if isinstance(value, float):
+                    print(f"  {key}: {value:.4f}")
 
     best_model_path = os.path.join(args.experiment_dir, "best_retweet_gnn_general.pt")
     if os.path.exists(best_model_path):
-        mlflow.log_artifact(best_model_path, artifact_path="model")
-        print(f"Logged model artifact: {best_model_path}")
-
-    history_pkl_path = os.path.join(args.experiment_dir, "training_history.pkl")
-    if os.path.exists(history_pkl_path):
-        mlflow.log_artifact(history_pkl_path, artifact_path="history")
+        print(f"Best model saved at: {best_model_path}")
 
     if history and (history.get("step") or history.get("epoch_step")):
         fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -1615,12 +1503,10 @@ def log_final_mlflow_artifacts(args, history, mlflow_run):
 
         curves_path = os.path.join(args.experiment_dir, "training_curves.png")
         fig.savefig(curves_path, dpi=150, bbox_inches="tight")
-        mlflow.log_artifact(curves_path, artifact_path="plots")
         plt.close(fig)
-        print(f"Logged training curves artifact: {curves_path}")
+        print(f"Training curves saved to: {curves_path}")
 
-    mlflow.end_run()
-    print(f"\nMLflow run completed: {mlflow_run.info.run_id}")
+    print(f"\nTraining run completed. All results in: {args.experiment_dir}")
 
 
 def main():
@@ -1649,7 +1535,7 @@ def main():
     free_unused_memory()
 
     train_plan = resolve_training_hparams(args)
-    mlflow_run = start_mlflow_run(args, valid_users, train_plan)
+    save_run_params(args, valid_users, train_plan)
     history = train_and_log(
         args,
         device,
@@ -1660,7 +1546,7 @@ def main():
         train_eval_loader,
         train_plan,
     )
-    log_final_mlflow_artifacts(args, history, mlflow_run)
+    save_final_results(args, history)
 
 
 if __name__ == "__main__":
