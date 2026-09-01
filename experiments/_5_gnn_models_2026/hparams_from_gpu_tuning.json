@@ -1,0 +1,22 @@
+{
+  "_source": {
+    "experiment_id": "948972921441417",
+    "run_name": "skillful-kit-608",
+    "run_id": "02fe577dc1ab45ea9e2226cd46a85d13",
+    "best_val_f1": 0.874597
+  },
+  "epochs": 5,
+  "batch_size": 64,
+  "train_chunk_size": 10,
+  "patience": 10,
+  "grad_accum_steps": 2,
+  "max_val_samples": 50000,
+  "dropout": 0.1201975341512912,
+  "drop_edge_rate": 0.017425083650459836,
+  "lr": 5.611516415334506e-05,
+  "lr_schedule": "linear",
+  "weight_decay": 0.0014228952018686845,
+  "warmup_epochs": 2,
+  "finetune": true,
+  "init_weights_path": "./experiments/v2_N20/best_retweet_gnn_general.pt"
+}
