@@ -11,6 +11,7 @@ Contains:
 """
 import os
 import time
+import gc
 import pickle
 from random import shuffle as _shuffle_list
 
@@ -405,7 +406,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 log_every_n_steps=100, patience=15, lr_warmup_epochs=0,
                 weight_decay=1e-3, resume=False, gradient_accumulation_steps=None,
                 mixed_precision=False, train_f1_every_n_epochs=1,
-                progress_every_n_steps=None):
+                train_eval_loader=None,
+                on_checkpoint=None):
     """Unified training loop with checkpointing and configurable settings.
 
     Args:
@@ -434,6 +436,9 @@ def train_model(model, train_loader, val_loader, experiment_dir,
         train_f1_every_n_epochs: compute train F1 every N epochs during
             training. None skips train F1 entirely during the loop. In all
             cases, final train F1 on the best model is computed at the end.
+        on_checkpoint: optional callback(history, global_step, is_epoch_end) invoked
+            after each periodic checkpoint and end-of-epoch. Use for real-time
+            MLflow logging without file polling.
 
     Returns:
         (model, history) — model loaded with best weights, and full training history dict.
@@ -533,14 +538,14 @@ def train_model(model, train_loader, val_loader, experiment_dir,
     elif resume:
         print(f"  No checkpoint found at {checkpoint_path}, starting from scratch.")
 
+    _last_checkpoint_time = time.time()
+
     for epoch in range(start_epoch, epochs + 1):
         model.train()
         epoch_loss_sum = 0.0
         epoch_loss_batches = 0
         running_loss = 0.0
         running_steps = 0
-        _progress_interval = progress_every_n_steps or max(1, steps_per_epoch // 10)
-        _last_progress_time = time.time()
         print(f"  Epoch {epoch}/{epochs} — {steps_per_epoch} steps")
         _epoch_start_time = time.time()
 
@@ -588,6 +593,8 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 avg_loss = running_loss / running_steps
                 print(f"\n  --- Checkpoint at step {global_step} "
                       f"(epoch {epoch}/{epochs}, step {step_in_epoch}/{steps_per_epoch}) ---")
+                _steps_elapsed = time.time() - _last_checkpoint_time
+                print(f"    ⏱ Time since last checkpoint: {_fmt_duration(_steps_elapsed)}")
                 print(f"    Computing val F1 + val loss (single pass)...")
                 t_val = time.time()
                 val_f1, val_prec, val_rec, _, _, val_loss = evaluate(
@@ -617,6 +624,12 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                 history["val_precision"].append(val_prec)
                 history["val_recall"].append(val_rec)
 
+                # Save history after each checkpoint (not just end-of-epoch)
+                with open(history_path, "wb") as f:
+                    pickle.dump(history, f)
+                if on_checkpoint:
+                    on_checkpoint(history, global_step, is_epoch_end=False)
+
                 # Early stopping
                 if patience and steps_since_improvement >= patience:
                     print(f"\n  Early stopping: no val F1 improvement for {patience} "
@@ -643,6 +656,9 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
                 running_loss = 0.0
                 running_steps = 0
+                _last_checkpoint_time = time.time()
+                gc.collect()
+                torch.cuda.empty_cache()
                 model.train()
 
         # Flush any remaining accumulated gradients at epoch boundary
@@ -655,23 +671,31 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
         scheduler.step()
 
+        # Free GPU cache between training and evaluation
+        gc.collect()
+        torch.cuda.empty_cache()
+
         epoch_train_loss = epoch_loss_sum / max(epoch_loss_batches, 1)
 
         # End-of-epoch evaluation
         print(f"\n  === End of epoch {epoch}/{epochs} ===")
+        _epoch_elapsed = time.time() - _last_checkpoint_time
+        print(f"    ⏱ Time since last checkpoint: {_fmt_duration(_epoch_elapsed)}")
         _compute_train_f1 = (train_f1_every_n_epochs is not None
                              and epoch % train_f1_every_n_epochs == 0)
         if _compute_train_f1:
             print(f"    Computing train F1...")
             t_train_f1 = time.time()
-            train_f1, _, _, _ = evaluate(model, train_loader, device)
+            train_f1, train_prec, train_rec, _, _, _ = evaluate(model, train_loader, device)
             print(f"    Train F1 took {_fmt_duration(time.time() - t_train_f1)}")
         else:
             train_f1 = None
+            train_prec = None
+            train_rec = None
 
         print(f"    Computing val F1 + val loss (single pass)...")
         t_val = time.time()
-        val_f1, _, _, val_loss = evaluate(model, val_loader, device,
+        val_f1, val_prec, val_rec, _, _, val_loss = evaluate(model, val_loader, device,
                                           class_weights=class_weights, epoch=epoch)
         print(f"    Val eval took {_fmt_duration(time.time() - t_val)}")
 
@@ -705,8 +729,11 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                         optimizer, scheduler, best_val_f1, steps_since_improvement)
         with open(history_path, "wb") as f:
             pickle.dump(history, f)
+        if on_checkpoint:
+            on_checkpoint(history, global_step, is_epoch_end=True)
         print(f"    Checkpoint saved (epoch {epoch}, step {global_step}, "
               f"best_val_f1 {best_val_f1:.4f})")
+        _last_checkpoint_time = time.time()
 
     print(f"\nTraining complete. Best val F1: {best_val_f1:.4f} | Total steps: {global_step}")
     model.load_state_dict(torch.load(best_model_path, weights_only=True))
