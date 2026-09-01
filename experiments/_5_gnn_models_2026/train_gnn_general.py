@@ -1418,6 +1418,88 @@ def train_and_log(args, device, model, class_weights, train_loader, val_loader, 
             del val_preds, val_labels, tr_preds, tr_labels, init_criterion
             free_unused_memory()
 
+        # --- Print progress so far when resuming from checkpoint ---
+        if train_plan["can_resume"]:
+            print("\n" + "=" * 60)
+            print("RESUMING FROM CHECKPOINT — progress so far")
+            print("=" * 60)
+
+            # Load checkpoint metadata
+            _ckpt_path = os.path.join(args.experiment_dir, "training_checkpoint.pt")
+            _ckpt = torch.load(_ckpt_path, map_location="cpu")
+            _ckpt_epoch = _ckpt.get("epoch", "?")
+            _ckpt_step = _ckpt.get("global_step", "?")
+            _ckpt_best_f1 = _ckpt.get("best_val_f1", None)
+            _ckpt_no_improve = _ckpt.get("steps_since_improvement", None)
+            print(f"  Checkpoint epoch:  {_ckpt_epoch}")
+            print(f"  Global step:       {_ckpt_step}")
+            if _ckpt_best_f1 is not None:
+                print(f"  Best val F1:       {_ckpt_best_f1:.4f}")
+            if _ckpt_no_improve is not None:
+                print(f"  No improvement:    {_ckpt_no_improve}" + (f"/{args.patience}" if args.patience else ""))
+
+            # Show any extra checkpoint keys (useful for debugging)
+            _known_keys = {"epoch", "global_step", "best_val_f1", "best_val_loss",
+                           "model_state_dict", "optimizer_state_dict", "scheduler_state_dict",
+                           "scaler_state_dict", "steps_since_improvement"}
+            _extra_keys = sorted(set(_ckpt.keys()) - _known_keys)
+            if _extra_keys:
+                print(f"  Additional checkpoint keys: {_extra_keys}")
+            del _ckpt
+
+            # Load training history for detailed per-step/epoch progress
+            _hist_path = os.path.join(args.experiment_dir, "training_history.pkl")
+            if os.path.exists(_hist_path):
+                with open(_hist_path, "rb") as _hf:
+                    _hist = pickle.load(_hf)
+
+                # Checkpoint-level metrics — match train_model's live format:
+                #   Loss: X | Val Loss: X | Val F1: X (P=X R=X) | Best: X
+                if _hist.get("step"):
+                    _n_ckpts = len(_hist["step"])
+                    _running_best = 0.0
+                    print(f"\n  Checkpoint-level history ({_n_ckpts} checkpoints):")
+                    _show = min(10, _n_ckpts)
+                    if _n_ckpts > _show:
+                        # Compute running best up to the omitted portion
+                        for _j in range(_n_ckpts - _show):
+                            _running_best = max(_running_best, _hist["val_f1"][_j])
+                        print(f"    ... ({_n_ckpts - _show} earlier checkpoints omitted)")
+                    for _i in range(max(0, _n_ckpts - _show), _n_ckpts):
+                        _running_best = max(_running_best, _hist["val_f1"][_i])
+                        _vp = _hist["val_precision"][_i] if _i < len(_hist.get("val_precision", [])) else None
+                        _vr = _hist["val_recall"][_i] if _i < len(_hist.get("val_recall", [])) else None
+                        _pr_str = f" (P={_vp:.4f} R={_vr:.4f})" if _vp is not None else ""
+                        print(f"    Step {_hist['step'][_i]:>6d} | "
+                              f"Loss: {_hist['train_loss'][_i]:.4f} | "
+                              f"Val Loss: {_hist['val_loss'][_i]:.4f} | "
+                              f"Val F1: {_hist['val_f1'][_i]:.4f}{_pr_str} | "
+                              f"Best: {_running_best:.4f}")
+
+                # Epoch-level metrics — match train_model's live format:
+                #   Train Loss: X | Train F1: X | Val F1: X | Val Loss: X | Best: X
+                if _hist.get("epoch_step"):
+                    _n_ep = len(_hist["epoch_step"])
+                    _ep_best = 0.0
+                    print(f"\n  Epoch-level history ({_n_ep} epochs completed):")
+                    for _i in range(_n_ep):
+                        _ep_best = max(_ep_best, _hist["epoch_val_f1"][_i])
+                        _etl = _hist["epoch_train_loss"][_i] if _i < len(_hist.get("epoch_train_loss", [])) else None
+                        _etf = _hist["epoch_train_f1"][_i] if _i < len(_hist.get("epoch_train_f1", [])) else None
+                        _line = f"    Epoch {_i+1:>3d} (step {_hist['epoch_step'][_i]:>6d}) | "
+                        if _etl is not None:
+                            _line += f"Train Loss: {_etl:.4f} | "
+                        if _etf is not None:
+                            _line += f"Train F1: {_etf:.4f} | "
+                        _line += (f"Val F1: {_hist['epoch_val_f1'][_i]:.4f} | "
+                                  f"Val Loss: {_hist['epoch_val_loss'][_i]:.4f} | "
+                                  f"Best: {_ep_best:.4f}")
+                        print(_line)
+
+                del _hist
+
+            print("=" * 60 + "\n")
+
         model, history = train_model(
             model=model,
             train_loader=train_loader,
