@@ -497,7 +497,7 @@ def parse_args():
     parser.add_argument(
         "--reset-gnn-training",
         action=argparse.BooleanOptionalAction,
-        default=True,
+        default=False,
         help="Clear checkpoints/logs before training. Use --no-reset-gnn-training to resume from existing artifacts.",
     )
     parser.add_argument(
@@ -519,12 +519,12 @@ def parse_args():
     )
     parser.add_argument(
         "--data-path",
-        default="/Workspace/Users/pablo.celayes@bolt.eu/learning/data/sna_classifier",
+        default="/serafin/pcelayes/repos/sna_classifier/data",
         help="Base data directory containing datasets and cached baseline artifacts.",
     )
     parser.add_argument(
         "--embeddings-path",
-        default="/Workspace/Users/pablo.celayes@bolt.eu/learning/data/sna_classifier/node_embeddings.pt",
+        default="/serafin/pcelayes/repos/sna_classifier/data/node_embeddings.pt",
         help="Path to the node embeddings file consumed by RetweetGNN.",
     )
     parser.add_argument(
@@ -554,7 +554,7 @@ def parse_args():
     parser.add_argument(
         "--epochs",
         type=int,
-        default=1,
+        default=5,
         help="Total training epochs.",
     )
     parser.add_argument(
