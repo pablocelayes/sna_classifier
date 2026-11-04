@@ -455,7 +455,7 @@ def train_one_trial(params):
 
         # Log to MLflow
         mlflow.log_params(params)
-        mlflow.log_metrics({"best_val_f1": best_val_f1, "trial_time_s": elapsed})
+        mlflow.log_metrics({"best_val_f1": best_val_f1, "trial_time_s": elapsed, "trial_failed": 0})
 
         # Cleanup
         del model, optimizer, scheduler, criterion, val_batches
@@ -467,6 +467,9 @@ def train_one_trial(params):
     except Exception as e:
         import traceback
         tb_str = traceback.format_exc()
+        mlflow.log_metric("trial_failed", 1)
+        mlflow.set_tag("error_type", type(e).__name__)
+        mlflow.log_text(tb_str, "traceback.txt")
         gc.collect()
         torch.cuda.empty_cache()
         return {"loss": 1.0, "status": STATUS_FAIL, "error": str(e), "traceback": tb_str}
@@ -490,7 +493,7 @@ search_space = {
     "weight_decay": hp.loguniform("weight_decay", math.log(1e-5), math.log(1e-2)),
 
     # Batch size: discrete choices
-    "batch_size": hp.choice("batch_size", [128, 256, 512]),
+    "batch_size": hp.choice("batch_size", [64, 128, 256]),
 
     # Dropout: uniform 0.05 to 0.5
     "dropout": hp.uniform("dropout", 0.05, 0.5),
@@ -502,7 +505,7 @@ search_space = {
     "warmup_epochs": hp.choice("warmup_epochs", [2, 3, 5, 8]),
 
     # Gradient accumulation steps
-    "grad_accum_steps": hp.choice("grad_accum_steps", [1, 2, 4, 8]),
+    "grad_accum_steps": hp.choice("grad_accum_steps", [2, 4, 8, 16]),
 
     # LR schedule type
     "lr_schedule": hp.choice("lr_schedule", ["cosine", "linear"]),

@@ -13,6 +13,7 @@ import os
 import time
 import gc
 import pickle
+import itertools
 from random import shuffle as _shuffle_list
 
 import numpy as np
@@ -507,6 +508,7 @@ def train_model(model, train_loader, val_loader, experiment_dir,
     running_steps = 0
     start_epoch = 1
     steps_since_improvement = 0
+    _resume_skip_steps = 0
 
     history = {
         "step": [], "train_loss": [], "val_loss": [], "val_f1": [],
@@ -524,10 +526,24 @@ def train_model(model, train_loader, val_loader, experiment_dir,
         model.load_state_dict(ckpt["model_state_dict"])
         optimizer.load_state_dict(ckpt["optimizer_state_dict"])
         scheduler.load_state_dict(ckpt["scheduler_state_dict"])
-        start_epoch = ckpt["epoch"] + 1
         global_step = ckpt["global_step"]
         best_val_f1 = ckpt["best_val_f1"]
         steps_since_improvement = ckpt.get("steps_since_improvement", 0)
+        saved_epoch = ckpt["epoch"]
+        _steps_before_epoch = (saved_epoch - 1) * steps_per_epoch
+        _steps_completed_in_epoch = global_step - _steps_before_epoch
+        if _steps_completed_in_epoch >= steps_per_epoch:
+            start_epoch = saved_epoch + 1
+        else:
+            start_epoch = saved_epoch
+            _resume_skip_steps = _steps_completed_in_epoch
+            print(f"  Mid-epoch checkpoint: {_steps_completed_in_epoch}/{steps_per_epoch} "
+                  f"steps completed in epoch {saved_epoch}")
+        # Restore loader state for deterministic mid-epoch resume
+        _loader_state = ckpt.get("loader_state")
+        if _loader_state is not None and hasattr(train_loader, 'set_resume_state'):
+            train_loader.set_resume_state(*_loader_state)
+            print(f"  Loader state restored (seed={_loader_state[0]}, chunk={_loader_state[1]})")
         if os.path.exists(history_path):
             with open(history_path, "rb") as f:
                 history = pickle.load(f)
@@ -546,13 +562,21 @@ def train_model(model, train_loader, val_loader, experiment_dir,
         epoch_loss_batches = 0
         running_loss = 0.0
         running_steps = 0
-        print(f"  Epoch {epoch}/{epochs} — {steps_per_epoch} steps")
+
+        # On mid-epoch resume, process only the remaining portion of the epoch
+        _remaining_steps = steps_per_epoch
+        if _resume_skip_steps > 0:
+            _remaining_steps = steps_per_epoch - _resume_skip_steps
+            _resume_skip_steps = 0  # Only the first epoch after resume is partial
+
+        print(f"  Epoch {epoch}/{epochs} — {_remaining_steps} steps"
+              + (" (resuming mid-epoch)" if _remaining_steps < steps_per_epoch else ""))
         _epoch_start_time = time.time()
 
         if _use_grad_accum:
             optimizer.zero_grad()
 
-        for step_in_epoch, batch in enumerate(train_loader, 1):
+        for step_in_epoch, batch in enumerate(itertools.islice(train_loader, _remaining_steps), 1):
             batch = batch.to(device)
             with torch.autocast(device_type=_autocast_device, dtype=torch.float16, enabled=mixed_precision):
                 logits = model(batch)
@@ -583,16 +607,16 @@ def train_model(model, train_loader, val_loader, experiment_dir,
             running_steps += 1
             epoch_loss_sum += loss_item
             epoch_loss_batches += 1
-            if step_in_epoch % max(1, steps_per_epoch // 10) == 0:
+            if step_in_epoch % max(1, _remaining_steps // 10) == 0:
                 elapsed = time.time() - _epoch_start_time
-                print(f"    step {step_in_epoch}/{steps_per_epoch} — "
+                print(f"    step {step_in_epoch}/{_remaining_steps} — "
                       f"loss: {loss_item:.4f} — {elapsed:.0f}s elapsed")
 
             # Periodic checkpoint
             if global_step % log_every_n_steps == 0:
                 avg_loss = running_loss / running_steps
                 print(f"\n  --- Checkpoint at step {global_step} "
-                      f"(epoch {epoch}/{epochs}, step {step_in_epoch}/{steps_per_epoch}) ---")
+                      f"(epoch {epoch}/{epochs}, step {step_in_epoch}/{_remaining_steps}) ---")
                 _steps_elapsed = time.time() - _last_checkpoint_time
                 print(f"    ⏱ Time since last checkpoint: {_fmt_duration(_steps_elapsed)}")
                 print(f"    Computing val F1 + val loss (single pass)...")
@@ -636,9 +660,10 @@ def train_model(model, train_loader, val_loader, experiment_dir,
                           f"consecutive checkpoints. Best val F1: {best_val_f1:.4f}")
                     with open(history_path, "wb") as f:
                         pickle.dump(history, f)
+                    _loader_st = train_loader.get_state() if hasattr(train_loader, 'get_state') else None
                     _save_checkpoint(checkpoint_path, epoch, global_step, model,
                                     optimizer, scheduler, best_val_f1,
-                                    steps_since_improvement)
+                                    steps_since_improvement, loader_state=_loader_st)
                     model.load_state_dict(torch.load(best_model_path, weights_only=True))
                     # Compute final train F1 on best model (using sampled loader)
                     print(f"    Computing train F1 on best model (epoch {best_epoch}, {_train_eval_label})...")
@@ -753,9 +778,9 @@ def train_model(model, train_loader, val_loader, experiment_dir,
 
 
 def _save_checkpoint(path, epoch, global_step, model, optimizer, scheduler,
-                    best_val_f1, steps_since_improvement):
+                    best_val_f1, steps_since_improvement, loader_state=None):
     """Helper to save a training checkpoint."""
-    torch.save({
+    data = {
         "epoch": epoch,
         "global_step": global_step,
         "model_state_dict": model.state_dict(),
@@ -763,4 +788,7 @@ def _save_checkpoint(path, epoch, global_step, model, optimizer, scheduler,
         "scheduler_state_dict": scheduler.state_dict(),
         "best_val_f1": best_val_f1,
         "steps_since_improvement": steps_since_improvement,
-    }, path)
+    }
+    if loader_state is not None:
+        data["loader_state"] = loader_state
+    torch.save(data, path)
