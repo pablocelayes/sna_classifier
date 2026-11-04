@@ -1,0 +1,22 @@
+{
+  "_source": {
+    "experiment_id": "3717664953061603",
+    "run_name": "optuna_trial_19",
+    "run_id": null,
+    "best_val_f1": 0.739439
+  },
+  "epochs": 5,
+  "batch_size": 128,
+  "train_chunk_size": 10,
+  "patience": 15,
+  "grad_accum_steps": 4,
+  "max_val_samples": 50000,
+  "dropout": 0.12735490677640524,
+  "drop_edge_rate": 0.07726345915423269,
+  "lr": 2.365465784439242e-05,
+  "lr_schedule": "linear",
+  "weight_decay": 0.00013483048964019407,
+  "warmup_epochs": 2,
+  "finetune": true,
+  "init_weights_path": "./experiments/v2_N20/best_retweet_gnn_general.pt"
+}
