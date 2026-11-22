@@ -12,9 +12,9 @@ torch-geometric>=2.3
 torch-geometric-signed-directed>=1.0   # MagNetConv
 numpy>=1.24,<2.0
 scipy>=1.10
-pandas>=2.0
+pandas>=2.0,<3.0                       # code written for pandas 2.x
 scikit-learn>=1.2
 networkx>=3.1
-pyarrow>=12.0                          # imported by gnn_models.py
+pyarrow>=12.0,<20                      # imported by gnn_models.py; newer pyarrow requires numpy>=2
 matplotlib>=3.7                        # training curves (headless Agg backend)
 mlflow>=2.8                            # optional: run with --no-mlflow to skip
