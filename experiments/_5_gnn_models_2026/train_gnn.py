@@ -103,7 +103,7 @@ def parse_args():
     g = p.add_argument_group("paths")
     g.add_argument("--project-home", default=DEFAULT_PROJECT_HOME,
                    help="sna_classifier repo root (added to sys.path for tw_dataset).")
-    g.add_argument("--data-path", default="/serafin/pcelayes/repos/sna_classifier/data",
+    g.add_argument("--data-path", default="/home/pcelayes/repos/sna_classifier/data",
                    help="Data dir containing datasets/user_splits.json.")
     g.add_argument("--embeddings-path", default=None,
                    help="Node embeddings .pt (default: <data-path>/node_embeddings.pt).")
