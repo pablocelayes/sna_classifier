@@ -63,7 +63,22 @@ command -v nvidia-smi >/dev/null && nvidia-smi || echo "nvidia-smi not available
 mkdir -p "$(dirname "${VENV_DIR}")"
 LOCK_FILE="${VENV_DIR}.lock"
 
+check_python_version() {
+    # torch 2.x wheels need Python >= 3.9 (older ones: 3.8). Fail early and clearly.
+    if ! "$1" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)'; then
+        echo "ERROR: $1 is $("$1" --version 2>&1); torch>=2.0 needs Python >= 3.9." >&2
+        echo "       Load a newer Python (e.g. 'module avail python' / conda) and set PYTHON_BIN," >&2
+        echo "       then delete the old venv: rm -rf ${VENV_DIR}" >&2
+        exit 1
+    fi
+}
+
 setup_env() {
+    if [[ -x "${VENV_DIR}/bin/python" ]]; then
+        check_python_version "${VENV_DIR}/bin/python"
+    else
+        check_python_version "${PYTHON_BIN}"
+    fi
     if [[ ! -x "${VENV_DIR}/bin/python" ]]; then
         echo ">> Creating virtualenv at ${VENV_DIR} (using $(${PYTHON_BIN} --version))"
         "${PYTHON_BIN}" -m venv "${VENV_DIR}"
