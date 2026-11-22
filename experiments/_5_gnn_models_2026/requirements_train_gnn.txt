@@ -1,0 +1,20 @@
+# Requirements for train_gnn.py (GNN training from notebook 3.1, no baseline SVC).
+#
+# NOTE: install torch FIRST with the wheel matching the cluster's CUDA version, e.g.
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+# then: pip install -r requirements_train_gnn.txt
+#
+# The per-user dataframes are pandas pickles (sparse), so keep pandas >= the
+# version that wrote them (2.0.x) to be able to unpickle them.
+
+torch>=2.0
+torch-geometric>=2.3
+torch-geometric-signed-directed>=1.0   # MagNetConv
+numpy>=1.24,<2.0
+scipy>=1.10
+pandas>=2.0
+scikit-learn>=1.2
+networkx>=3.1
+pyarrow>=12.0                          # imported by gnn_models.py
+matplotlib>=3.7                        # training curves (headless Agg backend)
+mlflow>=2.8                            # optional: run with --no-mlflow to skip
